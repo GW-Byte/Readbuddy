@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReadBuddy - AI Reading Helper for Kids</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>ReadBuddy - AI Reading Helper 📚</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -17,67 +17,150 @@
         
         :root {
             --primary: #FF6B9D;
+            --primary-dark: #E85384;
             --secondary: #4ECDC4;
-            --accent: #FFE66D;
-            --success: #95E1D3;
-            --bg-main: #FFF8F0;
-            --bg-card: #FFFFFF;
+            --secondary-dark: #3AB8AF;
+            --accent: #FFD93D;
+            --success: #6BCF7F;
+            --warning: #FFA756;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --bg-paper: #FFFEF9;
             --text-dark: #2D3748;
             --text-light: #718096;
-            --shadow: 0 10px 40px rgba(255, 107, 157, 0.15);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
+            --shadow-md: 0 4px 20px rgba(0,0,0,0.12);
+            --shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
+            --border-radius: 24px;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
         }
         
         body {
-            font-family: 'Fredoka', 'Comic Neue', cursive;
-            background: linear-gradient(135deg, #FFF8F0 0%, #FFE8E8 100%);
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
             color: var(--text-dark);
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 107, 157, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(78, 205, 196, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(255, 217, 61, 0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
         
         #root {
+            position: relative;
+            z-index: 1;
             max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
         
         .header {
-            text-align: center;
-            padding: 30px 20px;
-            background: linear-gradient(135deg, var(--primary), #FF8FB1);
-            border-radius: 30px;
-            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: var(--border-radius);
+            padding: 40px 30px;
             margin-bottom: 30px;
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-lg);
             position: relative;
             overflow: hidden;
+            animation: fadeInUp 0.6s ease-out;
         }
         
         .header::before {
+            content: '✨';
+            position: absolute;
+            font-size: 120px;
+            top: -20px;
+            right: -10px;
+            opacity: 0.15;
+            animation: sparkle 3s infinite;
+        }
+        
+        .header::after {
             content: '📚';
             position: absolute;
-            font-size: 150px;
-            opacity: 0.1;
-            right: -20px;
-            top: -30px;
-            transform: rotate(-15deg);
+            font-size: 100px;
+            bottom: -10px;
+            left: -10px;
+            opacity: 0.15;
+            animation: float 6s infinite;
         }
         
-        .header h1 {
-            font-size: 3em;
-            font-weight: 700;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        .header-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
         }
         
-        .header p {
-            font-size: 1.3em;
-            opacity: 0.95;
+        .logo {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .logo-icon {
+            font-size: 4em;
+            animation: pulse 2s infinite;
+        }
+        
+        .logo-text h1 {
+            font-family: 'Baloo 2', cursive;
+            font-size: 3.5em;
+            font-weight: 800;
+            color: white;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
+            margin: 0;
+            letter-spacing: -1px;
+        }
+        
+        .tagline {
+            color: rgba(255,255,255,0.95);
+            font-size: 1.4em;
+            font-weight: 600;
         }
         
         .main-container {
             display: grid;
-            grid-template-columns: 300px 1fr;
+            grid-template-columns: 320px 1fr;
             gap: 30px;
+            animation: fadeInUp 0.6s ease-out 0.2s both;
         }
         
         @media (max-width: 968px) {
@@ -87,197 +170,344 @@
         }
         
         .sidebar {
-            background: var(--bg-card);
-            border-radius: 25px;
-            padding: 25px;
-            box-shadow: var(--shadow);
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            box-shadow: var(--shadow-md);
             height: fit-content;
             position: sticky;
             top: 20px;
         }
         
-        .level-selector {
-            margin-bottom: 25px;
-        }
-        
         .level-selector h3 {
             color: var(--primary);
-            margin-bottom: 15px;
-            font-size: 1.3em;
-        }
-        
-        .level-btn {
-            width: 100%;
-            padding: 15px 20px;
-            margin-bottom: 10px;
-            border: 3px solid #E2E8F0;
-            background: white;
-            border-radius: 15px;
-            cursor: pointer;
-            font-family: 'Fredoka', cursive;
-            font-size: 1.05em;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 800;
             display: flex;
             align-items: center;
             gap: 10px;
         }
         
+        .level-btn {
+            width: 100%;
+            padding: 18px 20px;
+            margin-bottom: 12px;
+            border: 3px solid transparent;
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 16px;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.05em;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .level-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .level-btn:hover::before {
+            left: 100%;
+        }
+        
         .level-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 20px rgba(255, 107, 157, 0.3);
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
         }
         
         .level-btn.active {
             background: linear-gradient(135deg, var(--primary), #FF8FB1);
             color: white;
-            border-color: var(--primary);
+            border-color: var(--primary-dark);
             transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
         }
         
         .level-icon {
-            font-size: 1.5em;
+            font-size: 2em;
+            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
         }
         
         .progress-section {
-            padding-top: 20px;
-            border-top: 2px solid #F0F0F0;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 3px solid #f0f0f0;
         }
         
         .progress-section h3 {
             color: var(--secondary);
-            margin-bottom: 15px;
-            font-size: 1.2em;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
-        .progress-bar {
-            background: #E2E8F0;
-            height: 20px;
-            border-radius: 10px;
+        .progress-bar-container {
+            background: #e2e8f0;
+            height: 28px;
+            border-radius: 14px;
             overflow: hidden;
             position: relative;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
         }
         
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, var(--success), var(--secondary));
-            transition: width 0.5s ease;
-            border-radius: 10px;
+            transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 14px;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(78, 205, 196, 0.4);
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
         
         .progress-text {
             text-align: center;
-            margin-top: 10px;
-            font-weight: 600;
-            color: var(--text-light);
+            margin-top: 12px;
+            font-weight: 700;
+            color: var(--text-dark);
+            font-size: 1.05em;
         }
         
-        .stats {
+        .stats-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, 1fr);
             gap: 15px;
-            margin-top: 20px;
+            margin-top: 25px;
         }
         
         .stat-card {
-            background: linear-gradient(135deg, #FFF, #F7F7F7);
-            padding: 15px;
-            border-radius: 15px;
+            background: linear-gradient(135deg, #fff 0%, #f7fafc 100%);
+            padding: 20px;
+            border-radius: 16px;
             text-align: center;
-            border: 2px solid #F0F0F0;
+            border: 2px solid #e2e8f0;
+            transition: all 0.3s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-sm);
+            border-color: var(--primary);
         }
         
         .stat-number {
-            font-size: 2em;
-            font-weight: 700;
-            color: var(--primary);
+            font-size: 2.5em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .stat-label {
             font-size: 0.9em;
             color: var(--text-light);
-            margin-top: 5px;
+            margin-top: 8px;
+            font-weight: 600;
         }
         
         .content-area {
-            background: var(--bg-card);
-            border-radius: 25px;
-            padding: 40px;
-            box-shadow: var(--shadow);
+            background: white;
+            border-radius: var(--border-radius);
+            padding: 45px;
+            box-shadow: var(--shadow-md);
             min-height: 600px;
         }
         
+        .lesson-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 35px;
+            padding-bottom: 25px;
+            border-bottom: 3px solid #f0f0f0;
+        }
+        
+        .lesson-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .lesson-title h2 {
+            font-family: 'Baloo 2', cursive;
+            font-size: 2em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .word-counter {
+            background: linear-gradient(135deg, var(--accent), #FFE66D);
+            padding: 12px 24px;
+            border-radius: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+            box-shadow: var(--shadow-sm);
+        }
+        
         .lesson-card {
-            background: linear-gradient(135deg, #FFF, #FFFEF8);
+            background: linear-gradient(135deg, #fff 0%, #fffef9 100%);
             border: 3px solid var(--accent);
-            border-radius: 25px;
-            padding: 40px;
+            border-radius: 24px;
+            padding: 45px;
             margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(255, 230, 109, 0.3);
+            box-shadow: 0 12px 35px rgba(255, 217, 61, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .lesson-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 217, 61, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
         
         .word-display {
             text-align: center;
-            margin: 40px 0;
+            margin: 45px 0;
+            position: relative;
+            z-index: 1;
         }
         
         .current-word {
-            font-size: 5em;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 20px;
-            text-shadow: 3px 3px 0px var(--accent);
-            animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-family: 'Baloo 2', cursive;
+            font-size: 6em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 25px;
+            filter: drop-shadow(4px 4px 0px rgba(255, 217, 61, 0.3));
+            animation: bounceIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .current-word:hover {
+            transform: scale(1.1) rotate(-2deg);
         }
         
         @keyframes bounceIn {
-            0% { transform: scale(0); opacity: 0; }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); opacity: 1; }
+            0% { 
+                transform: scale(0) rotate(-180deg); 
+                opacity: 0; 
+            }
+            50% { 
+                transform: scale(1.2) rotate(10deg); 
+            }
+            100% { 
+                transform: scale(1) rotate(0deg); 
+                opacity: 1; 
+            }
+        }
+        
+        .phonetic-text {
+            font-size: 1.6em;
+            color: var(--text-light);
+            font-style: italic;
+            margin-bottom: 15px;
         }
         
         .image-container {
             width: 100%;
-            max-width: 500px;
-            margin: 30px auto;
-            border-radius: 20px;
+            max-width: 550px;
+            margin: 35px auto;
+            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
             position: relative;
+            border: 4px solid white;
         }
         
         .image-container img {
             width: 100%;
-            height: auto;
+            height: 350px;
+            object-fit: cover;
             display: block;
+            transition: transform 0.3s;
+        }
+        
+        .image-container:hover img {
+            transform: scale(1.05);
         }
         
         .image-loading {
             width: 100%;
-            height: 300px;
-            background: linear-gradient(90deg, #F0F0F0 25%, #E0E0E0 50%, #F0F0F0 75%);
+            height: 350px;
+            background: linear-gradient(90deg, #e0e7ff 0%, #c7d2fe 50%, #e0e7ff 100%);
             background-size: 200% 100%;
-            animation: shimmer 2s infinite;
+            animation: shimmer 1.5s infinite;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 3em;
+            font-size: 4em;
         }
         
-        @keyframes shimmer {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
+        .loading-text {
+            font-size: 0.3em;
+            margin-top: 20px;
+            color: var(--text-light);
+            font-weight: 700;
         }
         
         .caption {
             text-align: center;
-            font-size: 1.4em;
+            font-size: 1.5em;
             color: var(--text-dark);
-            margin-top: 20px;
-            padding: 15px;
-            background: rgba(255, 230, 109, 0.2);
-            border-radius: 15px;
-            font-weight: 500;
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255, 217, 61, 0.15);
+            border-radius: 16px;
+            font-weight: 600;
+            line-height: 1.6;
+            border-left: 5px solid var(--accent);
         }
         
         .controls {
@@ -285,127 +515,177 @@
             gap: 15px;
             justify-content: center;
             flex-wrap: wrap;
-            margin-top: 30px;
+            margin-top: 35px;
+            position: relative;
+            z-index: 1;
         }
         
         .btn {
-            padding: 18px 35px;
+            padding: 18px 32px;
             border: none;
             border-radius: 50px;
-            font-family: 'Fredoka', cursive;
+            font-family: 'Nunito', sans-serif;
             font-size: 1.2em;
-            font-weight: 600;
+            font-weight: 700;
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            box-shadow: var(--shadow-md);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
         
         .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
         }
         
         .btn:active {
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, var(--primary), #FF8FB1);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: white;
         }
         
         .btn-secondary {
-            background: linear-gradient(135deg, var(--secondary), #6FE3DB);
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
             color: white;
         }
         
         .btn-success {
-            background: linear-gradient(135deg, var(--success), var(--secondary));
+            background: linear-gradient(135deg, var(--success), #5BC46E);
             color: white;
         }
         
         .btn-accent {
-            background: linear-gradient(135deg, var(--accent), #FFD93D);
+            background: linear-gradient(135deg, var(--accent), #FFE66D);
             color: var(--text-dark);
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning), #FF9142);
+            color: white;
         }
         
         .btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
-            transform: none;
+            transform: none !important;
+        }
+        
+        .btn-icon {
+            font-size: 1.3em;
         }
         
         .story-mode {
-            background: linear-gradient(135deg, #E8F5E9, #F1F8E9);
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
             border: 3px solid var(--success);
-            padding: 30px;
-            border-radius: 20px;
-            margin-top: 20px;
+            padding: 40px;
+            border-radius: 24px;
+            margin-top: 25px;
+            box-shadow: 0 10px 30px rgba(107, 207, 127, 0.2);
         }
         
         .story-text {
-            font-size: 1.6em;
-            line-height: 1.8;
+            font-size: 1.8em;
+            line-height: 2;
             color: var(--text-dark);
-            margin-bottom: 25px;
+            margin-bottom: 30px;
+            font-weight: 500;
         }
         
         .story-text .highlight {
-            background: linear-gradient(120deg, var(--accent) 0%, var(--accent) 100%);
-            background-repeat: no-repeat;
-            background-size: 100% 40%;
-            background-position: 0 80%;
-            padding: 2px 4px;
-            font-weight: 700;
+            background: linear-gradient(180deg, transparent 60%, var(--accent) 60%);
+            padding: 2px 6px;
+            font-weight: 800;
             color: var(--text-dark);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .story-text .highlight:hover {
+            background: var(--accent);
+            transform: scale(1.1);
         }
         
         .settings-panel {
-            background: #F7FAFC;
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 20px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 30px;
+            border: 3px solid var(--accent);
         }
         
         .settings-panel h4 {
-            color: var(--primary);
-            margin-bottom: 15px;
+            color: var(--text-dark);
+            margin-bottom: 18px;
+            font-size: 1.3em;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
         
         .api-input {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #E2E8F0;
-            border-radius: 10px;
-            font-family: monospace;
-            font-size: 0.9em;
-            margin-bottom: 10px;
+            padding: 16px 20px;
+            border: 3px solid #fbbf24;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 1em;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+            background: white;
         }
         
         .api-input:focus {
             outline: none;
             border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(255, 107, 157, 0.1);
+            transform: translateY(-2px);
         }
         
-        .info-box {
-            background: linear-gradient(135deg, #E3F2FD, #F3E5F5);
-            padding: 20px;
-            border-radius: 15px;
-            margin: 20px 0;
-            border-left: 5px solid var(--secondary);
+        .feature-pills {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 20px;
         }
         
-        .info-box h4 {
-            color: var(--secondary);
-            margin-bottom: 10px;
-        }
-        
-        .info-box p {
+        .pill {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.95em;
+            font-weight: 600;
             color: var(--text-dark);
-            line-height: 1.6;
+            border: 2px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .achievement-popup {
@@ -414,12 +694,13 @@
             left: 50%;
             transform: translate(-50%, -50%) scale(0);
             background: white;
-            padding: 50px;
+            padding: 60px;
             border-radius: 30px;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             z-index: 1000;
             text-align: center;
-            animation: popup 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            animation: popup 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            border: 5px solid var(--accent);
         }
         
         @keyframes popup {
@@ -427,32 +708,53 @@
         }
         
         .achievement-icon {
-            font-size: 5em;
+            font-size: 6em;
             margin-bottom: 20px;
+            animation: pulse 1s infinite;
         }
         
         .achievement-text {
-            font-size: 2em;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 10px;
+            font-family: 'Baloo 2', cursive;
+            font-size: 2.5em;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
         }
         
         .confetti {
             position: fixed;
             width: 10px;
             height: 10px;
-            background: var(--primary);
-            position: absolute;
-            animation: confetti-fall 3s linear;
+            z-index: 999;
         }
         
-        @keyframes confetti-fall {
-            to {
-                transform: translateY(100vh) rotate(360deg);
-                opacity: 0;
-            }
+        .auto-gen-indicator {
+            display: inline-block;
+            background: linear-gradient(135deg, #a78bfa, #c084fc);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 700;
+            margin-left: 10px;
+            animation: pulse 2s infinite;
         }
+        
+        .difficulty-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: 700;
+            margin-left: 10px;
+        }
+        
+        .difficulty-easy { background: #dcfce7; color: #166534; }
+        .difficulty-medium { background: #fef3c7; color: #92400e; }
+        .difficulty-hard { background: #fee2e2; color: #991b1b; }
     </style>
 </head>
 <body>
@@ -461,31 +763,121 @@
     <script type="text/babel">
         const { useState, useEffect, useRef } = React;
         
-        // Learning content organized by levels
-        const learningContent = {
+        // AI Word Generator - Creates contextual words based on difficulty
+        const generateWordsWithAI = async (level, count, apiKey) => {
+            if (!apiKey) return null;
+            
+            const prompts = {
+                level1: "Generate 10 simple 3-letter CVC (consonant-vowel-consonant) words for a child learning to read. Words should be common, easy to visualize (cat, dog, sun). Return ONLY a JSON array of words, nothing else.",
+                level2: "Generate 10 word family words (like -at family: cat, hat, mat or -ing family: ring, sing, king). Mix different word families. Return ONLY a JSON array of words.",
+                level3: "Generate 10 common sight words that children need to recognize instantly (like: the, and, you, have, said). Return ONLY a JSON array of words.",
+                level4: "Generate 10 multi-syllable words suitable for children (happy, butterfly, elephant, garden). Return ONLY a JSON array of words.",
+            };
+            
+            try {
+                const response = await fetch("https://api.anthropic.com/v1/messages", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-api-key": apiKey,
+                        "anthropic-version": "2023-06-01"
+                    },
+                    body: JSON.stringify({
+                        model: "claude-sonnet-4-20250514",
+                        max_tokens: 500,
+                        messages: [{
+                            role: "user",
+                            content: prompts[level]
+                        }]
+                    })
+                });
+                
+                const data = await response.json();
+                const wordsText = data.content[0].text;
+                const words = JSON.parse(wordsText.trim());
+                return words;
+            } catch (error) {
+                console.error('Error generating words:', error);
+                return null;
+            }
+        };
+        
+        // Enhanced image generation with better prompts
+        const generateEnhancedImage = async (word, apiKey) => {
+            if (!apiKey) {
+                return {
+                    url: `https://source.unsplash.com/500x350/?${word},children,education`,
+                    caption: `A picture showing: ${word}`,
+                    isAI: false
+                };
+            }
+            
+            try {
+                const response = await fetch("https://api.anthropic.com/v1/messages", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-api-key": apiKey,
+                        "anthropic-version": "2023-06-01"
+                    },
+                    body: JSON.stringify({
+                        model: "claude-sonnet-4-20250514",
+                        max_tokens: 300,
+                        messages: [{
+                            role: "user",
+                            content: `You are helping a child learn the word "${word}". Create a vivid, simple, child-friendly description of what they would see in an educational illustration. Focus on bright colors, simple shapes, and happy imagery. Be specific and visual. 2-3 sentences only.`
+                        }]
+                    })
+                });
+                
+                const data = await response.json();
+                const description = data.content[0].text;
+                
+                // For now, using Unsplash. In production, integrate DALL-E or Stability AI
+                return {
+                    url: `https://source.unsplash.com/500x350/?${word},colorful,simple`,
+                    caption: description,
+                    isAI: true
+                };
+            } catch (error) {
+                console.error('Error generating image:', error);
+                return {
+                    url: `https://source.unsplash.com/500x350/?${word},education`,
+                    caption: `A picture showing: ${word}`,
+                    isAI: false
+                };
+            }
+        };
+        
+        // Base learning content
+        const baseLearningContent = {
             level1: {
                 name: "Letter Sounds",
                 icon: "🔤",
                 words: ["cat", "dog", "sun", "hat", "bat", "run", "hop", "top", "cup", "fan"],
-                description: "Learn basic 3-letter words with simple sounds"
+                description: "Learn basic 3-letter words with simple sounds",
+                difficulty: "easy"
             },
             level2: {
                 name: "Word Families",
                 icon: "👨‍👩‍👧",
                 words: ["fish", "ship", "wish", "dish", "cake", "lake", "make", "take", "tree", "free"],
-                description: "Practice word patterns and rhyming"
+                description: "Practice word patterns and rhyming",
+                difficulty: "easy"
             },
             level3: {
                 name: "Sight Words",
                 icon: "👀",
                 words: ["the", "and", "you", "are", "have", "they", "said", "come", "some", "were"],
-                description: "Common words to recognize instantly"
+                description: "Common words to recognize instantly",
+                difficulty: "medium"
             },
             level4: {
                 name: "Longer Words",
                 icon: "📏",
                 words: ["happy", "rabbit", "garden", "window", "basket", "children", "morning", "birthday", "elephant", "butterfly"],
-                description: "Build confidence with multi-syllable words"
+                description: "Build confidence with multi-syllable words",
+                difficulty: "medium"
             },
             level5: {
                 name: "Story Time",
@@ -500,14 +892,10 @@
                         title: "A Day at the Park",
                         text: "Sam went to the park. He saw a big tree. Birds sang in the tree. Sam played on the swing. He had so much fun!",
                         focusWords: ["park", "tree", "birds", "swing", "fun"]
-                    },
-                    {
-                        title: "The Little Garden",
-                        text: "Emma planted seeds in her garden. The sun shone bright. Rain helped the plants grow. Soon, beautiful flowers bloomed everywhere. Emma smiled with joy!",
-                        focusWords: ["garden", "seeds", "plants", "flowers", "smiled"]
                     }
                 ],
-                description: "Read complete stories with comprehension"
+                description: "Read complete stories with comprehension",
+                difficulty: "hard"
             }
         };
         
@@ -521,14 +909,17 @@
             const [totalWords, setTotalWords] = useState(0);
             const [showAchievement, setShowAchievement] = useState(false);
             const [isSpeaking, setIsSpeaking] = useState(false);
+            const [learningContent, setLearningContent] = useState(baseLearningContent);
+            const [isGeneratingWords, setIsGeneratingWords] = useState(false);
+            const [confetti, setConfetti] = useState([]);
             
             const currentContent = learningContent[currentLevel];
             const isStoryMode = currentLevel === 'level5';
             const currentWord = isStoryMode ? null : currentContent.words[currentIndex];
             const currentStory = isStoryMode ? currentContent.stories[currentIndex] : null;
             
-            // Text-to-Speech function
-            const speak = (text, rate = 0.8) => {
+            // Text-to-Speech
+            const speak = (text, rate = 0.75) => {
                 if ('speechSynthesis' in window) {
                     window.speechSynthesis.cancel();
                     const utterance = new SpeechSynthesisUtterance(text);
@@ -541,59 +932,23 @@
                     
                     window.speechSynthesis.speak(utterance);
                 } else {
-                    alert('Text-to-speech is not supported in your browser. Please try Chrome or Safari.');
+                    alert('Text-to-speech not supported. Please use Chrome or Safari.');
                 }
             };
             
-            // Generate AI image using Anthropic API
+            // Generate new image with AI
             const generateImage = async (word) => {
-                if (!apiKey) {
-                    alert('Please enter your Anthropic API key in the settings below!');
-                    return;
-                }
-                
                 setImageLoading(true);
                 setGeneratedImage(null);
                 
-                try {
-                    const response = await fetch("https://api.anthropic.com/v1/messages", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "x-api-key": apiKey,
-                            "anthropic-version": "2023-06-01"
-                        },
-                        body: JSON.stringify({
-                            model: "claude-sonnet-4-20250514",
-                            max_tokens: 1024,
-                            messages: [{
-                                role: "user",
-                                content: `Create a simple, colorful, child-friendly description of the word "${word}" that would help a young child understand it. Make it vivid and fun! Respond with just 2-3 sentences describing what the child would see.`
-                            }]
-                        })
-                    });
-                    
-                    const data = await response.json();
-                    const description = data.content[0].text;
-                    
-                    // For MVP, we'll use a placeholder image service with the AI description
-                    // In production, you'd integrate with DALL-E or Stable Diffusion
-                    setGeneratedImage({
-                        url: `https://source.unsplash.com/400x300/?${word},children,cartoon`,
-                        caption: description
-                    });
-                    
-                } catch (error) {
-                    console.error('Error generating image:', error);
-                    alert('Error generating image. Please check your API key and try again.');
-                } finally {
-                    setImageLoading(false);
-                }
+                const result = await generateEnhancedImage(word, apiKey);
+                setGeneratedImage(result);
+                setImageLoading(false);
             };
             
             // Auto-generate image when word changes
             useEffect(() => {
-                if (currentWord && apiKey) {
+                if (currentWord) {
                     generateImage(currentWord);
                 }
             }, [currentWord]);
@@ -606,6 +961,22 @@
                 setTotalWords(total);
             }, []);
             
+            // Confetti effect
+            const createConfetti = () => {
+                const colors = ['#FF6B9D', '#4ECDC4', '#FFD93D', '#6BCF7F', '#FFA756'];
+                const newConfetti = [];
+                for (let i = 0; i < 50; i++) {
+                    newConfetti.push({
+                        id: i,
+                        left: Math.random() * 100 + '%',
+                        backgroundColor: colors[Math.floor(Math.random() * colors.length)],
+                        animationDelay: Math.random() * 2 + 's'
+                    });
+                }
+                setConfetti(newConfetti);
+                setTimeout(() => setConfetti([]), 3000);
+            };
+            
             const markComplete = () => {
                 const newCompleted = wordsCompleted + 1;
                 const newTotal = totalWords + 1;
@@ -614,9 +985,9 @@
                 localStorage.setItem('wordsCompleted', newCompleted);
                 localStorage.setItem('totalWords', newTotal);
                 
-                // Show achievement every 10 words
                 if (newCompleted % 10 === 0) {
                     setShowAchievement(true);
+                    createConfetti();
                     setTimeout(() => setShowAchievement(false), 3000);
                 }
                 
@@ -629,8 +1000,7 @@
                     setCurrentIndex(currentIndex + 1);
                     setGeneratedImage(null);
                 } else {
-                    // Level complete!
-                    alert('🎉 Level Complete! Great job!');
+                    alert('🎉 Level Complete! Amazing work!');
                     setCurrentIndex(0);
                 }
             };
@@ -647,18 +1017,51 @@
                 localStorage.setItem('anthropicApiKey', key);
             };
             
+            // Generate new words for current level
+            const generateNewWords = async () => {
+                if (!apiKey) {
+                    alert('Please add your API key to generate new words!');
+                    return;
+                }
+                
+                setIsGeneratingWords(true);
+                const newWords = await generateWordsWithAI(currentLevel, 10, apiKey);
+                
+                if (newWords) {
+                    setLearningContent(prev => ({
+                        ...prev,
+                        [currentLevel]: {
+                            ...prev[currentLevel],
+                            words: newWords
+                        }
+                    }));
+                    setCurrentIndex(0);
+                    alert('✨ Generated 10 new words! Let\'s learn!');
+                } else {
+                    alert('Could not generate words. Check your API key.');
+                }
+                
+                setIsGeneratingWords(false);
+            };
+            
             return (
                 <>
                     <div className="header">
-                        <h1>📚 ReadBuddy</h1>
-                        <p>Your AI-Powered Reading Adventure!</p>
+                        <div className="header-content">
+                            <div className="logo">
+                                <span className="logo-icon">📚</span>
+                                <div className="logo-text">
+                                    <h1>ReadBuddy</h1>
+                                </div>
+                            </div>
+                            <p className="tagline">Your AI-Powered Reading Adventure!</p>
+                        </div>
                     </div>
                     
                     <div className="main-container">
-                        {/* Sidebar */}
                         <div className="sidebar">
                             <div className="level-selector">
-                                <h3>Choose Your Level</h3>
+                                <h3>🎯 Choose Level</h3>
                                 {Object.entries(learningContent).map(([key, level]) => (
                                     <button
                                         key={key}
@@ -676,8 +1079,8 @@
                             </div>
                             
                             <div className="progress-section">
-                                <h3>Your Progress</h3>
-                                <div className="progress-bar">
+                                <h3>📊 Your Progress</h3>
+                                <div className="progress-bar-container">
                                     <div 
                                         className="progress-fill" 
                                         style={{width: `${totalWords > 0 ? (wordsCompleted / totalWords) * 100 : 0}%`}}
@@ -687,7 +1090,7 @@
                                     {wordsCompleted} / {totalWords} words mastered
                                 </div>
                                 
-                                <div className="stats">
+                                <div className="stats-grid">
                                     <div className="stat-card">
                                         <div className="stat-number">{wordsCompleted}</div>
                                         <div className="stat-label">Words Learned</div>
@@ -700,26 +1103,37 @@
                             </div>
                         </div>
                         
-                        {/* Main Content */}
                         <div className="content-area">
+                            <div className="lesson-header">
+                                <div className="lesson-title">
+                                    <h2>{currentContent.icon} {currentContent.name}</h2>
+                                    <span className={`difficulty-badge difficulty-${currentContent.difficulty}`}>
+                                        {currentContent.difficulty.toUpperCase()}
+                                    </span>
+                                </div>
+                                {!isStoryMode && (
+                                    <div className="word-counter">
+                                        Word {currentIndex + 1} of {currentContent.words.length}
+                                    </div>
+                                )}
+                            </div>
+                            
                             <div className="lesson-card">
-                                <h2 style={{color: 'var(--primary)', marginBottom: '10px'}}>
-                                    {currentContent.icon} {currentContent.name}
-                                </h2>
-                                <p style={{color: 'var(--text-light)', marginBottom: '30px'}}>
-                                    {currentContent.description}
-                                </p>
-                                
                                 {!isStoryMode ? (
                                     <>
-                                        {/* Word Mode */}
                                         <div className="word-display">
-                                            <div className="current-word">{currentWord}</div>
+                                            <div className="current-word" onClick={() => speak(currentWord)}>
+                                                {currentWord}
+                                            </div>
+                                            <div className="phonetic-text">Click word to hear it!</div>
                                         </div>
                                         
                                         {imageLoading && (
                                             <div className="image-container">
-                                                <div className="image-loading">🎨</div>
+                                                <div className="image-loading">
+                                                    🎨
+                                                    <div className="loading-text">Creating image...</div>
+                                                </div>
                                             </div>
                                         )}
                                         
@@ -730,7 +1144,10 @@
                                         )}
                                         
                                         {generatedImage && (
-                                            <div className="caption">{generatedImage.caption}</div>
+                                            <div className="caption">
+                                                {generatedImage.isAI && <span style={{fontSize: '0.7em'}}>🤖 AI: </span>}
+                                                {generatedImage.caption}
+                                            </div>
                                         )}
                                         
                                         <div className="controls">
@@ -739,20 +1156,23 @@
                                                 onClick={() => speak(currentWord)}
                                                 disabled={isSpeaking}
                                             >
-                                                🔊 {isSpeaking ? 'Speaking...' : 'Hear Word'}
+                                                <span className="btn-icon">🔊</span>
+                                                {isSpeaking ? 'Speaking...' : 'Hear Word'}
                                             </button>
                                             <button 
                                                 className="btn btn-secondary"
                                                 onClick={() => speak(currentWord, 0.5)}
                                             >
-                                                🐌 Slow Speed
+                                                <span className="btn-icon">🐌</span>
+                                                Slow Speed
                                             </button>
                                             <button 
                                                 className="btn btn-accent"
                                                 onClick={() => generateImage(currentWord)}
-                                                disabled={!apiKey || imageLoading}
+                                                disabled={imageLoading}
                                             >
-                                                🎨 {imageLoading ? 'Creating...' : 'New Image'}
+                                                <span className="btn-icon">🎨</span>
+                                                {imageLoading ? 'Creating...' : 'New Image'}
                                             </button>
                                         </div>
                                         
@@ -768,15 +1188,28 @@
                                                 className="btn btn-success"
                                                 onClick={markComplete}
                                             >
-                                                ✓ Got It! Next Word →
+                                                <span className="btn-icon">✓</span>
+                                                Got It! Next →
                                             </button>
                                         </div>
+                                        
+                                        {apiKey && currentLevel !== 'level5' && (
+                                            <div className="controls" style={{marginTop: '15px'}}>
+                                                <button 
+                                                    className="btn btn-warning"
+                                                    onClick={generateNewWords}
+                                                    disabled={isGeneratingWords}
+                                                >
+                                                    <span className="btn-icon">✨</span>
+                                                    {isGeneratingWords ? 'Generating...' : 'Generate New Words with AI'}
+                                                </button>
+                                            </div>
+                                        )}
                                     </>
                                 ) : (
                                     <>
-                                        {/* Story Mode */}
                                         <div className="story-mode">
-                                            <h3 style={{color: 'var(--secondary)', marginBottom: '20px', fontSize: '2em'}}>
+                                            <h3 style={{color: 'var(--success)', marginBottom: '25px', fontSize: '2.2em', fontFamily: "'Baloo 2', cursive"}}>
                                                 {currentStory.title}
                                             </h3>
                                             <div className="story-text">
@@ -787,6 +1220,7 @@
                                                         <span 
                                                             key={i}
                                                             className={isHighlight ? 'highlight' : ''}
+                                                            onClick={() => isHighlight && speak(cleanWord)}
                                                         >
                                                             {word}{' '}
                                                         </span>
@@ -797,16 +1231,18 @@
                                             <div className="controls">
                                                 <button 
                                                     className="btn btn-primary"
-                                                    onClick={() => speak(currentStory.text, 0.9)}
+                                                    onClick={() => speak(currentStory.text, 0.85)}
                                                     disabled={isSpeaking}
                                                 >
-                                                    🔊 {isSpeaking ? 'Reading...' : 'Read Story'}
+                                                    <span className="btn-icon">🔊</span>
+                                                    {isSpeaking ? 'Reading...' : 'Read Story'}
                                                 </button>
                                                 <button 
                                                     className="btn btn-secondary"
                                                     onClick={() => speak(currentStory.text, 0.6)}
                                                 >
-                                                    🐌 Slow Reading
+                                                    <span className="btn-icon">🐌</span>
+                                                    Slow Reading
                                                 </button>
                                             </div>
                                             
@@ -822,7 +1258,8 @@
                                                     className="btn btn-success"
                                                     onClick={markComplete}
                                                 >
-                                                    ✓ Story Complete! Next →
+                                                    <span className="btn-icon">✓</span>
+                                                    Story Complete! →
                                                 </button>
                                             </div>
                                         </div>
@@ -830,45 +1267,59 @@
                                 )}
                             </div>
                             
-                            {/* Settings Panel */}
                             <div className="settings-panel">
-                                <h4>🔑 AI Settings (Optional - For Enhanced Features)</h4>
+                                <h4>🔑 AI Settings</h4>
                                 <input 
                                     type="password"
                                     className="api-input"
-                                    placeholder="Enter your Anthropic API key (optional)"
+                                    placeholder="Paste your Anthropic API key here (optional)"
                                     value={apiKey}
                                     onChange={(e) => saveApiKey(e.target.value)}
                                 />
-                                <p style={{fontSize: '0.9em', color: 'var(--text-light)'}}>
-                                    Get your free API key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>
-                                    <br/>With an API key, images will have AI-generated descriptions!
+                                <p style={{fontSize: '0.95em', color: 'var(--text-dark)', marginBottom: '15px'}}>
+                                    Get your free API key at <a href="https://console.anthropic.com" target="_blank" style={{color: 'var(--primary)', fontWeight: 700}}>console.anthropic.com</a> ($5 free credit!)
                                 </p>
-                            </div>
-                            
-                            <div className="info-box">
-                                <h4>💡 How to Use ReadBuddy</h4>
-                                <p>
-                                    1. Choose your level from the sidebar<br/>
-                                    2. Click "Hear Word" to listen to the pronunciation<br/>
-                                    3. Look at the picture to understand the word<br/>
-                                    4. Click "Got It!" when you're ready for the next word<br/>
-                                    5. Track your progress and earn achievements! 🌟
-                                </p>
+                                
+                                <div className="feature-pills">
+                                    <div className="pill">
+                                        <span>✨</span>
+                                        AI Image Descriptions
+                                    </div>
+                                    <div className="pill">
+                                        <span>🎲</span>
+                                        Auto-Generate Words
+                                    </div>
+                                    <div className="pill">
+                                        <span>📖</span>
+                                        Custom Stories (Coming Soon)
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     
-                    {/* Achievement Popup */}
                     {showAchievement && (
                         <div className="achievement-popup">
                             <div className="achievement-icon">🏆</div>
                             <div className="achievement-text">Amazing Work!</div>
-                            <p style={{fontSize: '1.2em', color: 'var(--text-light)'}}>
-                                You've learned {wordsCompleted} words!
+                            <p style={{fontSize: '1.3em', color: 'var(--text-light)', fontWeight: 600}}>
+                                You've learned {wordsCompleted} words! Keep it up! 🌟
                             </p>
                         </div>
                     )}
+                    
+                    {confetti.map(item => (
+                        <div
+                            key={item.id}
+                            className="confetti"
+                            style={{
+                                left: item.left,
+                                backgroundColor: item.backgroundColor,
+                                animationDelay: item.animationDelay,
+                                animation: 'confetti-fall 3s linear forwards'
+                            }}
+                        />
+                    ))}
                 </>
             );
         }
