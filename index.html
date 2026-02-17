@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReadBuddy - AI Reading Helper for Kids</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Comic+Neue:wght@300;400;700&display=swap" rel="stylesheet">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #FF6B9D;
+            --secondary: #4ECDC4;
+            --accent: #FFE66D;
+            --success: #95E1D3;
+            --bg-main: #FFF8F0;
+            --bg-card: #FFFFFF;
+            --text-dark: #2D3748;
+            --text-light: #718096;
+            --shadow: 0 10px 40px rgba(255, 107, 157, 0.15);
+        }
+        
+        body {
+            font-family: 'Fredoka', 'Comic Neue', cursive;
+            background: linear-gradient(135deg, #FFF8F0 0%, #FFE8E8 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+        }
+        
+        #root {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, var(--primary), #FF8FB1);
+            border-radius: 30px;
+            color: white;
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '📚';
+            position: absolute;
+            font-size: 150px;
+            opacity: 0.1;
+            right: -20px;
+            top: -30px;
+            transform: rotate(-15deg);
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.95;
+        }
+        
+        .main-container {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+        }
+        
+        @media (max-width: 968px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .sidebar {
+            background: var(--bg-card);
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .level-selector {
+            margin-bottom: 25px;
+        }
+        
+        .level-selector h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .level-btn {
+            width: 100%;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border: 3px solid #E2E8F0;
+            background: white;
+            border-radius: 15px;
+            cursor: pointer;
+            font-family: 'Fredoka', cursive;
+            font-size: 1.05em;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .level-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(255, 107, 157, 0.3);
+        }
+        
+        .level-btn.active {
+            background: linear-gradient(135deg, var(--primary), #FF8FB1);
+            color: white;
+            border-color: var(--primary);
+            transform: scale(1.05);
+        }
+        
+        .level-icon {
+            font-size: 1.5em;
+        }
+        
+        .progress-section {
+            padding-top: 20px;
+            border-top: 2px solid #F0F0F0;
+        }
+        
+        .progress-section h3 {
+            color: var(--secondary);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .progress-bar {
+            background: #E2E8F0;
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), var(--secondary));
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin-top: 10px;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #FFF, #F7F7F7);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #F0F0F0;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            color: var(--text-light);
+            margin-top: 5px;
+        }
+        
+        .content-area {
+            background: var(--bg-card);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            min-height: 600px;
+        }
+        
+        .lesson-card {
+            background: linear-gradient(135deg, #FFF, #FFFEF8);
+            border: 3px solid var(--accent);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(255, 230, 109, 0.3);
+        }
+        
+        .word-display {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .current-word {
+            font-size: 5em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 0px var(--accent);
+            animation: bounceIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        
+        @keyframes bounceIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .image-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 30px auto;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .image-loading {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(90deg, #F0F0F0 25%, #E0E0E0 50%, #F0F0F0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .caption {
+            text-align: center;
+            font-size: 1.4em;
+            color: var(--text-dark);
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 230, 109, 0.2);
+            border-radius: 15px;
+            font-weight: 500;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 18px 35px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Fredoka', cursive;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+        }
+        
+        .btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), #FF8FB1);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--secondary), #6FE3DB);
+            color: white;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, var(--success), var(--secondary));
+            color: white;
+        }
+        
+        .btn-accent {
+            background: linear-gradient(135deg, var(--accent), #FFD93D);
+            color: var(--text-dark);
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .story-mode {
+            background: linear-gradient(135deg, #E8F5E9, #F1F8E9);
+            border: 3px solid var(--success);
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 20px;
+        }
+        
+        .story-text {
+            font-size: 1.6em;
+            line-height: 1.8;
+            color: var(--text-dark);
+            margin-bottom: 25px;
+        }
+        
+        .story-text .highlight {
+            background: linear-gradient(120deg, var(--accent) 0%, var(--accent) 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 40%;
+            background-position: 0 80%;
+            padding: 2px 4px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+        
+        .settings-panel {
+            background: #F7FAFC;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+        }
+        
+        .settings-panel h4 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .api-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #E2E8F0;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .api-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #E3F2FD, #F3E5F5);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid var(--secondary);
+        }
+        
+        .info-box h4 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+        }
+        
+        .info-box p {
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        .achievement-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: white;
+            padding: 50px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            z-index: 1000;
+            text-align: center;
+            animation: popup 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+        
+        @keyframes popup {
+            to { transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        .achievement-icon {
+            font-size: 5em;
+            margin-bottom: 20px;
+        }
+        
+        .achievement-text {
+            font-size: 2em;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--primary);
+            position: absolute;
+            animation: confetti-fall 3s linear;
+        }
+        
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+        
+        // Learning content organized by levels
+        const learningContent = {
+            level1: {
+                name: "Letter Sounds",
+                icon: "🔤",
+                words: ["cat", "dog", "sun", "hat", "bat", "run", "hop", "top", "cup", "fan"],
+                description: "Learn basic 3-letter words with simple sounds"
+            },
+            level2: {
+                name: "Word Families",
+                icon: "👨‍👩‍👧",
+                words: ["fish", "ship", "wish", "dish", "cake", "lake", "make", "take", "tree", "free"],
+                description: "Practice word patterns and rhyming"
+            },
+            level3: {
+                name: "Sight Words",
+                icon: "👀",
+                words: ["the", "and", "you", "are", "have", "they", "said", "come", "some", "were"],
+                description: "Common words to recognize instantly"
+            },
+            level4: {
+                name: "Longer Words",
+                icon: "📏",
+                words: ["happy", "rabbit", "garden", "window", "basket", "children", "morning", "birthday", "elephant", "butterfly"],
+                description: "Build confidence with multi-syllable words"
+            },
+            level5: {
+                name: "Story Time",
+                icon: "📖",
+                stories: [
+                    {
+                        title: "The Happy Cat",
+                        text: "The cat sat on the mat. The cat was happy. The cat played with a ball. The cat ran and jumped. What a fun day!",
+                        focusWords: ["cat", "sat", "mat", "happy", "ball"]
+                    },
+                    {
+                        title: "A Day at the Park",
+                        text: "Sam went to the park. He saw a big tree. Birds sang in the tree. Sam played on the swing. He had so much fun!",
+                        focusWords: ["park", "tree", "birds", "swing", "fun"]
+                    },
+                    {
+                        title: "The Little Garden",
+                        text: "Emma planted seeds in her garden. The sun shone bright. Rain helped the plants grow. Soon, beautiful flowers bloomed everywhere. Emma smiled with joy!",
+                        focusWords: ["garden", "seeds", "plants", "flowers", "smiled"]
+                    }
+                ],
+                description: "Read complete stories with comprehension"
+            }
+        };
+        
+        function ReadBuddyApp() {
+            const [currentLevel, setCurrentLevel] = useState('level1');
+            const [currentIndex, setCurrentIndex] = useState(0);
+            const [apiKey, setApiKey] = useState(localStorage.getItem('anthropicApiKey') || '');
+            const [generatedImage, setGeneratedImage] = useState(null);
+            const [imageLoading, setImageLoading] = useState(false);
+            const [wordsCompleted, setWordsCompleted] = useState(0);
+            const [totalWords, setTotalWords] = useState(0);
+            const [showAchievement, setShowAchievement] = useState(false);
+            const [isSpeaking, setIsSpeaking] = useState(false);
+            
+            const currentContent = learningContent[currentLevel];
+            const isStoryMode = currentLevel === 'level5';
+            const currentWord = isStoryMode ? null : currentContent.words[currentIndex];
+            const currentStory = isStoryMode ? currentContent.stories[currentIndex] : null;
+            
+            // Text-to-Speech function
+            const speak = (text, rate = 0.8) => {
+                if ('speechSynthesis' in window) {
+                    window.speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.rate = rate;
+                    utterance.pitch = 1.1;
+                    utterance.volume = 1;
+                    
+                    utterance.onstart = () => setIsSpeaking(true);
+                    utterance.onend = () => setIsSpeaking(false);
+                    
+                    window.speechSynthesis.speak(utterance);
+                } else {
+                    alert('Text-to-speech is not supported in your browser. Please try Chrome or Safari.');
+                }
+            };
+            
+            // Generate AI image using Anthropic API
+            const generateImage = async (word) => {
+                if (!apiKey) {
+                    alert('Please enter your Anthropic API key in the settings below!');
+                    return;
+                }
+                
+                setImageLoading(true);
+                setGeneratedImage(null);
+                
+                try {
+                    const response = await fetch("https://api.anthropic.com/v1/messages", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "x-api-key": apiKey,
+                            "anthropic-version": "2023-06-01"
+                        },
+                        body: JSON.stringify({
+                            model: "claude-sonnet-4-20250514",
+                            max_tokens: 1024,
+                            messages: [{
+                                role: "user",
+                                content: `Create a simple, colorful, child-friendly description of the word "${word}" that would help a young child understand it. Make it vivid and fun! Respond with just 2-3 sentences describing what the child would see.`
+                            }]
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    const description = data.content[0].text;
+                    
+                    // For MVP, we'll use a placeholder image service with the AI description
+                    // In production, you'd integrate with DALL-E or Stable Diffusion
+                    setGeneratedImage({
+                        url: `https://source.unsplash.com/400x300/?${word},children,cartoon`,
+                        caption: description
+                    });
+                    
+                } catch (error) {
+                    console.error('Error generating image:', error);
+                    alert('Error generating image. Please check your API key and try again.');
+                } finally {
+                    setImageLoading(false);
+                }
+            };
+            
+            // Auto-generate image when word changes
+            useEffect(() => {
+                if (currentWord && apiKey) {
+                    generateImage(currentWord);
+                }
+            }, [currentWord]);
+            
+            // Progress tracking
+            useEffect(() => {
+                const completed = parseInt(localStorage.getItem('wordsCompleted') || '0');
+                const total = parseInt(localStorage.getItem('totalWords') || '0');
+                setWordsCompleted(completed);
+                setTotalWords(total);
+            }, []);
+            
+            const markComplete = () => {
+                const newCompleted = wordsCompleted + 1;
+                const newTotal = totalWords + 1;
+                setWordsCompleted(newCompleted);
+                setTotalWords(newTotal);
+                localStorage.setItem('wordsCompleted', newCompleted);
+                localStorage.setItem('totalWords', newTotal);
+                
+                // Show achievement every 10 words
+                if (newCompleted % 10 === 0) {
+                    setShowAchievement(true);
+                    setTimeout(() => setShowAchievement(false), 3000);
+                }
+                
+                nextWord();
+            };
+            
+            const nextWord = () => {
+                const maxIndex = isStoryMode ? currentContent.stories.length - 1 : currentContent.words.length - 1;
+                if (currentIndex < maxIndex) {
+                    setCurrentIndex(currentIndex + 1);
+                    setGeneratedImage(null);
+                } else {
+                    // Level complete!
+                    alert('🎉 Level Complete! Great job!');
+                    setCurrentIndex(0);
+                }
+            };
+            
+            const previousWord = () => {
+                if (currentIndex > 0) {
+                    setCurrentIndex(currentIndex - 1);
+                    setGeneratedImage(null);
+                }
+            };
+            
+            const saveApiKey = (key) => {
+                setApiKey(key);
+                localStorage.setItem('anthropicApiKey', key);
+            };
+            
+            return (
+                <>
+                    <div className="header">
+                        <h1>📚 ReadBuddy</h1>
+                        <p>Your AI-Powered Reading Adventure!</p>
+                    </div>
+                    
+                    <div className="main-container">
+                        {/* Sidebar */}
+                        <div className="sidebar">
+                            <div className="level-selector">
+                                <h3>Choose Your Level</h3>
+                                {Object.entries(learningContent).map(([key, level]) => (
+                                    <button
+                                        key={key}
+                                        className={`level-btn ${currentLevel === key ? 'active' : ''}`}
+                                        onClick={() => {
+                                            setCurrentLevel(key);
+                                            setCurrentIndex(0);
+                                            setGeneratedImage(null);
+                                        }}
+                                    >
+                                        <span className="level-icon">{level.icon}</span>
+                                        <span>{level.name}</span>
+                                    </button>
+                                ))}
+                            </div>
+                            
+                            <div className="progress-section">
+                                <h3>Your Progress</h3>
+                                <div className="progress-bar">
+                                    <div 
+                                        className="progress-fill" 
+                                        style={{width: `${totalWords > 0 ? (wordsCompleted / totalWords) * 100 : 0}%`}}
+                                    ></div>
+                                </div>
+                                <div className="progress-text">
+                                    {wordsCompleted} / {totalWords} words mastered
+                                </div>
+                                
+                                <div className="stats">
+                                    <div className="stat-card">
+                                        <div className="stat-number">{wordsCompleted}</div>
+                                        <div className="stat-label">Words Learned</div>
+                                    </div>
+                                    <div className="stat-card">
+                                        <div className="stat-number">{Math.floor(wordsCompleted / 10)}</div>
+                                        <div className="stat-label">Achievements</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        {/* Main Content */}
+                        <div className="content-area">
+                            <div className="lesson-card">
+                                <h2 style={{color: 'var(--primary)', marginBottom: '10px'}}>
+                                    {currentContent.icon} {currentContent.name}
+                                </h2>
+                                <p style={{color: 'var(--text-light)', marginBottom: '30px'}}>
+                                    {currentContent.description}
+                                </p>
+                                
+                                {!isStoryMode ? (
+                                    <>
+                                        {/* Word Mode */}
+                                        <div className="word-display">
+                                            <div className="current-word">{currentWord}</div>
+                                        </div>
+                                        
+                                        {imageLoading && (
+                                            <div className="image-container">
+                                                <div className="image-loading">🎨</div>
+                                            </div>
+                                        )}
+                                        
+                                        {generatedImage && !imageLoading && (
+                                            <div className="image-container">
+                                                <img src={generatedImage.url} alt={currentWord} />
+                                            </div>
+                                        )}
+                                        
+                                        {generatedImage && (
+                                            <div className="caption">{generatedImage.caption}</div>
+                                        )}
+                                        
+                                        <div className="controls">
+                                            <button 
+                                                className="btn btn-primary"
+                                                onClick={() => speak(currentWord)}
+                                                disabled={isSpeaking}
+                                            >
+                                                🔊 {isSpeaking ? 'Speaking...' : 'Hear Word'}
+                                            </button>
+                                            <button 
+                                                className="btn btn-secondary"
+                                                onClick={() => speak(currentWord, 0.5)}
+                                            >
+                                                🐌 Slow Speed
+                                            </button>
+                                            <button 
+                                                className="btn btn-accent"
+                                                onClick={() => generateImage(currentWord)}
+                                                disabled={!apiKey || imageLoading}
+                                            >
+                                                🎨 {imageLoading ? 'Creating...' : 'New Image'}
+                                            </button>
+                                        </div>
+                                        
+                                        <div className="controls" style={{marginTop: '20px'}}>
+                                            <button 
+                                                className="btn btn-secondary"
+                                                onClick={previousWord}
+                                                disabled={currentIndex === 0}
+                                            >
+                                                ← Previous
+                                            </button>
+                                            <button 
+                                                className="btn btn-success"
+                                                onClick={markComplete}
+                                            >
+                                                ✓ Got It! Next Word →
+                                            </button>
+                                        </div>
+                                    </>
+                                ) : (
+                                    <>
+                                        {/* Story Mode */}
+                                        <div className="story-mode">
+                                            <h3 style={{color: 'var(--secondary)', marginBottom: '20px', fontSize: '2em'}}>
+                                                {currentStory.title}
+                                            </h3>
+                                            <div className="story-text">
+                                                {currentStory.text.split(' ').map((word, i) => {
+                                                    const cleanWord = word.replace(/[.,!?]/g, '').toLowerCase();
+                                                    const isHighlight = currentStory.focusWords.includes(cleanWord);
+                                                    return (
+                                                        <span 
+                                                            key={i}
+                                                            className={isHighlight ? 'highlight' : ''}
+                                                        >
+                                                            {word}{' '}
+                                                        </span>
+                                                    );
+                                                })}
+                                            </div>
+                                            
+                                            <div className="controls">
+                                                <button 
+                                                    className="btn btn-primary"
+                                                    onClick={() => speak(currentStory.text, 0.9)}
+                                                    disabled={isSpeaking}
+                                                >
+                                                    🔊 {isSpeaking ? 'Reading...' : 'Read Story'}
+                                                </button>
+                                                <button 
+                                                    className="btn btn-secondary"
+                                                    onClick={() => speak(currentStory.text, 0.6)}
+                                                >
+                                                    🐌 Slow Reading
+                                                </button>
+                                            </div>
+                                            
+                                            <div className="controls" style={{marginTop: '20px'}}>
+                                                <button 
+                                                    className="btn btn-secondary"
+                                                    onClick={previousWord}
+                                                    disabled={currentIndex === 0}
+                                                >
+                                                    ← Previous Story
+                                                </button>
+                                                <button 
+                                                    className="btn btn-success"
+                                                    onClick={markComplete}
+                                                >
+                                                    ✓ Story Complete! Next →
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                            
+                            {/* Settings Panel */}
+                            <div className="settings-panel">
+                                <h4>🔑 AI Settings (Optional - For Enhanced Features)</h4>
+                                <input 
+                                    type="password"
+                                    className="api-input"
+                                    placeholder="Enter your Anthropic API key (optional)"
+                                    value={apiKey}
+                                    onChange={(e) => saveApiKey(e.target.value)}
+                                />
+                                <p style={{fontSize: '0.9em', color: 'var(--text-light)'}}>
+                                    Get your free API key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a>
+                                    <br/>With an API key, images will have AI-generated descriptions!
+                                </p>
+                            </div>
+                            
+                            <div className="info-box">
+                                <h4>💡 How to Use ReadBuddy</h4>
+                                <p>
+                                    1. Choose your level from the sidebar<br/>
+                                    2. Click "Hear Word" to listen to the pronunciation<br/>
+                                    3. Look at the picture to understand the word<br/>
+                                    4. Click "Got It!" when you're ready for the next word<br/>
+                                    5. Track your progress and earn achievements! 🌟
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Achievement Popup */}
+                    {showAchievement && (
+                        <div className="achievement-popup">
+                            <div className="achievement-icon">🏆</div>
+                            <div className="achievement-text">Amazing Work!</div>
+                            <p style={{fontSize: '1.2em', color: 'var(--text-light)'}}>
+                                You've learned {wordsCompleted} words!
+                            </p>
+                        </div>
+                    )}
+                </>
+            );
+        }
+        
+        ReactDOM.render(<ReadBuddyApp />, document.getElementById('root'));
+    </script>
+</body>
+</html>
