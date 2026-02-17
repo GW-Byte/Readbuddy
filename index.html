@@ -456,25 +456,29 @@
         
         .image-container {
             width: 100%;
-            max-width: 550px;
+            max-width: 500px;
             margin: 35px auto;
             border-radius: 24px;
             overflow: hidden;
             box-shadow: 0 15px 50px rgba(0,0,0,0.2);
             position: relative;
             border: 4px solid white;
+            background: #f7fafc;
         }
         
         .image-container img {
             width: 100%;
-            height: 350px;
-            object-fit: cover;
+            height: auto;
+            min-height: 220px;
+            max-height: 380px;
+            object-fit: contain;
             display: block;
             transition: transform 0.3s;
+            background: #f7fafc;
         }
         
         .image-container:hover img {
-            transform: scale(1.05);
+            transform: scale(1.03);
         }
         
         .image-loading {
@@ -579,10 +583,6 @@
             color: white;
         }
         
-        .btn-accent {
-            background: linear-gradient(135deg, var(--accent), #FFE66D);
-            color: var(--text-dark);
-        }
         
         .btn-warning {
             background: linear-gradient(135deg, var(--warning), #FF9142);
@@ -631,62 +631,6 @@
             transform: scale(1.1);
         }
         
-        .settings-panel {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            padding: 30px;
-            border-radius: 20px;
-            margin-top: 30px;
-            border: 3px solid var(--accent);
-        }
-        
-        .settings-panel h4 {
-            color: var(--text-dark);
-            margin-bottom: 18px;
-            font-size: 1.3em;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .api-input {
-            width: 100%;
-            padding: 16px 20px;
-            border: 3px solid #fbbf24;
-            border-radius: 12px;
-            font-family: 'Courier New', monospace;
-            font-size: 1em;
-            margin-bottom: 12px;
-            transition: all 0.3s;
-            background: white;
-        }
-        
-        .api-input:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(255, 107, 157, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        .feature-pills {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-        
-        .pill {
-            background: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 0.95em;
-            font-weight: 600;
-            color: var(--text-dark);
-            border: 2px solid #e2e8f0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
         
         .achievement-popup {
             position: fixed;
@@ -1220,14 +1164,6 @@
                                                 <span className="btn-icon">🐌</span>
                                                 Slow Speed
                                             </button>
-                                            <button 
-                                                className="btn btn-accent"
-                                                onClick={() => generateImage(currentWord)}
-                                                disabled={imageLoading}
-                                            >
-                                                <span className="btn-icon">🎨</span>
-                                                {imageLoading ? 'Creating...' : 'New Image'}
-                                            </button>
                                         </div>
                                         
                                         <div className="controls" style={{marginTop: '20px'}}>
@@ -1321,34 +1257,6 @@
                                 )}
                             </div>
                             
-                            <div className="settings-panel">
-                                <h4>🔑 AI Settings</h4>
-                                <input 
-                                    type="password"
-                                    className="api-input"
-                                    placeholder="Paste your Anthropic API key here (optional)"
-                                    value={apiKey}
-                                    onChange={(e) => saveApiKey(e.target.value)}
-                                />
-                                <p style={{fontSize: '0.95em', color: 'var(--text-dark)', marginBottom: '15px'}}>
-                                    Get your free API key at <a href="https://console.anthropic.com" target="_blank" style={{color: 'var(--primary)', fontWeight: 700}}>console.anthropic.com</a> ($5 free credit!)
-                                </p>
-                                
-                                <div className="feature-pills">
-                                    <div className="pill">
-                                        <span>✨</span>
-                                        AI Image Descriptions
-                                    </div>
-                                    <div className="pill">
-                                        <span>🎲</span>
-                                        Auto-Generate Words
-                                    </div>
-                                    <div className="pill">
-                                        <span>📖</span>
-                                        Custom Stories (Coming Soon)
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     
