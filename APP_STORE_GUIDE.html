@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReadBuddy - Publish to App Stores Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: #f0f4ff;
+            color: #2d3748;
+            padding: 24px;
+        }
+
+        .page {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 28px;
+            padding: 50px 40px;
+            text-align: center;
+            color: white;
+            margin-bottom: 36px;
+            box-shadow: 0 12px 40px rgba(102,126,234,0.35);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '📱';
+            position: absolute; font-size: 180px; opacity: .08;
+            right: -30px; top: -30px;
+        }
+        .hero h1 {
+            font-family: 'Baloo 2', cursive;
+            font-size: 2.8em;
+            text-shadow: 2px 2px 6px rgba(0,0,0,.2);
+        }
+        .hero p { font-size: 1.25em; opacity: .95; margin-top: 10px; }
+
+        /* ── REALITY BANNER ── */
+        .reality {
+            background: #fff8e1;
+            border: 3px solid #ffc107;
+            border-radius: 18px;
+            padding: 24px 30px;
+            margin-bottom: 36px;
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+        }
+        .reality .icon { font-size: 2.5em; flex-shrink: 0; }
+        .reality h3 { color: #e65100; margin-bottom: 8px; font-size: 1.3em; }
+        .reality p  { color: #5d4037; line-height: 1.7; }
+
+        /* ── PATH CARDS ── */
+        .paths {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 36px;
+        }
+        .path-card {
+            background: white;
+            border-radius: 22px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.09);
+            border-top: 6px solid #667eea;
+            transition: transform .25s, box-shadow .25s;
+        }
+        .path-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,.15); }
+        .path-card.recommended { border-top-color: #48bb78; }
+        .path-card.advanced    { border-top-color: #ed8936; }
+
+        .rec-badge {
+            display: inline-block;
+            background: #48bb78; color: white;
+            padding: 5px 14px; border-radius: 20px;
+            font-size: .82em; font-weight: 800;
+            margin-bottom: 14px;
+        }
+        .path-card h3 { font-family: 'Baloo 2', cursive; font-size: 1.6em; margin-bottom: 10px; }
+        .path-card .meta { color: #718096; font-size: .95em; margin-bottom: 18px; }
+        .path-card ul { list-style: none; }
+        .path-card ul li {
+            padding: 9px 0 9px 28px;
+            position: relative;
+            border-bottom: 1px solid #f0f0f0;
+            line-height: 1.5;
+        }
+        .path-card ul li::before { content: '→'; position: absolute; left: 0; color: #667eea; font-weight: 800; }
+        .path-card ul li:last-child { border-bottom: none; }
+
+        /* ── SECTION TITLES ── */
+        .section-title {
+            font-family: 'Baloo 2', cursive;
+            font-size: 2em;
+            margin: 44px 0 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* ── STORE SECTIONS ── */
+        .store-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 28px;
+            margin-bottom: 36px;
+        }
+        @media (max-width: 780px) { .store-grid { grid-template-columns: 1fr; } }
+
+        .store-card {
+            background: white;
+            border-radius: 22px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.09);
+        }
+        .store-card.apple  { border-top: 6px solid #555; }
+        .store-card.android{ border-top: 6px solid #34a853; }
+
+        .store-header {
+            display: flex; align-items: center; gap: 16px;
+            margin-bottom: 22px;
+        }
+        .store-logo { font-size: 3em; }
+        .store-header h3 { font-family: 'Baloo 2', cursive; font-size: 1.7em; }
+        .store-header .fee {
+            display: inline-block;
+            background: #edf2f7;
+            padding: 4px 14px; border-radius: 20px;
+            font-size: .85em; font-weight: 700;
+            color: #4a5568; margin-top: 4px;
+        }
+
+        .step-list { list-style: none; counter-reset: steps; }
+        .step-list li {
+            counter-increment: steps;
+            padding: 14px 14px 14px 52px;
+            position: relative;
+            margin-bottom: 10px;
+            background: #f7fafc;
+            border-radius: 12px;
+            line-height: 1.6;
+        }
+        .step-list li::before {
+            content: counter(steps);
+            position: absolute; left: 14px; top: 50%;
+            transform: translateY(-50%);
+            width: 28px; height: 28px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: .9em;
+        }
+
+        .apple  .step-list li::before { background: linear-gradient(135deg, #555, #333); }
+        .android.step-list li::before { background: linear-gradient(135deg, #34a853, #0f9d58); }
+
+        /* ── TOOL COMPARISON ── */
+        .tool-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,.09);
+            margin-bottom: 36px;
+        }
+        .tool-table th {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 18px 20px;
+            text-align: left;
+            font-size: 1.05em;
+        }
+        .tool-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            line-height: 1.5;
+        }
+        .tool-table tr:last-child td { border-bottom: none; }
+        .tool-table tr:nth-child(even) td { background: #f7fafc; }
+
+        .badge-free { background: #c6f6d5; color: #276749; padding: 4px 12px; border-radius: 12px; font-weight: 700; font-size: .85em; }
+        .badge-paid { background: #fed7d7; color: #822727; padding: 4px 12px; border-radius: 12px; font-weight: 700; font-size: .85em; }
+        .badge-best { background: #bee3f8; color: #2c5282; padding: 4px 12px; border-radius: 12px; font-weight: 700; font-size: .85em; }
+
+        /* ── COST TABLE ── */
+        .cost-card {
+            background: white;
+            border-radius: 22px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.09);
+            margin-bottom: 36px;
+        }
+        .cost-card h3 { font-family: 'Baloo 2', cursive; font-size: 1.6em; margin-bottom: 18px; }
+        .cost-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid #e2e8f0;
+            align-items: center;
+        }
+        .cost-row:last-child { border-bottom: none; }
+        .cost-row .label { font-weight: 600; }
+        .cost-row .price { font-weight: 800; font-size: 1.15em; }
+        .cost-row .price.free  { color: #48bb78; }
+        .cost-row .price.once  { color: #ed8936; }
+        .cost-row .price.year  { color: #667eea; }
+
+        /* ── TIMELINE ── */
+        .timeline {
+            background: white;
+            border-radius: 22px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.09);
+            margin-bottom: 36px;
+        }
+        .tl-item {
+            display: flex;
+            gap: 20px;
+            padding: 16px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .tl-item:last-child { border-bottom: none; }
+        .tl-dot {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4em;
+            flex-shrink: 0;
+        }
+        .tl-body h4 { font-size: 1.1em; margin-bottom: 5px; }
+        .tl-body p  { color: #718096; line-height: 1.6; }
+
+        /* ── TIP / WARNING ── */
+        .tip {
+            background: #f0fff4;
+            border-left: 5px solid #48bb78;
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin: 18px 0;
+        }
+        .tip strong { color: #276749; }
+
+        .warn {
+            background: #fff5f5;
+            border-left: 5px solid #fc8181;
+            border-radius: 12px;
+            padding: 18px 22px;
+            margin: 18px 0;
+        }
+        .warn strong { color: #c53030; }
+
+        /* ── CTA ── */
+        .cta {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+        }
+        .cta h2 { font-family: 'Baloo 2', cursive; font-size: 2em; margin-bottom: 14px; }
+        .cta p  { font-size: 1.15em; opacity: .95; line-height: 1.7; }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <!-- HERO -->
+    <div class="hero">
+        <h1>📱 Publish ReadBuddy to App Stores</h1>
+        <p>From GitHub Pages web link → Apple App Store &amp; Google Play Store</p>
+    </div>
+
+    <!-- REALITY CHECK -->
+    <div class="reality">
+        <div class="icon">💡</div>
+        <div>
+            <h3>The Big Picture — What You Actually Need to Do</h3>
+            <p>
+                Your current app is a <strong>website</strong> (hosted on GitHub Pages).
+                App stores only accept <strong>native apps</strong> — but you do NOT need to rewrite your entire app!
+                There are tools that automatically <strong>wrap your website into a native app</strong> in minutes.
+                The most popular approach is called a <strong>PWA (Progressive Web App)</strong> or using a wrapper tool like
+                <strong>Capacitor</strong> or <strong>WebToNativeApp</strong>. The sections below explain every option clearly.
+            </p>
+        </div>
+    </div>
+
+    <!-- 3 PATHS -->
+    <div class="section-title">🛣️ Choose Your Path</div>
+    <div class="paths">
+
+        <div class="path-card recommended">
+            <div class="rec-badge">⭐ RECOMMENDED FOR YOU</div>
+            <h3>Path 1: PWA (No Coding)</h3>
+            <div class="meta">⏱ 1–2 days &nbsp;|&nbsp; 💰 Free &nbsp;|&nbsp; 🎯 Easiest</div>
+            <ul>
+                <li>Add a small config file to GitHub to turn your app into a PWA</li>
+                <li>Users can install it directly from their browser — no App Store needed!</li>
+                <li>Works on iPhone (Safari → "Add to Home Screen") and Android (Chrome → Install)</li>
+                <li>Looks and feels like a real app on the home screen</li>
+                <li>No developer account or store fees required</li>
+                <li>Best first step before spending money on official stores</li>
+            </ul>
+        </div>
+
+        <div class="path-card">
+            <h3>Path 2: Capacitor Wrapper</h3>
+            <div class="meta">⏱ 1–2 weeks &nbsp;|&nbsp; 💰 $99/yr (Apple) + $25 once (Android) &nbsp;|&nbsp; 🎯 Moderate</div>
+            <ul>
+                <li>Use Capacitor (free tool by Ionic) to wrap your HTML app into a native app</li>
+                <li>Creates real .ipa (iOS) and .apk (Android) files</li>
+                <li>Submit to both official App Stores</li>
+                <li>Requires a Mac computer for iOS builds</li>
+                <li>Full access to phone features (camera, notifications etc.)</li>
+                <li>Official App Store listing with reviews and downloads</li>
+            </ul>
+        </div>
+
+        <div class="path-card advanced">
+            <h3>Path 3: No-Code App Builder</h3>
+            <div class="meta">⏱ 3–5 days &nbsp;|&nbsp; 💰 $20–50/month &nbsp;|&nbsp; 🎯 Easy but has monthly cost</div>
+            <ul>
+                <li>Use tools like AppGyver, Bravo Studio, or Median.co</li>
+                <li>Enter your website URL, configure settings, export app</li>
+                <li>They handle the technical build process for you</li>
+                <li>Some can even submit to stores on your behalf</li>
+                <li>Good if you don't want to touch code at all</li>
+                <li>Monthly fee ongoing, but saves a lot of time</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PATH 1: PWA -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section-title">🥇 Path 1: Make It a PWA (Do This First — Free!)</div>
+
+    <div class="store-card" style="border-top: 6px solid #667eea; margin-bottom: 28px;">
+        <p style="margin-bottom: 22px; font-size: 1.05em; line-height: 1.7;">
+            A PWA lets iPhone and Android users install your app directly from their browser — it sits on their home screen with an icon, works offline, and feels like a real app. This is the <strong>fastest and cheapest</strong> way to reach mobile users right now.
+        </p>
+
+        <h3 style="margin-bottom: 16px; font-size: 1.4em;">Step 1 — Add a manifest.json file to GitHub</h3>
+        <p style="margin-bottom: 14px;">Create a new file in your GitHub repository called <code style="background:#edf2f7;padding:3px 8px;border-radius:6px;">manifest.json</code> and paste this content:</p>
+        <pre style="background:#2d3748;color:#e2e8f0;padding:22px;border-radius:14px;overflow-x:auto;font-size:.95em;line-height:1.7;">{
+  "name": "ReadBuddy - AI Reading Helper",
+  "short_name": "ReadBuddy",
+  "description": "AI-powered reading app for kids",
+  "start_url": "/readbuddy/",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}</pre>
+
+        <h3 style="margin: 24px 0 16px; font-size: 1.4em;">Step 2 — Add this line inside &lt;head&gt; of your index.html</h3>
+        <pre style="background:#2d3748;color:#e2e8f0;padding:18px;border-radius:14px;font-size:.95em;">&lt;link rel="manifest" href="manifest.json"&gt;
+&lt;meta name="theme-color" content="#667eea"&gt;
+&lt;meta name="apple-mobile-web-app-capable" content="yes"&gt;
+&lt;meta name="apple-mobile-web-app-status-bar-style" content="default"&gt;
+&lt;meta name="apple-mobile-web-app-title" content="ReadBuddy"&gt;</pre>
+
+        <h3 style="margin: 24px 0 16px; font-size: 1.4em;">Step 3 — Create simple app icons</h3>
+        <p style="line-height: 1.7; margin-bottom: 14px;">
+            Create two square PNG images of your app logo and upload them to GitHub:<br>
+            • <strong>icon-192.png</strong> — 192×192 pixels<br>
+            • <strong>icon-512.png</strong> — 512×512 pixels<br><br>
+            Use <a href="https://canva.com" target="_blank" style="color:#667eea;font-weight:700;">Canva.com</a> (free) to design a simple logo and export at those sizes.
+        </p>
+
+        <div class="tip">
+            <strong>✅ After this:</strong> Open your app URL on an Android phone in Chrome → tap the banner "Add to Home Screen". On iPhone, open in Safari → tap Share button → "Add to Home Screen". Done — it looks like a real app!
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- PATH 2: OFFICIAL STORES -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section-title">🏪 Path 2: Official App Stores with Capacitor</div>
+
+    <div class="store-grid">
+
+        <!-- APPLE -->
+        <div class="store-card apple">
+            <div class="store-header">
+                <div class="store-logo">🍎</div>
+                <div>
+                    <h3>Apple App Store</h3>
+                    <span class="fee">$99 / year developer fee</span>
+                </div>
+            </div>
+
+            <ol class="step-list apple">
+                <li>
+                    <strong>Register Apple Developer Account</strong><br>
+                    Go to <strong>developer.apple.com</strong> → Enrol → Pay $99/year. You need an Apple ID first.
+                </li>
+                <li>
+                    <strong>Install tools on a Mac computer</strong><br>
+                    You MUST have a Mac. Install: Xcode (free, App Store), Node.js (nodejs.org), and Capacitor:<br>
+                    <code style="background:#edf2f7;padding:4px 8px;border-radius:6px;font-size:.9em;">npm install -g @capacitor/cli</code>
+                </li>
+                <li>
+                    <strong>Download your app from GitHub</strong><br>
+                    Create a folder on your Mac, put your index.html inside it.
+                </li>
+                <li>
+                    <strong>Wrap with Capacitor</strong><br>
+                    Run in Terminal:<br>
+                    <code style="background:#edf2f7;padding:4px 8px;border-radius:6px;font-size:.9em;display:block;margin-top:6px;">
+                        npm init -y<br>
+                        npm install @capacitor/core @capacitor/ios<br>
+                        npx cap init ReadBuddy com.yourname.readbuddy<br>
+                        npx cap add ios<br>
+                        npx cap copy<br>
+                        npx cap open ios
+                    </code>
+                </li>
+                <li>
+                    <strong>Build in Xcode</strong><br>
+                    Xcode opens automatically. Set your Bundle ID, signing certificate, then click ▶ to build.
+                </li>
+                <li>
+                    <strong>Create app listing on App Store Connect</strong><br>
+                    Go to <strong>appstoreconnect.apple.com</strong> → New App → fill in name, description, screenshots, age rating (4+), category (Education).
+                </li>
+                <li>
+                    <strong>Upload and Submit for Review</strong><br>
+                    In Xcode → Product → Archive → Distribute App → App Store Connect → Upload. Then submit on App Store Connect. Apple reviews in 1–3 days.
+                </li>
+            </ol>
+
+            <div class="warn" style="margin-top: 18px;">
+                <strong>⚠️ Important:</strong> You need a Mac computer for iOS builds. If you don't have one, use MacStadium or MacInCloud (rent a Mac online from ~$1/hour).
+            </div>
+        </div>
+
+        <!-- ANDROID -->
+        <div class="store-card android">
+            <div class="store-header">
+                <div class="store-logo">🤖</div>
+                <div>
+                    <h3>Google Play Store</h3>
+                    <span class="fee">$25 one-time fee (much cheaper!)</span>
+                </div>
+            </div>
+
+            <ol class="step-list">
+                <li>
+                    <strong>Register Google Play Developer Account</strong><br>
+                    Go to <strong>play.google.com/console</strong> → Create account → Pay $25 once (not yearly!).
+                </li>
+                <li>
+                    <strong>Install tools on any computer (Windows/Mac/Linux)</strong><br>
+                    Install: Node.js, Android Studio (free, developer.android.com), then Capacitor:<br>
+                    <code style="background:#edf2f7;padding:4px 8px;border-radius:6px;font-size:.9em;">npm install -g @capacitor/cli</code>
+                </li>
+                <li>
+                    <strong>Wrap with Capacitor</strong><br>
+                    <code style="background:#edf2f7;padding:4px 8px;border-radius:6px;font-size:.9em;display:block;margin-top:6px;">
+                        npm init -y<br>
+                        npm install @capacitor/core @capacitor/android<br>
+                        npx cap init ReadBuddy com.yourname.readbuddy<br>
+                        npx cap add android<br>
+                        npx cap copy<br>
+                        npx cap open android
+                    </code>
+                </li>
+                <li>
+                    <strong>Build in Android Studio</strong><br>
+                    Android Studio opens. Click Build → Generate Signed Bundle/APK → Android App Bundle (.aab file). You'll create a keystore (save this file safely forever!).
+                </li>
+                <li>
+                    <strong>Create app listing on Play Console</strong><br>
+                    Go to play.google.com/console → Create app → Fill in: title, description, screenshots (phone + tablet), app icon (512×512), category (Education → Educational).
+                </li>
+                <li>
+                    <strong>Set up content rating</strong><br>
+                    Complete the content rating questionnaire → select "Everyone" (children's app). This is required.
+                </li>
+                <li>
+                    <strong>Upload and Publish</strong><br>
+                    Upload your .aab file → Submit for review. Google reviews in 1–7 days. First submission usually takes longer.
+                </li>
+            </ol>
+
+            <div class="tip" style="margin-top: 18px;">
+                <strong>✅ Easier than Apple!</strong> Android is more beginner-friendly, cheaper, and you can use any computer (not just Mac). Start with Android first to practice the process.
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- NO-CODE TOOLS -->
+    <!-- ═══════════════════════════════════════════ -->
+    <div class="section-title">🛠️ Path 3: No-Code Tool Comparison</div>
+
+    <table class="tool-table">
+        <thead>
+            <tr>
+                <th>Tool</th>
+                <th>Price</th>
+                <th>How It Works</th>
+                <th>iOS</th>
+                <th>Android</th>
+                <th>Best For</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Median.co</strong></td>
+                <td><span class="badge-paid">~$29/mo</span></td>
+                <td>Enter your URL, configure, download app</td>
+                <td>✅</td>
+                <td>✅</td>
+                <td>Simplest wrapper tool</td>
+            </tr>
+            <tr>
+                <td><strong>WebViewGold</strong></td>
+                <td><span class="badge-paid">$29 once</span></td>
+                <td>Template-based wrapper, customise &amp; export</td>
+                <td>✅</td>
+                <td>✅</td>
+                <td>One-time cost, good value</td>
+            </tr>
+            <tr>
+                <td><strong>Bravo Studio</strong></td>
+                <td><span class="badge-paid">$19/mo</span></td>
+                <td>Connects to your web app, builds native</td>
+                <td>✅</td>
+                <td>✅</td>
+                <td>Design-focused apps</td>
+            </tr>
+            <tr>
+                <td><strong>Capacitor (DIY)</strong></td>
+                <td><span class="badge-free">FREE</span></td>
+                <td>Command-line tool, wraps HTML into native</td>
+                <td>✅ (Mac only)</td>
+                <td>✅ (any PC)</td>
+                <td>Developers who want control</td>
+            </tr>
+            <tr>
+                <td><strong>PWA (Add to Home)</strong></td>
+                <td><span class="badge-free">FREE</span></td>
+                <td>Browser install, no App Store needed</td>
+                <td>✅ (Safari)</td>
+                <td>✅ (Chrome)</td>
+                <td><span class="badge-best">⭐ Start here!</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- COSTS -->
+    <div class="section-title">💰 Total Cost Summary</div>
+    <div class="cost-card">
+        <h3>What You'll Need to Pay</h3>
+
+        <div class="cost-row">
+            <span class="label">GitHub Pages hosting (current)</span>
+            <span class="price free">FREE forever</span>
+        </div>
+        <div class="cost-row">
+            <span class="label">PWA (install from browser)</span>
+            <span class="price free">FREE</span>
+        </div>
+        <div class="cost-row">
+            <span class="label">Google Play Store registration</span>
+            <span class="price once">$25 once</span>
+        </div>
+        <div class="cost-row">
+            <span class="label">Apple App Store registration</span>
+            <span class="price year">$99/year</span>
+        </div>
+        <div class="cost-row">
+            <span class="label">Capacitor (wrap tool)</span>
+            <span class="price free">FREE</span>
+        </div>
+        <div class="cost-row">
+            <span class="label">App icon design (Canva)</span>
+            <span class="price free">FREE</span>
+        </div>
+        <div class="cost-row" style="background:#f0fff4;padding:16px;border-radius:12px;margin-top:10px;">
+            <span class="label" style="font-size:1.1em;"><strong>🎯 Minimum to be on BOTH stores</strong></span>
+            <span class="price once" style="font-size:1.3em;"><strong>$124 first year</strong></span>
+        </div>
+    </div>
+
+    <!-- TIMELINE -->
+    <div class="section-title">📅 Realistic Timeline</div>
+    <div class="timeline">
+        <div class="tl-item">
+            <div class="tl-dot">1</div>
+            <div class="tl-body">
+                <h4>Today — Add PWA Support (2 hours)</h4>
+                <p>Add manifest.json and meta tags to GitHub. Users can now install it from their phone browser immediately. Share your link and tell people to tap "Add to Home Screen".</p>
+            </div>
+        </div>
+        <div class="tl-item">
+            <div class="tl-dot">2</div>
+            <div class="tl-body">
+                <h4>Week 1 — Register on Google Play ($25)</h4>
+                <p>Create your Google developer account. Install Android Studio and Capacitor. Build and upload your first Android app. Much easier than Apple — good place to start.</p>
+            </div>
+        </div>
+        <div class="tl-item">
+            <div class="tl-dot">3</div>
+            <div class="tl-body">
+                <h4>Week 2 — Google Play Review &amp; Launch 🎉</h4>
+                <p>Google reviews typically take 1–7 days. Once approved, your app appears in the Play Store. Share your Play Store link with users! Start collecting ratings.</p>
+            </div>
+        </div>
+        <div class="tl-item">
+            <div class="tl-dot">4</div>
+            <div class="tl-body">
+                <h4>Month 1 — Apple App Store ($99/year)</h4>
+                <p>Register Apple Developer account. You need a Mac (or rent one online). Use Capacitor to build the iOS version. Submit for Apple review (1–3 days). This opens your app to all iPhone users.</p>
+            </div>
+        </div>
+        <div class="tl-item">
+            <div class="tl-dot">5</div>
+            <div class="tl-body">
+                <h4>Month 2+ — Grow &amp; Improve</h4>
+                <p>Respond to reviews, push updates, add features. App stores give you analytics — see how many installs, where users drop off, and what they love.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- REQUIREMENTS CHECKLIST -->
+    <div class="section-title">✅ What You'll Need Ready</div>
+    <div class="store-grid">
+        <div class="store-card apple">
+            <div class="store-header">
+                <div class="store-logo">🍎</div>
+                <div><h3>Apple Requirements</h3></div>
+            </div>
+            <ul style="list-style:none;">
+                <li style="padding:10px 0;border-bottom:1px solid #eee;">☐ Mac computer (required for building)</li>
+                <li style="padding:10px 0;border-bottom:1px solid #eee;">☐ Apple ID (free)</li>
+                <li style="padding:10px 0;border-bottom:1px solid #eee;">☐ Apple Developer account ($99/year)</li>
+                <li style="padding:10px 0;border-bottom:1px solid #eee;">☐ Xcode installed (free)</li>
+                <li style="padding:10px 0;border-bottom:1px solid #eee;">☐ App icon: 1024×1024 px PNG (no transparency)</li>
+                <li style="padding:10px 0;border-bottom:1px solid #eee;">☐ Screenshots: iPhone 6.7" and 5.5" sizes</li>
+                <li style="padding:10px 0;border-bottom:1px solid #eee;">☐ App name, description, keywords</li>
+                <li style="padding:10px 0;">☐ Privacy policy URL (required for kids apps)</li>
+            </ul>
+        </div>
+        <div class="store-card android">
+            <div class="store-header">
+                <div class="store-logo">🤖</div>
+                <div><h3>Android Requirements</h3></div>
+            </div>
+            <ul style="list-style:none;">
+                <li style="padding:10px 0;border-bottom:1px solid #eee;">☐ Any computer (Windows, Mac or Linux)</li>
+                <li style="padding:10px 0;border-bottom:1px solid #eee;">☐ Google account (free)</li>
+                <li style="padding:10px 0;border-bottom:1px solid #eee;">☐ Google Play developer account ($25 once)</li>
+                <li style="padding:10px 0;border-bottom:1px solid #eee;">☐ Android Studio installed (free)</li>
+                <li style="padding:10px 0;border-bottom:1px solid #eee;">☐ App icon: 512×512 px PNG</li>
+                <li style="padding:10px 0;border-bottom:1px solid #eee;">☐ Feature graphic: 1024×500 px</li>
+                <li style="padding:10px 0;border-bottom:1px solid #eee;">☐ Screenshots: at least 2 phone screenshots</li>
+                <li style="padding:10px 0;">☐ Privacy policy URL (required)</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="warn">
+        <strong>⚠️ Kids App Special Requirements (Both Stores):</strong> Because ReadBuddy is for children, both stores require a <strong>Privacy Policy</strong> stating you don't collect personal data from children. Create a free one at <a href="https://privacypolicygenerator.info" target="_blank" style="color:#c53030;font-weight:700;">privacypolicygenerator.info</a> and host it on GitHub Pages as a separate page. This is mandatory — your app will be rejected without it.
+    </div>
+
+    <!-- CTA -->
+    <div class="cta">
+        <h2>🚀 Your Recommended Action Plan</h2>
+        <p>
+            <strong>TODAY:</strong> Add PWA support (free, 2 hours) → users can install from browser immediately<br><br>
+            <strong>THIS WEEK:</strong> Register Google Play ($25) + build Android app with Capacitor<br><br>
+            <strong>NEXT MONTH:</strong> Register Apple Developer ($99/year) + submit iOS app<br><br>
+            Start with PWA + Android. Once you have real users and feedback,<br>
+            invest in the Apple App Store for the full audience!
+        </p>
+    </div>
+
+</div>
+</body>
+</html>
