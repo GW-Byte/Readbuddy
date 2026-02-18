@@ -3,1299 +3,963 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ReadBuddy - AI Reading Helper 📚</title>
-
-    <!-- PWA Support — makes app installable on iPhone & Android -->
+    <title>ReadBuddy 🌟 Kids Reading App</title>
     <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#667eea">
+    <meta name="theme-color" content="#FF6B9D">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="ReadBuddy">
-    <meta name="description" content="AI-powered reading helper for kids — learn words, hear pronunciation, and build reading skills!">
-    <meta name="mobile-web-app-capable" content="yes">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&family=Baloo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
         :root {
-            --primary: #FF6B9D;
-            --primary-dark: #E85384;
-            --secondary: #4ECDC4;
-            --secondary-dark: #3AB8AF;
-            --accent: #FFD93D;
-            --success: #6BCF7F;
-            --warning: #FFA756;
-            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --bg-paper: #FFFEF9;
-            --text-dark: #2D3748;
-            --text-light: #718096;
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.1);
-            --shadow-md: 0 4px 20px rgba(0,0,0,0.12);
-            --shadow-lg: 0 10px 40px rgba(0,0,0,0.15);
-            --border-radius: 24px;
+            --pink:   #FF6B9D;
+            --teal:   #3DD9CB;
+            --yellow: #FFD93D;
+            --purple: #A78BFA;
+            --orange: #FF9A3C;
+            --green:  #5DD882;
+            --blue:   #4A90E2;
+            --bg:     #FFF8F0;
+            --card:   #FFFFFF;
+            --text:   #2D2D2D;
+            --muted:  #888;
+            --shadow: 0 8px 32px rgba(0,0,0,0.10);
+            --r: 24px;
         }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-        
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        
-        @keyframes sparkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-        
+
         body {
             font-family: 'Nunito', sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            background: var(--bg);
             min-height: 100vh;
-            color: var(--text-dark);
-            position: relative;
-            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 10% 20%, rgba(255,107,157,0.07) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(61,217,203,0.07) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(255,217,61,0.05) 0%, transparent 60%);
         }
-        
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(255, 107, 157, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(78, 205, 196, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(255, 217, 61, 0.05) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        #root {
-            position: relative;
-            z-index: 1;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
+
+        #root { max-width: 1200px; margin: 0 auto; padding: 16px; }
+
+        /* ── Header ── */
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: var(--border-radius);
-            padding: 40px 30px;
-            margin-bottom: 30px;
-            box-shadow: var(--shadow-lg);
-            position: relative;
-            overflow: hidden;
-            animation: fadeInUp 0.6s ease-out;
-        }
-        
-        .header::before {
-            content: '✨';
-            position: absolute;
-            font-size: 120px;
-            top: -20px;
-            right: -10px;
-            opacity: 0.15;
-            animation: sparkle 3s infinite;
-        }
-        
-        .header::after {
-            content: '📚';
-            position: absolute;
-            font-size: 100px;
-            bottom: -10px;
-            left: -10px;
-            opacity: 0.15;
-            animation: float 6s infinite;
-        }
-        
-        .header-content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-        }
-        
-        .logo {
-            display: inline-flex;
+            background: linear-gradient(135deg, #FF6B9D 0%, #FF9A3C 50%, #FFD93D 100%);
+            border-radius: var(--r);
+            padding: 28px 32px;
+            margin-bottom: 24px;
+            display: flex;
             align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
+            justify-content: space-between;
+            box-shadow: 0 8px 32px rgba(255,107,157,0.3);
+            flex-wrap: wrap;
+            gap: 16px;
         }
-        
-        .logo-icon {
-            font-size: 4em;
-            animation: pulse 2s infinite;
+        .header-left { display: flex; align-items: center; gap: 14px; }
+        .logo-emoji { font-size: 3em; animation: bounce 2s infinite; }
+        @keyframes bounce {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
-        
-        .logo-text h1 {
-            font-family: 'Baloo 2', cursive;
-            font-size: 3.5em;
-            font-weight: 800;
+        .header h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.6em;
             color: white;
-            text-shadow: 3px 3px 6px rgba(0,0,0,0.2);
-            margin: 0;
-            letter-spacing: -1px;
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.15);
+            letter-spacing: 1px;
         }
-        
-        .tagline {
-            color: rgba(255,255,255,0.95);
-            font-size: 1.4em;
-            font-weight: 600;
-        }
-        
-        .main-container {
-            display: grid;
-            grid-template-columns: 320px 1fr;
-            gap: 30px;
-            animation: fadeInUp 0.6s ease-out 0.2s both;
-        }
-        
-        @media (max-width: 968px) {
-            .main-container {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .sidebar {
+        .header-tagline { color: rgba(255,255,255,0.9); font-weight: 700; font-size: 1em; }
+        .stars-badge {
             background: white;
-            border-radius: var(--border-radius);
-            padding: 30px;
-            box-shadow: var(--shadow-md);
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-weight: 900;
+            font-size: 1.1em;
+            color: var(--pink);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            white-space: nowrap;
+        }
+
+        /* ── Layout ── */
+        .layout {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 20px;
+        }
+        @media(max-width: 780px) {
+            .layout { grid-template-columns: 1fr; }
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            background: var(--card);
+            border-radius: var(--r);
+            padding: 24px 18px;
+            box-shadow: var(--shadow);
             height: fit-content;
             position: sticky;
-            top: 20px;
+            top: 16px;
         }
-        
-        .level-selector h3 {
-            color: var(--primary);
-            margin-bottom: 20px;
-            font-size: 1.4em;
-            font-weight: 800;
+        .sidebar h3 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.2em;
+            color: var(--text);
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
-        
-        .level-btn {
+
+        .age-btn {
             width: 100%;
-            padding: 18px 20px;
-            margin-bottom: 12px;
+            padding: 13px 14px;
+            margin-bottom: 8px;
             border: 3px solid transparent;
-            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-            border-radius: 16px;
+            border-radius: 14px;
+            background: #f7f7f7;
             cursor: pointer;
             font-family: 'Nunito', sans-serif;
-            font-size: 1.05em;
-            font-weight: 700;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .level-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-            transition: left 0.5s;
-        }
-        
-        .level-btn:hover::before {
-            left: 100%;
-        }
-        
-        .level-btn:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: var(--shadow-md);
-            border-color: var(--primary);
-        }
-        
-        .level-btn.active {
-            background: linear-gradient(135deg, var(--primary), #FF8FB1);
-            color: white;
-            border-color: var(--primary-dark);
-            transform: scale(1.05);
-            box-shadow: 0 8px 25px rgba(255, 107, 157, 0.4);
-        }
-        
-        .level-icon {
-            font-size: 2em;
-            filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
-        }
-        
-        .progress-section {
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 3px solid #f0f0f0;
-        }
-        
-        .progress-section h3 {
-            color: var(--secondary);
-            margin-bottom: 20px;
-            font-size: 1.3em;
+            font-size: 0.95em;
             font-weight: 800;
+            transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
             display: flex;
             align-items: center;
             gap: 10px;
+            text-align: left;
         }
-        
-        .progress-bar-container {
-            background: #e2e8f0;
-            height: 28px;
-            border-radius: 14px;
+        .age-btn:hover { transform: translateX(4px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-color: var(--pink); }
+        .age-btn.active { background: linear-gradient(135deg, var(--pink), #FF8FB1); color: white; border-color: #E85384; transform: scale(1.03); box-shadow: 0 6px 20px rgba(255,107,157,0.35); }
+        .age-btn .age-icon { font-size: 1.6em; }
+        .age-btn .age-info { flex: 1; }
+        .age-btn .age-name { display: block; font-weight: 900; }
+        .age-btn .age-range { display: block; font-size: 0.78em; opacity: 0.75; font-weight: 600; }
+
+        .progress-wrap { margin-top: 24px; padding-top: 20px; border-top: 2px dashed #eee; }
+        .prog-bar-bg {
+            background: #eee;
+            border-radius: 20px;
+            height: 20px;
             overflow: hidden;
-            position: relative;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+            margin: 10px 0 8px;
         }
-        
-        .progress-fill {
+        .prog-bar-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--success), var(--secondary));
-            transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            border-radius: 20px;
+            background: linear-gradient(90deg, var(--green), var(--teal));
+            transition: width 0.7s cubic-bezier(.34,1.56,.64,1);
+        }
+        .prog-label { font-weight: 700; font-size: 0.9em; color: var(--muted); text-align: center; }
+        .stat-row { display: flex; gap: 10px; margin-top: 14px; }
+        .stat-box {
+            flex: 1;
+            background: #f7f7f7;
             border-radius: 14px;
-            position: relative;
-            box-shadow: 0 2px 8px rgba(78, 205, 196, 0.4);
-        }
-        
-        .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shimmer 2s infinite;
-        }
-        
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        
-        .progress-text {
+            padding: 12px 8px;
             text-align: center;
-            margin-top: 12px;
-            font-weight: 700;
-            color: var(--text-dark);
-            font-size: 1.05em;
+            border: 2px solid #eee;
         }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-top: 25px;
+        .stat-num { font-family: 'Fredoka One', cursive; font-size: 1.8em; color: var(--pink); }
+        .stat-lbl { font-size: 0.75em; font-weight: 700; color: var(--muted); }
+
+        /* ── Main content ── */
+        .content {
+            background: var(--card);
+            border-radius: var(--r);
+            padding: 32px;
+            box-shadow: var(--shadow);
+            min-height: 500px;
         }
-        
-        .stat-card {
-            background: linear-gradient(135deg, #fff 0%, #f7fafc 100%);
-            padding: 20px;
-            border-radius: 16px;
-            text-align: center;
-            border: 2px solid #e2e8f0;
-            transition: all 0.3s;
-        }
-        
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-sm);
-            border-color: var(--primary);
-        }
-        
-        .stat-number {
-            font-size: 2.5em;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .stat-label {
-            font-size: 0.9em;
-            color: var(--text-light);
-            margin-top: 8px;
-            font-weight: 600;
-        }
-        
-        .content-area {
-            background: white;
-            border-radius: var(--border-radius);
-            padding: 45px;
-            box-shadow: var(--shadow-md);
-            min-height: 600px;
-        }
-        
-        .lesson-header {
+        .content-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 35px;
-            padding-bottom: 25px;
-            border-bottom: 3px solid #f0f0f0;
+            margin-bottom: 26px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
-        
-        .lesson-title {
+        .content-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.7em;
+            color: var(--text);
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 10px;
         }
-        
-        .lesson-title h2 {
-            font-family: 'Baloo 2', cursive;
-            font-size: 2em;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .word-counter {
-            background: linear-gradient(135deg, var(--accent), #FFE66D);
-            padding: 12px 24px;
+        .word-count-pill {
+            background: var(--yellow);
             border-radius: 20px;
-            font-weight: 700;
-            color: var(--text-dark);
-            box-shadow: var(--shadow-sm);
+            padding: 6px 18px;
+            font-weight: 900;
+            font-size: 1em;
+            color: #7a5c00;
         }
-        
-        .lesson-card {
-            background: linear-gradient(135deg, #fff 0%, #fffef9 100%);
-            border: 3px solid var(--accent);
+
+        /* ── Word Card: image LEFT, word+buttons RIGHT ── */
+        .word-card {
+            background: linear-gradient(135deg, #fffef9, #fff5f8);
+            border: 3px solid var(--yellow);
             border-radius: 24px;
-            padding: 45px;
-            margin-bottom: 30px;
-            box-shadow: 0 12px 35px rgba(255, 217, 61, 0.25);
+            padding: 30px;
+            box-shadow: 0 12px 40px rgba(255,217,61,0.2);
+            display: flex;
+            gap: 32px;
+            align-items: stretch;
             position: relative;
             overflow: hidden;
         }
-        
-        .lesson-card::before {
+        .word-card::after {
             content: '';
             position: absolute;
-            top: -50%;
-            right: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255, 217, 61, 0.1) 0%, transparent 70%);
-            animation: rotate 20s linear infinite;
+            inset: 0;
+            background: radial-gradient(circle at 80% 20%, rgba(255,217,61,0.08), transparent 60%);
+            pointer-events: none;
         }
-        
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+
+        @media(max-width: 620px) {
+            .word-card { flex-direction: column; }
         }
-        
-        .word-display {
-            text-align: center;
-            margin: 45px 0;
-            position: relative;
-            z-index: 1;
+
+        /* Image column */
+        .card-image-col {
+            flex: 0 0 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
         }
-        
-        .current-word {
-            font-family: 'Baloo 2', cursive;
-            font-size: 6em;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 25px;
-            filter: drop-shadow(4px 4px 0px rgba(255, 217, 61, 0.3));
-            animation: bounceIn 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-        
-        .current-word:hover {
-            transform: scale(1.1) rotate(-2deg);
-        }
-        
-        @keyframes bounceIn {
-            0% { 
-                transform: scale(0) rotate(-180deg); 
-                opacity: 0; 
-            }
-            50% { 
-                transform: scale(1.2) rotate(10deg); 
-            }
-            100% { 
-                transform: scale(1) rotate(0deg); 
-                opacity: 1; 
-            }
-        }
-        
-        .phonetic-text {
-            font-size: 1.6em;
-            color: var(--text-light);
-            font-style: italic;
-            margin-bottom: 15px;
-        }
-        
-        .image-container {
-            width: 100%;
-            max-width: 500px;
-            margin: 35px auto;
-            border-radius: 24px;
+        .img-frame {
+            width: 220px;
+            height: 200px;
+            border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+            background: #f0f4f8;
+            border: 3px solid white;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
             position: relative;
-            border: 4px solid white;
-            background: #f7fafc;
         }
-        
-        .image-container img {
+        .img-frame img {
             width: 100%;
-            height: auto;
-            min-height: 220px;
-            max-height: 380px;
+            height: 100%;
             object-fit: contain;
-            display: block;
             transition: transform 0.3s;
-            background: #f7fafc;
         }
-        
-        .image-container:hover img {
-            transform: scale(1.03);
-        }
-        
-        .image-loading {
+        .img-frame:hover img { transform: scale(1.06); }
+        .img-loading {
             width: 100%;
-            height: 350px;
-            background: linear-gradient(90deg, #e0e7ff 0%, #c7d2fe 50%, #e0e7ff 100%);
-            background-size: 200% 100%;
-            animation: shimmer 1.5s infinite;
+            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 4em;
+            background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
+            animation: pulse-bg 1.5s infinite;
+            font-size: 3em;
         }
-        
-        .loading-text {
-            font-size: 0.3em;
-            margin-top: 20px;
-            color: var(--text-light);
-            font-weight: 700;
+        @keyframes pulse-bg {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
-        
-        .caption {
-            text-align: center;
-            font-size: 1.5em;
-            color: var(--text-dark);
-            margin-top: 25px;
-            padding: 20px;
-            background: rgba(255, 217, 61, 0.15);
-            border-radius: 16px;
-            font-weight: 600;
-            line-height: 1.6;
-            border-left: 5px solid var(--accent);
-        }
-        
-        .controls {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 35px;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .btn {
-            padding: 18px 32px;
+        .img-loading span { font-size: 0.25em; margin-top: 10px; color: #5a67d8; font-weight: 700; font-family: 'Nunito'; }
+
+        /* Speak-image button directly under image */
+        .img-speak-btn {
+            width: 100%;
+            padding: 12px 16px;
             border: none;
-            border-radius: 50px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--teal), #2dbfb3);
+            color: white;
             font-family: 'Nunito', sans-serif;
-            font-size: 1.2em;
-            font-weight: 700;
+            font-size: 1em;
+            font-weight: 800;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: var(--shadow-md);
             display: flex;
             align-items: center;
-            gap: 12px;
-            position: relative;
-            overflow: hidden;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
+            box-shadow: 0 4px 14px rgba(61,217,203,0.4);
         }
-        
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.5);
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
-        }
-        
-        .btn:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-        
-        .btn:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.2);
-        }
-        
-        .btn:active {
-            transform: translateY(-2px);
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        .img-speak-btn:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 8px 22px rgba(61,217,203,0.5); }
+        .img-speak-btn:active { transform: scale(0.97); }
+        .img-speak-btn.speaking { animation: speak-pulse 0.6s infinite alternate; }
+        @keyframes speak-pulse { from { box-shadow: 0 4px 14px rgba(61,217,203,0.4); } to { box-shadow: 0 8px 30px rgba(61,217,203,0.8); } }
+
+        .img-slow-btn {
+            width: 100%;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--purple), #8b5cf6);
             color: white;
-        }
-        
-        .btn-secondary {
-            background: linear-gradient(135deg, var(--secondary), var(--secondary-dark));
-            color: white;
-        }
-        
-        .btn-success {
-            background: linear-gradient(135deg, var(--success), #5BC46E);
-            color: white;
-        }
-        
-        
-        .btn-warning {
-            background: linear-gradient(135deg, var(--warning), #FF9142);
-            color: white;
-        }
-        
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-        
-        .btn-icon {
-            font-size: 1.3em;
-        }
-        
-        .story-mode {
-            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-            border: 3px solid var(--success);
-            padding: 40px;
-            border-radius: 24px;
-            margin-top: 25px;
-            box-shadow: 0 10px 30px rgba(107, 207, 127, 0.2);
-        }
-        
-        .story-text {
-            font-size: 1.8em;
-            line-height: 2;
-            color: var(--text-dark);
-            margin-bottom: 30px;
-            font-weight: 500;
-        }
-        
-        .story-text .highlight {
-            background: linear-gradient(180deg, transparent 60%, var(--accent) 60%);
-            padding: 2px 6px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 0.9em;
             font-weight: 800;
-            color: var(--text-dark);
-            border-radius: 4px;
             cursor: pointer;
-            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
+            box-shadow: 0 4px 14px rgba(167,139,250,0.4);
         }
-        
-        .story-text .highlight:hover {
-            background: var(--accent);
-            transform: scale(1.1);
+        .img-slow-btn:hover { transform: translateY(-2px) scale(1.03); }
+
+        /* Word / info column */
+        .card-info-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 16px;
         }
-        
-        
-        .achievement-popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(0);
-            background: white;
-            padding: 60px;
-            border-radius: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            z-index: 1000;
-            text-align: center;
-            animation: popup 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-            border: 5px solid var(--accent);
-        }
-        
-        @keyframes popup {
-            to { transform: translate(-50%, -50%) scale(1); }
-        }
-        
-        .achievement-icon {
-            font-size: 6em;
-            margin-bottom: 20px;
-            animation: pulse 1s infinite;
-        }
-        
-        .achievement-text {
-            font-family: 'Baloo 2', cursive;
-            font-size: 2.5em;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+        .big-word {
+            font-family: 'Fredoka One', cursive;
+            font-size: clamp(2.8em, 8vw, 5em);
+            background: linear-gradient(135deg, var(--pink), var(--orange));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 15px;
+            line-height: 1.1;
+            cursor: pointer;
+            transition: transform 0.2s;
+            animation: wordIn 0.6s cubic-bezier(.34,1.56,.64,1);
+            filter: drop-shadow(3px 3px 0 rgba(255,217,61,0.4));
+            user-select: none;
         }
-        
-        .confetti {
-            position: fixed;
-            width: 10px;
-            height: 10px;
+        .big-word:hover { transform: scale(1.07) rotate(-1deg); }
+        @keyframes wordIn {
+            from { opacity: 0; transform: scale(0.5) rotate(-10deg); }
+            to   { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+
+        .phonetic { font-size: 1.1em; color: var(--muted); font-style: italic; font-weight: 600; }
+
+        .caption-box {
+            background: rgba(255,217,61,0.15);
+            border-left: 5px solid var(--yellow);
+            border-radius: 0 14px 14px 0;
+            padding: 14px 18px;
+            font-size: 1.05em;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .action-btns {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .btn {
+            padding: 13px 22px;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1em;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(0,0,0,0.18); }
+        .btn:active { transform: translateY(-1px); }
+        .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none !important; }
+
+        .btn-pink  { background: linear-gradient(135deg, var(--pink),   #E85384); color: white; }
+        .btn-green { background: linear-gradient(135deg, var(--green),  #3ab85a); color: white; }
+        .btn-blue  { background: linear-gradient(135deg, var(--blue),   #3178c6); color: white; }
+        .btn-orange{ background: linear-gradient(135deg, var(--orange), #e07a20); color: white; }
+
+        .nav-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-nav {
+            padding: 14px 28px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-nav:hover { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(0,0,0,0.18); }
+        .btn-nav:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .btn-prev { background: #f0f0f0; color: #555; }
+        .btn-next { background: linear-gradient(135deg, var(--green), #3ab85a); color: white; }
+
+        /* ── Story Mode ── */
+        .story-card {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border: 3px solid var(--green);
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 10px 30px rgba(93,216,130,0.2);
+        }
+        .story-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2em;
+            color: #166534;
+            margin-bottom: 20px;
+        }
+        .story-body {
+            font-size: 1.5em;
+            line-height: 2.2;
+            color: var(--text);
+            font-weight: 600;
+        }
+        .story-word {
+            display: inline-block;
+            background: linear-gradient(180deg, transparent 60%, var(--yellow) 60%);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .story-word:hover { background: var(--yellow); transform: scale(1.1); }
+
+        .story-controls { margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+        /* ── Achievement popup ── */
+        .overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.4);
             z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        
-        .auto-gen-indicator {
+        .achievement-box {
+            background: white;
+            border-radius: 30px;
+            padding: 52px 60px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            border: 5px solid var(--yellow);
+            animation: popIn 0.5s cubic-bezier(.34,1.56,.64,1);
+            max-width: 90%;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to   { transform: scale(1); opacity: 1; }
+        }
+        .ach-icon { font-size: 5em; animation: bounce 1s infinite; }
+        .ach-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.2em;
+            background: linear-gradient(135deg, var(--pink), var(--teal));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 14px 0 8px;
+        }
+        .ach-sub { font-size: 1.1em; font-weight: 600; color: var(--muted); }
+
+        /* Confetti */
+        @keyframes fall {
+            0%   { transform: translateY(-40px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(105vh) rotate(720deg); opacity: 0; }
+        }
+        .conf-piece {
+            position: fixed;
+            width: 10px; height: 10px;
+            border-radius: 3px;
+            animation: fall 2.5s linear forwards;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        /* Age group color bands */
+        .age-toddler   { --level-color: #FF6B9D; }
+        .age-preschool { --level-color: #FF9A3C; }
+        .age-early     { --level-color: #3DD9CB; }
+        .age-mid       { --level-color: #A78BFA; }
+        .age-advanced  { --level-color: #4A90E2; }
+
+        .level-badge {
             display: inline-block;
-            background: linear-gradient(135deg, #a78bfa, #c084fc);
+            background: var(--level-color, var(--pink));
             color: white;
-            padding: 8px 16px;
             border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 700;
+            padding: 4px 14px;
+            font-size: 0.8em;
+            font-weight: 800;
             margin-left: 10px;
-            animation: pulse 2s infinite;
+            vertical-align: middle;
         }
-        
-        .difficulty-badge {
-            display: inline-block;
-            padding: 6px 16px;
-            border-radius: 15px;
-            font-size: 0.9em;
-            font-weight: 700;
-            margin-left: 10px;
-        }
-        
-        .difficulty-easy { background: #dcfce7; color: #166534; }
-        .difficulty-medium { background: #fef3c7; color: #92400e; }
-        .difficulty-hard { background: #fee2e2; color: #991b1b; }
     </style>
 </head>
 <body>
-    <div id="root"></div>
-    
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
-        
-        // AI Word Generator - Creates contextual words based on difficulty
-        const generateWordsWithAI = async (level, count, apiKey) => {
-            if (!apiKey) return null;
-            
-            const prompts = {
-                level1: "Generate 10 simple 3-letter CVC (consonant-vowel-consonant) words for a child learning to read. Words should be common, easy to visualize (cat, dog, sun). Return ONLY a JSON array of words, nothing else.",
-                level2: "Generate 10 word family words (like -at family: cat, hat, mat or -ing family: ring, sing, king). Mix different word families. Return ONLY a JSON array of words.",
-                level3: "Generate 10 common sight words that children need to recognize instantly (like: the, and, you, have, said). Return ONLY a JSON array of words.",
-                level4: "Generate 10 multi-syllable words suitable for children (happy, butterfly, elephant, garden). Return ONLY a JSON array of words.",
-            };
-            
-            try {
-                const response = await fetch("https://api.anthropic.com/v1/messages", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "x-api-key": apiKey,
-                        "anthropic-version": "2023-06-01"
-                    },
-                    body: JSON.stringify({
-                        model: "claude-sonnet-4-20250514",
-                        max_tokens: 500,
-                        messages: [{
-                            role: "user",
-                            content: prompts[level]
-                        }]
-                    })
-                });
-                
-                const data = await response.json();
-                const wordsText = data.content[0].text;
-                const words = JSON.parse(wordsText.trim());
-                return words;
-            } catch (error) {
-                console.error('Error generating words:', error);
-                return null;
-            }
-        };
-        
-        // Word → emoji map for instant illustrated fallback
-        const WORD_EMOJIS = {
-            cat:'🐱', dog:'🐶', sun:'☀️', hat:'🎩', bat:'🦇', run:'🏃', hop:'🐸',
-            top:'🌀', cup:'☕', fan:'🌀', fish:'🐟', ship:'🚢', wish:'⭐', dish:'🍽️',
-            cake:'🎂', lake:'🏞️', make:'🔨', take:'🤲', tree:'🌳', free:'🕊️',
-            the:'📖', and:'➕', you:'👤', are:'💬', have:'🤲', they:'👥', said:'💬',
-            come:'👋', some:'🔢', were:'⏰', happy:'😊', rabbit:'🐰', garden:'🌺',
-            window:'🪟', basket:'🧺', children:'👧', morning:'🌅', birthday:'🎂',
-            elephant:'🐘', butterfly:'🦋', bird:'🐦', ball:'⚽', rain:'🌧️',
-            book:'📚', home:'🏠', food:'🍎', play:'🎮', sing:'🎵', jump:'⬆️',
-            swim:'🏊', ride:'🚲', love:'❤️', help:'🤝', read:'📖', draw:'✏️',
-            park:'🌳', swing:'🎠', sky:'🌤️', sea:'🌊', bug:'🐛', ant:'🐜',
-            bee:'🐝', cow:'🐄', pig:'🐷', hen:'🐔', fox:'🦊', owl:'🦉',
-            king:'👑', ring:'💍', sing:'🎤', wing:'🪶', duck:'🦆', truck:'🚛',
-            frog:'🐸', clock:'🕐', block:'🧱', snow:'❄️', boat:'⛵', coat:'🧥',
-            goat:'🐐', road:'🛣️', toad:'🐸', bread:'🍞', head:'👤', read:'📚',
-            dead:'💀', lead:'✏️', bead:'📿', leaf:'🍃', beef:'🥩', feet:'🦶',
-            meet:'🤝', seed:'🌱', weed:'🌿', feed:'🍼', need:'❗', deed:'📜',
-        };
+<div id="root"></div>
 
-        // Build a colourful emoji SVG that always renders
-        const buildEmojiSVG = (word) => {
-            const emoji = WORD_EMOJIS[word.toLowerCase()] || '📖';
-            const colours = ['#FFF0F5','#F0FFF4','#FFF9C4','#E3F2FD','#F3E5F5'];
-            const bg = colours[word.length % colours.length];
-            const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="500" height="350" viewBox="0 0 500 350">
-  <rect width="500" height="350" fill="${bg}" rx="20"/>
-  <text x="250" y="190" font-size="160" text-anchor="middle" dominant-baseline="middle">${emoji}</text>
-  <text x="250" y="310" font-size="32" font-family="Nunito,sans-serif" font-weight="800"
-        fill="#4A5568" text-anchor="middle">${word}</text>
+<script type="text/babel">
+const { useState, useEffect, useCallback, useRef } = React;
+
+/* ───── Data ───── */
+const AGE_LEVELS = [
+    {
+        id: 'toddler',
+        icon: '🍼',
+        name: 'Baby Words',
+        range: 'Ages 1–2',
+        cls: 'age-toddler',
+        badge: 'TODDLER',
+        words: ['cat','dog','ball','cup','hat','sun','bed','car','bus','hen','bee','ant','cow','pig','duck','fish','frog','bird','star','moon'],
+        story: null,
+        hint: 'Click the picture or word to hear it!'
+    },
+    {
+        id: 'preschool',
+        icon: '🌈',
+        name: 'Colorful Words',
+        range: 'Ages 3–4',
+        cls: 'age-preschool',
+        badge: 'PRESCHOOL',
+        words: ['apple','kite','cake','rain','boat','tree','book','frog','jump','farm','flower','cloud','swing','baby','happy'],
+        story: null,
+        hint: 'Big, fun words! Tap to listen!'
+    },
+    {
+        id: 'early',
+        icon: '📖',
+        name: 'First Reader',
+        range: 'Ages 5–6',
+        cls: 'age-early',
+        badge: 'EARLY',
+        words: ['hat','bat','cat','mat','rat','hop','mop','top','pop','ship','chip','trip','drip','slip','clap','snap','trap'],
+        story: {
+            title: 'The Big Red Cat',
+            text: 'The cat sat on a mat. The cat had a hat. The big red cat ran to the van. What fun!',
+            focus: ['cat','mat','hat','ran','van','fun']
+        },
+        hint: 'Word families — they rhyme!'
+    },
+    {
+        id: 'mid',
+        icon: '🦋',
+        name: 'Growing Reader',
+        range: 'Ages 7–9',
+        cls: 'age-mid',
+        badge: 'GRADE 1-3',
+        words: ['happy','rabbit','garden','window','basket','morning','elephant','butterfly','children','birthday','playing','jumping','running','singing','laughing'],
+        story: {
+            title: 'A Day at the Park',
+            text: 'Sam went to the park on a bright morning. He saw a rabbit jumping in the garden. Birds were singing in the window tree. Sam played and laughed with the children. It was a very happy birthday!',
+            focus: ['park','rabbit','garden','morning','children','happy']
+        },
+        hint: 'Multi-syllable words — sound them out!'
+    },
+    {
+        id: 'advanced',
+        icon: '🚀',
+        name: 'Super Reader',
+        range: 'Ages 10–12',
+        cls: 'age-advanced',
+        badge: 'GRADES 4-6',
+        words: ['adventure','discovery','imagination','celebration','friendship','important','beautiful','wonderful','mysterious','fascinating','challenge','environment','responsible','courageous','extraordinary'],
+        story: {
+            title: 'The Mysterious Discovery',
+            text: 'Maya loved adventure more than anything. One extraordinary morning, she made a fascinating discovery in the garden. A mysterious door appeared between the trees. With courageous steps, she opened it — and a whole new world of imagination and wonder was waiting inside!',
+            focus: ['adventure','extraordinary','fascinating','mysterious','courageous','imagination']
+        },
+        hint: 'Big words for big readers!'
+    }
+];
+
+/* ───── Emoji fallback map ───── */
+const EMOJI_MAP = {
+    cat:'🐱',dog:'🐶',ball:'⚽',cup:'☕',hat:'🎩',sun:'☀️',bed:'🛏️',car:'🚗',bus:'🚌',
+    hen:'🐔',bee:'🐝',ant:'🐜',cow:'🐄',pig:'🐷',duck:'🦆',fish:'🐟',frog:'🐸',
+    bird:'🐦',star:'⭐',moon:'🌙',apple:'🍎',kite:'🪁',cake:'🎂',rain:'🌧️',boat:'⛵',
+    tree:'🌳',book:'📚',jump:'⬆️',farm:'🏡',flower:'🌸',cloud:'☁️',swing:'🎠',
+    baby:'👶',happy:'😊',hat:'🎩',bat:'🦇',ship:'🚢',chip:'🍟',clap:'👏',
+    rabbit:'🐰',garden:'🌺',window:'🪟',basket:'🧺',morning:'🌅',elephant:'🐘',
+    butterfly:'🦋',children:'👧',birthday:'🎂',playing:'🎮',jumping:'🏃',running:'🏃',
+    singing:'🎵',laughing:'😂',adventure:'🗺️',discovery:'🔍',imagination:'💭',
+    celebration:'🎉',friendship:'🤝',important:'❗',beautiful:'✨',wonderful:'🌟',
+    mysterious:'🔮',fascinating:'🤩',challenge:'💪',environment:'🌍',responsible:'🦸',
+    courageous:'⚔️',extraordinary:'🚀',park:'🌳',mat:'🟫',ran:'🏃',van:'🚐',fun:'🎊',
+    sat:'💺',big:'📐',red:'🔴',
+};
+
+const buildEmojiSVG = (word) => {
+    const emoji = EMOJI_MAP[word.toLowerCase()] || '📖';
+    const palettes = [['#FFF0F5','#FF6B9D'],['#F0FFF4','#3DD9CB'],['#FFFDE7','#FFD93D'],['#EDE9FE','#A78BFA'],['#EFF6FF','#4A90E2']];
+    const [bg, accent] = palettes[word.length % palettes.length];
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="${bg}" rx="16"/>
+  <circle cx="200" cy="130" r="90" fill="${accent}" opacity="0.15"/>
+  <text x="200" y="155" font-size="120" text-anchor="middle" dominant-baseline="middle">${emoji}</text>
 </svg>`;
-            return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-        };
+    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+};
 
-        // Fetch a real photo from Wikipedia (free, no API key, works everywhere)
-        const fetchWikipediaImage = async (word) => {
-            try {
-                const url = `https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(word)}`;
-                const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
-                if (!res.ok) return null;
-                const data = await res.json();
-                if (data.thumbnail && data.thumbnail.source) {
-                    // Scale up the thumbnail
-                    const src = data.thumbnail.source.replace(/\/\d+px-/, '/400px-');
-                    return src;
-                }
-                return null;
-            } catch {
-                return null;
-            }
-        };
+const fetchWikiImage = async (word) => {
+    try {
+        const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(word)}`);
+        if (!res.ok) return null;
+        const data = await res.json();
+        if (data.thumbnail?.source) return data.thumbnail.source.replace(/\/\d+px-/, '/400px-');
+        return null;
+    } catch { return null; }
+};
 
-        // Main image + caption generator
-        const generateEnhancedImage = async (word, apiKey) => {
-            // 1. Always build the emoji fallback immediately (shown while loading)
-            const fallbackUrl = buildEmojiSVG(word);
+const getImageAndCaption = async (word, apiKey) => {
+    const fallback = buildEmojiSVG(word);
+    const wikiUrl = await fetchWikiImage(word);
+    const url = wikiUrl || fallback;
 
-            // 2. Try to fetch a real Wikipedia photo
-            const wikiUrl = await fetchWikipediaImage(word);
-            const photoUrl = wikiUrl || fallbackUrl;
+    if (apiKey) {
+        try {
+            const res = await fetch('https://api.anthropic.com/v1/messages', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01' },
+                body: JSON.stringify({
+                    model: 'claude-sonnet-4-20250514',
+                    max_tokens: 100,
+                    messages: [{ role: 'user', content: `Write 1 short, cheerful, child-friendly sentence about the word "${word}" for a 5-year-old. Keep it under 15 words.` }]
+                })
+            });
+            const d = await res.json();
+            return { url, fallback, caption: d.content[0].text.trim(), ai: true };
+        } catch {}
+    }
 
-            // 3. If we have an API key, get an AI caption; otherwise write a simple one
-            if (apiKey) {
-                try {
-                    const response = await fetch("https://api.anthropic.com/v1/messages", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "x-api-key": apiKey,
-                            "anthropic-version": "2023-06-01"
-                        },
-                        body: JSON.stringify({
-                            model: "claude-sonnet-4-20250514",
-                            max_tokens: 120,
-                            messages: [{
-                                role: "user",
-                                content: `You are a fun reading teacher for young children. In 1-2 short, simple sentences, describe the word "${word}" in a way a 5-8 year old will understand. Use easy words. Be cheerful and encouraging!`
-                            }]
-                        })
-                    });
-                    const data = await response.json();
-                    const caption = data.content[0].text.trim();
-                    return { url: photoUrl, fallback: fallbackUrl, caption, isAI: true };
-                } catch {
-                    // API failed — still show image with simple caption
-                }
-            }
+    const captions = {
+        default: `This is a ${word}! Can you say it? 🌟`,
+    };
+    return { url, fallback, caption: EMOJI_MAP[word.toLowerCase()] ? `${EMOJI_MAP[word.toLowerCase()]} A ${word}! Great word!` : `This is a ${word}! 🌟`, ai: false };
+};
 
-            // Default simple caption
-            const simpleCaption = `This is a ${word}! Can you say it out loud? 🌟`;
-            return { url: photoUrl, fallback: fallbackUrl, caption: simpleCaption, isAI: false };
-        };
-        
-        // Base learning content
-        const baseLearningContent = {
-            level1: {
-                name: "Letter Sounds",
-                icon: "🔤",
-                words: ["cat", "dog", "sun", "hat", "bat", "run", "hop", "top", "cup", "fan"],
-                description: "Learn basic 3-letter words with simple sounds",
-                difficulty: "easy"
-            },
-            level2: {
-                name: "Word Families",
-                icon: "👨‍👩‍👧",
-                words: ["fish", "ship", "wish", "dish", "cake", "lake", "make", "take", "tree", "free"],
-                description: "Practice word patterns and rhyming",
-                difficulty: "easy"
-            },
-            level3: {
-                name: "Sight Words",
-                icon: "👀",
-                words: ["the", "and", "you", "are", "have", "they", "said", "come", "some", "were"],
-                description: "Common words to recognize instantly",
-                difficulty: "medium"
-            },
-            level4: {
-                name: "Longer Words",
-                icon: "📏",
-                words: ["happy", "rabbit", "garden", "window", "basket", "children", "morning", "birthday", "elephant", "butterfly"],
-                description: "Build confidence with multi-syllable words",
-                difficulty: "medium"
-            },
-            level5: {
-                name: "Story Time",
-                icon: "📖",
-                stories: [
-                    {
-                        title: "The Happy Cat",
-                        text: "The cat sat on the mat. The cat was happy. The cat played with a ball. The cat ran and jumped. What a fun day!",
-                        focusWords: ["cat", "sat", "mat", "happy", "ball"]
-                    },
-                    {
-                        title: "A Day at the Park",
-                        text: "Sam went to the park. He saw a big tree. Birds sang in the tree. Sam played on the swing. He had so much fun!",
-                        focusWords: ["park", "tree", "birds", "swing", "fun"]
-                    }
-                ],
-                description: "Read complete stories with comprehension",
-                difficulty: "hard"
-            }
-        };
-        
-        function ReadBuddyApp() {
-            const [currentLevel, setCurrentLevel] = useState('level1');
-            const [currentIndex, setCurrentIndex] = useState(0);
-            const [apiKey, setApiKey] = useState(localStorage.getItem('anthropicApiKey') || '');
-            const [generatedImage, setGeneratedImage] = useState(null);
-            const [imageLoading, setImageLoading] = useState(false);
-            const [wordsCompleted, setWordsCompleted] = useState(0);
-            const [totalWords, setTotalWords] = useState(0);
-            const [showAchievement, setShowAchievement] = useState(false);
-            const [isSpeaking, setIsSpeaking] = useState(false);
-            const [learningContent, setLearningContent] = useState(baseLearningContent);
-            const [isGeneratingWords, setIsGeneratingWords] = useState(false);
-            const [confetti, setConfetti] = useState([]);
-            
-            const currentContent = learningContent[currentLevel];
-            const isStoryMode = currentLevel === 'level5';
-            const currentWord = isStoryMode ? null : currentContent.words[currentIndex];
-            const currentStory = isStoryMode ? currentContent.stories[currentIndex] : null;
-            
-            // Text-to-Speech
-            const speak = (text, rate = 0.75) => {
-                if ('speechSynthesis' in window) {
-                    window.speechSynthesis.cancel();
-                    const utterance = new SpeechSynthesisUtterance(text);
-                    utterance.rate = rate;
-                    utterance.pitch = 1.1;
-                    utterance.volume = 1;
-                    
-                    utterance.onstart = () => setIsSpeaking(true);
-                    utterance.onend = () => setIsSpeaking(false);
-                    
-                    window.speechSynthesis.speak(utterance);
-                } else {
-                    alert('Text-to-speech not supported. Please use Chrome or Safari.');
-                }
-            };
-            
-            // Generate new image with AI
-            const generateImage = async (word) => {
-                setImageLoading(true);
-                setGeneratedImage(null);
-                
-                const result = await generateEnhancedImage(word, apiKey);
-                setGeneratedImage(result);
-                setImageLoading(false);
-            };
-            
-            // Auto-generate image when word changes
-            useEffect(() => {
-                if (currentWord) {
-                    generateImage(currentWord);
-                }
-            }, [currentWord]);
-            
-            // Progress tracking
-            useEffect(() => {
-                const completed = parseInt(localStorage.getItem('wordsCompleted') || '0');
-                const total = parseInt(localStorage.getItem('totalWords') || '0');
-                setWordsCompleted(completed);
-                setTotalWords(total);
-            }, []);
-            
-            // Confetti effect
-            const createConfetti = () => {
-                const colors = ['#FF6B9D', '#4ECDC4', '#FFD93D', '#6BCF7F', '#FFA756'];
-                const newConfetti = [];
-                for (let i = 0; i < 50; i++) {
-                    newConfetti.push({
-                        id: i,
-                        left: Math.random() * 100 + '%',
-                        backgroundColor: colors[Math.floor(Math.random() * colors.length)],
-                        animationDelay: Math.random() * 2 + 's'
-                    });
-                }
-                setConfetti(newConfetti);
-                setTimeout(() => setConfetti([]), 3000);
-            };
-            
-            const markComplete = () => {
-                const newCompleted = wordsCompleted + 1;
-                const newTotal = totalWords + 1;
-                setWordsCompleted(newCompleted);
-                setTotalWords(newTotal);
-                localStorage.setItem('wordsCompleted', newCompleted);
-                localStorage.setItem('totalWords', newTotal);
-                
-                if (newCompleted % 10 === 0) {
-                    setShowAchievement(true);
-                    createConfetti();
-                    setTimeout(() => setShowAchievement(false), 3000);
-                }
-                
-                nextWord();
-            };
-            
-            const nextWord = () => {
-                const maxIndex = isStoryMode ? currentContent.stories.length - 1 : currentContent.words.length - 1;
-                if (currentIndex < maxIndex) {
-                    setCurrentIndex(currentIndex + 1);
-                    setGeneratedImage(null);
-                } else {
-                    alert('🎉 Level Complete! Amazing work!');
-                    setCurrentIndex(0);
-                }
-            };
-            
-            const previousWord = () => {
-                if (currentIndex > 0) {
-                    setCurrentIndex(currentIndex - 1);
-                    setGeneratedImage(null);
-                }
-            };
-            
-            const saveApiKey = (key) => {
-                setApiKey(key);
-                localStorage.setItem('anthropicApiKey', key);
-            };
-            
-            // Generate new words for current level
-            const generateNewWords = async () => {
-                if (!apiKey) {
-                    alert('Please add your API key to generate new words!');
-                    return;
-                }
-                
-                setIsGeneratingWords(true);
-                const newWords = await generateWordsWithAI(currentLevel, 10, apiKey);
-                
-                if (newWords) {
-                    setLearningContent(prev => ({
-                        ...prev,
-                        [currentLevel]: {
-                            ...prev[currentLevel],
-                            words: newWords
-                        }
-                    }));
-                    setCurrentIndex(0);
-                    alert('✨ Generated 10 new words! Let\'s learn!');
-                } else {
-                    alert('Could not generate words. Check your API key.');
-                }
-                
-                setIsGeneratingWords(false);
-            };
-            
-            return (
-                <>
-                    <div className="header">
-                        <div className="header-content">
-                            <div className="logo">
-                                <span className="logo-icon">📚</span>
-                                <div className="logo-text">
-                                    <h1>ReadBuddy</h1>
-                                </div>
+/* ───── Main App ───── */
+function ReadBuddyApp() {
+    const [levelId, setLevelId] = useState('toddler');
+    const [idx, setIdx] = useState(0);
+    const [mode, setMode] = useState('word'); // 'word' | 'story'
+    const [imgData, setImgData] = useState(null);
+    const [imgLoading, setImgLoading] = useState(false);
+    const [speaking, setSpeaking] = useState(false);
+    const [apiKey] = useState(''); // users can add their key if desired
+    const [wordsLearned, setWordsLearned] = useState(() => parseInt(sessionStorage.getItem('wl') || '0'));
+    const [achievement, setAchievement] = useState(false);
+    const [confetti, setConfetti] = useState([]);
+    const [storyMode, setStoryMode] = useState(false);
+
+    const level = AGE_LEVELS.find(l => l.id === levelId);
+    const word = level.words[idx];
+    const story = level.story;
+
+    /* Speak */
+    const speak = useCallback((text, rate = 0.8) => {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.rate = rate;
+        u.pitch = 1.1;
+        u.volume = 1;
+        u.onstart = () => setSpeaking(true);
+        u.onend   = () => setSpeaking(false);
+        window.speechSynthesis.speak(u);
+    }, []);
+
+    /* Load image */
+    useEffect(() => {
+        if (storyMode) return;
+        let cancelled = false;
+        setImgLoading(true);
+        setImgData(null);
+        getImageAndCaption(word, apiKey).then(data => {
+            if (!cancelled) { setImgData(data); setImgLoading(false); }
+        });
+        return () => { cancelled = true; };
+    }, [word, storyMode]);
+
+    /* Auto-speak the word when it changes */
+    useEffect(() => {
+        if (!storyMode && word) {
+            const t = setTimeout(() => speak(word), 400);
+            return () => clearTimeout(t);
+        }
+    }, [word, storyMode]);
+
+    const changeLevel = (id) => {
+        setLevelId(id);
+        setIdx(0);
+        setStoryMode(false);
+        setImgData(null);
+    };
+
+    const next = () => {
+        if (idx < level.words.length - 1) { setIdx(idx + 1); setImgData(null); }
+        else { alert('🎉 You finished all words! Amazing!'); setIdx(0); }
+    };
+    const prev = () => { if (idx > 0) { setIdx(idx - 1); setImgData(null); } };
+
+    const markGotIt = () => {
+        const n = wordsLearned + 1;
+        setWordsLearned(n);
+        sessionStorage.setItem('wl', n);
+        if (n % 5 === 0) {
+            setAchievement(true);
+            const pieces = Array.from({length: 60}, (_, i) => ({
+                id: i,
+                x: Math.random() * 100,
+                color: ['#FF6B9D','#FFD93D','#3DD9CB','#A78BFA','#FF9A3C'][i % 5],
+                delay: Math.random() * 1.5,
+                size: 6 + Math.random() * 8
+            }));
+            setConfetti(pieces);
+            setTimeout(() => { setAchievement(false); setConfetti([]); }, 3200);
+        }
+        next();
+    };
+
+    const hasStory = !!story;
+
+    return (
+        <>
+            {/* Header */}
+            <div className="header">
+                <div className="header-left">
+                    <span className="logo-emoji">📚</span>
+                    <div>
+                        <h1>ReadBuddy</h1>
+                        <div className="header-tagline">🌟 Learning is fun for every age!</div>
+                    </div>
+                </div>
+                <div className="stars-badge">⭐ {wordsLearned} words learned!</div>
+            </div>
+
+            <div className="layout">
+                {/* Sidebar */}
+                <aside className="sidebar">
+                    <h3>🎯 Choose Your Level</h3>
+                    {AGE_LEVELS.map(l => (
+                        <button
+                            key={l.id}
+                            className={`age-btn ${l.cls} ${levelId === l.id ? 'active' : ''}`}
+                            onClick={() => changeLevel(l.id)}
+                        >
+                            <span className="age-icon">{l.icon}</span>
+                            <span className="age-info">
+                                <span className="age-name">{l.name}</span>
+                                <span className="age-range">{l.range}</span>
+                            </span>
+                        </button>
+                    ))}
+
+                    <div className="progress-wrap">
+                        <h3>📊 Progress</h3>
+                        <div className="prog-bar-bg">
+                            <div className="prog-bar-fill" style={{width: `${Math.min(100, (wordsLearned % 10) * 10)}%`}}></div>
+                        </div>
+                        <div className="prog-label">Next star in {10 - (wordsLearned % 10)} words!</div>
+                        <div className="stat-row">
+                            <div className="stat-box">
+                                <div className="stat-num">{wordsLearned}</div>
+                                <div className="stat-lbl">Learned</div>
                             </div>
-                            <p className="tagline">Your AI-Powered Reading Adventure!</p>
+                            <div className="stat-box">
+                                <div className="stat-num">{Math.floor(wordsLearned / 5)}</div>
+                                <div className="stat-lbl">Stars ⭐</div>
+                            </div>
                         </div>
                     </div>
-                    
-                    <div className="main-container">
-                        <div className="sidebar">
-                            <div className="level-selector">
-                                <h3>🎯 Choose Level</h3>
-                                {Object.entries(learningContent).map(([key, level]) => (
+                </aside>
+
+                {/* Main */}
+                <main className="content">
+                    <div className="content-header">
+                        <div className="content-title">
+                            {level.icon} {level.name}
+                            <span className={`level-badge ${level.cls}`}>{level.badge}</span>
+                        </div>
+                        <div style={{display:'flex', gap:'10px', flexWrap:'wrap'}}>
+                            {hasStory && (
+                                <button
+                                    className={`btn ${storyMode ? 'btn-orange' : 'btn-blue'}`}
+                                    onClick={() => setStoryMode(!storyMode)}
+                                >
+                                    {storyMode ? '🔤 Words' : '📖 Story'}
+                                </button>
+                            )}
+                            {!storyMode && (
+                                <div className="word-count-pill">
+                                    {idx + 1} / {level.words.length}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* ── WORD MODE ── */}
+                    {!storyMode && (
+                        <>
+                            <div className="word-card">
+                                {/* LEFT: image + buttons beside it */}
+                                <div className="card-image-col">
+                                    <div className="img-frame">
+                                        {imgLoading && (
+                                            <div className="img-loading">
+                                                🎨
+                                                <span>Loading...</span>
+                                            </div>
+                                        )}
+                                        {imgData && !imgLoading && (
+                                            <img
+                                                src={imgData.url}
+                                                alt={word}
+                                                onError={e => { if (imgData.fallback && e.target.src !== imgData.fallback) e.target.src = imgData.fallback; }}
+                                            />
+                                        )}
+                                    </div>
+
+                                    {/* ✅ Clickable buttons BESIDE (below) the image */}
                                     <button
-                                        key={key}
-                                        className={`level-btn ${currentLevel === key ? 'active' : ''}`}
-                                        onClick={() => {
-                                            setCurrentLevel(key);
-                                            setCurrentIndex(0);
-                                            setGeneratedImage(null);
-                                        }}
+                                        className={`img-speak-btn ${speaking ? 'speaking' : ''}`}
+                                        onClick={() => speak(word)}
+                                        disabled={speaking}
                                     >
-                                        <span className="level-icon">{level.icon}</span>
-                                        <span>{level.name}</span>
+                                        🔊 {speaking ? 'Saying...' : 'Say it!'}
                                     </button>
-                                ))}
-                            </div>
-                            
-                            <div className="progress-section">
-                                <h3>📊 Your Progress</h3>
-                                <div className="progress-bar-container">
-                                    <div 
-                                        className="progress-fill" 
-                                        style={{width: `${totalWords > 0 ? (wordsCompleted / totalWords) * 100 : 0}%`}}
-                                    ></div>
+                                    <button
+                                        className="img-slow-btn"
+                                        onClick={() => speak(word, 0.45)}
+                                    >
+                                        🐌 Slow
+                                    </button>
                                 </div>
-                                <div className="progress-text">
-                                    {wordsCompleted} / {totalWords} words mastered
-                                </div>
-                                
-                                <div className="stats-grid">
-                                    <div className="stat-card">
-                                        <div className="stat-number">{wordsCompleted}</div>
-                                        <div className="stat-label">Words Learned</div>
+
+                                {/* RIGHT: word + info */}
+                                <div className="card-info-col">
+                                    <div>
+                                        <div
+                                            className="big-word"
+                                            onClick={() => speak(word)}
+                                            title="Click to hear!"
+                                        >
+                                            {word}
+                                        </div>
+                                        <div className="phonetic">👆 Tap the word to hear it!</div>
+                                        <div style={{marginTop:'6px', fontSize:'0.85em', color:'var(--muted)', fontWeight:700}}>
+                                            {level.hint}
+                                        </div>
                                     </div>
-                                    <div className="stat-card">
-                                        <div className="stat-number">{Math.floor(wordsCompleted / 10)}</div>
-                                        <div className="stat-label">Achievements</div>
+
+                                    {imgData && (
+                                        <div className="caption-box">
+                                            {imgData.ai && <span style={{fontSize:'0.75em', color:'#7c3aed', fontWeight:800}}>🤖 AI says: </span>}
+                                            {imgData.caption}
+                                        </div>
+                                    )}
+
+                                    <div className="action-btns">
+                                        <button className="btn btn-pink" onClick={() => speak(word)} disabled={speaking}>
+                                            🔊 {speaking ? 'Speaking...' : 'Hear Word'}
+                                        </button>
+                                        <button className="btn btn-green" onClick={markGotIt}>
+                                            ✅ Got it!
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div className="content-area">
-                            <div className="lesson-header">
-                                <div className="lesson-title">
-                                    <h2>{currentContent.icon} {currentContent.name}</h2>
-                                    <span className={`difficulty-badge difficulty-${currentContent.difficulty}`}>
-                                        {currentContent.difficulty.toUpperCase()}
-                                    </span>
-                                </div>
-                                {!isStoryMode && (
-                                    <div className="word-counter">
-                                        Word {currentIndex + 1} of {currentContent.words.length}
-                                    </div>
-                                )}
+
+                            {/* Nav */}
+                            <div className="nav-row">
+                                <button className="btn-nav btn-prev" onClick={prev} disabled={idx === 0}>
+                                    ← Back
+                                </button>
+                                <button className="btn-nav btn-next" onClick={next} disabled={idx === level.words.length - 1}>
+                                    Next Word →
+                                </button>
                             </div>
-                            
-                            <div className="lesson-card">
-                                {!isStoryMode ? (
-                                    <>
-                                        <div className="word-display">
-                                            <div className="current-word" onClick={() => speak(currentWord)}>
-                                                {currentWord}
-                                            </div>
-                                            <div className="phonetic-text">Click word to hear it!</div>
-                                        </div>
-                                        
-                                        {imageLoading && (
-                                            <div className="image-container">
-                                                <div className="image-loading">
-                                                    🎨
-                                                    <div className="loading-text">Creating image...</div>
-                                                </div>
-                                            </div>
-                                        )}
-                                        
-                                        {generatedImage && !imageLoading && (
-                                            <div className="image-container">
-                                                <img
-                                                    src={generatedImage.url}
-                                                    alt={currentWord}
-                                                    onError={(e) => {
-                                                        if (generatedImage.fallback && e.target.src !== generatedImage.fallback) {
-                                                            e.target.src = generatedImage.fallback;
-                                                        }
-                                                    }}
-                                                />
-                                            </div>
-                                        )}
-                                        
-                                        {generatedImage && (
-                                            <div className="caption">
-                                                {generatedImage.isAI && <span style={{fontSize: '0.7em'}}>🤖 AI: </span>}
-                                                {generatedImage.caption}
-                                            </div>
-                                        )}
-                                        
-                                        <div className="controls">
-                                            <button 
-                                                className="btn btn-primary"
-                                                onClick={() => speak(currentWord)}
-                                                disabled={isSpeaking}
-                                            >
-                                                <span className="btn-icon">🔊</span>
-                                                {isSpeaking ? 'Speaking...' : 'Hear Word'}
-                                            </button>
-                                            <button 
-                                                className="btn btn-secondary"
-                                                onClick={() => speak(currentWord, 0.5)}
-                                            >
-                                                <span className="btn-icon">🐌</span>
-                                                Slow Speed
-                                            </button>
-                                        </div>
-                                        
-                                        <div className="controls" style={{marginTop: '20px'}}>
-                                            <button 
-                                                className="btn btn-secondary"
-                                                onClick={previousWord}
-                                                disabled={currentIndex === 0}
-                                            >
-                                                ← Previous
-                                            </button>
-                                            <button 
-                                                className="btn btn-success"
-                                                onClick={markComplete}
-                                            >
-                                                <span className="btn-icon">✓</span>
-                                                Got It! Next →
-                                            </button>
-                                        </div>
-                                        
-                                        {apiKey && currentLevel !== 'level5' && (
-                                            <div className="controls" style={{marginTop: '15px'}}>
-                                                <button 
-                                                    className="btn btn-warning"
-                                                    onClick={generateNewWords}
-                                                    disabled={isGeneratingWords}
-                                                >
-                                                    <span className="btn-icon">✨</span>
-                                                    {isGeneratingWords ? 'Generating...' : 'Generate New Words with AI'}
-                                                </button>
-                                            </div>
-                                        )}
-                                    </>
-                                ) : (
-                                    <>
-                                        <div className="story-mode">
-                                            <h3 style={{color: 'var(--success)', marginBottom: '25px', fontSize: '2.2em', fontFamily: "'Baloo 2', cursive"}}>
-                                                {currentStory.title}
-                                            </h3>
-                                            <div className="story-text">
-                                                {currentStory.text.split(' ').map((word, i) => {
-                                                    const cleanWord = word.replace(/[.,!?]/g, '').toLowerCase();
-                                                    const isHighlight = currentStory.focusWords.includes(cleanWord);
-                                                    return (
-                                                        <span 
-                                                            key={i}
-                                                            className={isHighlight ? 'highlight' : ''}
-                                                            onClick={() => isHighlight && speak(cleanWord)}
-                                                        >
-                                                            {word}{' '}
-                                                        </span>
-                                                    );
-                                                })}
-                                            </div>
-                                            
-                                            <div className="controls">
-                                                <button 
-                                                    className="btn btn-primary"
-                                                    onClick={() => speak(currentStory.text, 0.85)}
-                                                    disabled={isSpeaking}
-                                                >
-                                                    <span className="btn-icon">🔊</span>
-                                                    {isSpeaking ? 'Reading...' : 'Read Story'}
-                                                </button>
-                                                <button 
-                                                    className="btn btn-secondary"
-                                                    onClick={() => speak(currentStory.text, 0.6)}
-                                                >
-                                                    <span className="btn-icon">🐌</span>
-                                                    Slow Reading
-                                                </button>
-                                            </div>
-                                            
-                                            <div className="controls" style={{marginTop: '20px'}}>
-                                                <button 
-                                                    className="btn btn-secondary"
-                                                    onClick={previousWord}
-                                                    disabled={currentIndex === 0}
-                                                >
-                                                    ← Previous Story
-                                                </button>
-                                                <button 
-                                                    className="btn btn-success"
-                                                    onClick={markComplete}
-                                                >
-                                                    <span className="btn-icon">✓</span>
-                                                    Story Complete! →
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </>
-                                )}
+                        </>
+                    )}
+
+                    {/* ── STORY MODE ── */}
+                    {storyMode && story && (
+                        <div className="story-card">
+                            <div className="story-title">📖 {story.title}</div>
+                            <div className="story-body">
+                                {story.text.split(' ').map((w, i) => {
+                                    const clean = w.replace(/[.,!?]/g,'').toLowerCase();
+                                    const isKey = story.focus.includes(clean);
+                                    return (
+                                        <span key={i}>
+                                            {isKey ? (
+                                                <span className="story-word" onClick={() => speak(clean)}>{w}</span>
+                                            ) : w}{' '}
+                                        </span>
+                                    );
+                                })}
                             </div>
-                            
-                        </div>
-                    </div>
-                    
-                    {showAchievement && (
-                        <div className="achievement-popup">
-                            <div className="achievement-icon">🏆</div>
-                            <div className="achievement-text">Amazing Work!</div>
-                            <p style={{fontSize: '1.3em', color: 'var(--text-light)', fontWeight: 600}}>
-                                You've learned {wordsCompleted} words! Keep it up! 🌟
+                            <div className="story-controls">
+                                <button className="btn btn-pink" onClick={() => speak(story.text, 0.82)} disabled={speaking}>
+                                    🔊 {speaking ? 'Reading...' : 'Read Story'}
+                                </button>
+                                <button className="btn btn-blue" onClick={() => speak(story.text, 0.55)}>
+                                    🐌 Read Slowly
+                                </button>
+                                <button className="btn btn-green" onClick={() => { setStoryMode(false); markGotIt(); }}>
+                                    ✅ Story Done!
+                                </button>
+                            </div>
+                            <p style={{marginTop:'18px', color:'var(--muted)', fontWeight:700, fontSize:'0.95em'}}>
+                                💡 Tap the <span style={{background:'var(--yellow)', padding:'2px 6px', borderRadius:'4px', color:'#7a5c00'}}>highlighted words</span> to hear them!
                             </p>
                         </div>
                     )}
-                    
-                    {confetti.map(item => (
-                        <div
-                            key={item.id}
-                            className="confetti"
-                            style={{
-                                left: item.left,
-                                backgroundColor: item.backgroundColor,
-                                animationDelay: item.animationDelay,
-                                animation: 'confetti-fall 3s linear forwards'
-                            }}
-                        />
-                    ))}
-                </>
-            );
-        }
-        
-        ReactDOM.render(<ReadBuddyApp />, document.getElementById('root'));
-    </script>
+                </main>
+            </div>
+
+            {/* Achievement popup */}
+            {achievement && (
+                <div className="overlay" onClick={() => setAchievement(false)}>
+                    <div className="achievement-box" onClick={e => e.stopPropagation()}>
+                        <div className="ach-icon">🏆</div>
+                        <div className="ach-title">You're Amazing!</div>
+                        <div className="ach-sub">You've learned {wordsLearned} words! Keep going! 🌟</div>
+                        <button className="btn btn-green" style={{margin:'20px auto 0', fontSize:'1.1em'}} onClick={() => setAchievement(false)}>
+                            🎉 Yay!
+                        </button>
+                    </div>
+                </div>
+            )}
+
+            {/* Confetti */}
+            {confetti.map(p => (
+                <div key={p.id} className="conf-piece" style={{
+                    left: p.x + '%',
+                    top: '-20px',
+                    width: p.size + 'px',
+                    height: p.size + 'px',
+                    background: p.color,
+                    animationDelay: p.delay + 's',
+                    animationDuration: '2.5s'
+                }} />
+            ))}
+        </>
+    );
+}
+
+ReactDOM.render(<ReadBuddyApp />, document.getElementById('root'));
+</script>
 </body>
 </html>
