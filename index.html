@@ -4,10 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ReadBuddy 🌟 Kids Reading App</title>
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#FF6B9D">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="ReadBuddy">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
@@ -44,7 +40,6 @@
 
         #root { max-width: 1200px; margin: 0 auto; padding: 16px; }
 
-        /* ── Header ── */
         .header {
             background: linear-gradient(135deg, #FF6B9D 0%, #FF9A3C 50%, #FFD93D 100%);
             border-radius: var(--r);
@@ -82,17 +77,15 @@
             white-space: nowrap;
         }
 
-        /* ── Layout ── */
         .layout {
             display: grid;
-            grid-template-columns: 260px 1fr;
+            grid-template-columns: 270px 1fr;
             gap: 20px;
         }
         @media(max-width: 780px) {
             .layout { grid-template-columns: 1fr; }
         }
 
-        /* ── Sidebar ── */
         .sidebar {
             background: var(--card);
             border-radius: var(--r);
@@ -163,7 +156,6 @@
         .stat-num { font-family: 'Fredoka One', cursive; font-size: 1.8em; color: var(--pink); }
         .stat-lbl { font-size: 0.75em; font-weight: 700; color: var(--muted); }
 
-        /* ── Main content ── */
         .content {
             background: var(--card);
             border-radius: var(--r);
@@ -196,7 +188,6 @@
             color: #7a5c00;
         }
 
-        /* ── Word Card: image LEFT, word+buttons RIGHT ── */
         .word-card {
             background: linear-gradient(135deg, #fffef9, #fff5f8);
             border: 3px solid var(--yellow);
@@ -221,7 +212,6 @@
             .word-card { flex-direction: column; }
         }
 
-        /* Image column */
         .card-image-col {
             flex: 0 0 220px;
             display: flex;
@@ -266,7 +256,6 @@
         }
         .img-loading span { font-size: 0.25em; margin-top: 10px; color: #5a67d8; font-weight: 700; font-family: 'Nunito'; }
 
-        /* Speak-image button directly under image */
         .img-speak-btn {
             width: 100%;
             padding: 12px 16px;
@@ -285,8 +274,7 @@
             transition: all 0.25s cubic-bezier(.34,1.56,.64,1);
             box-shadow: 0 4px 14px rgba(61,217,203,0.4);
         }
-        .img-speak-btn:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 8px 22px rgba(61,217,203,0.5); }
-        .img-speak-btn:active { transform: scale(0.97); }
+        .img-speak-btn:hover { transform: translateY(-3px) scale(1.04); }
         .img-speak-btn.speaking { animation: speak-pulse 0.6s infinite alternate; }
         @keyframes speak-pulse { from { box-shadow: 0 4px 14px rgba(61,217,203,0.4); } to { box-shadow: 0 8px 30px rgba(61,217,203,0.8); } }
 
@@ -310,7 +298,6 @@
         }
         .img-slow-btn:hover { transform: translateY(-2px) scale(1.03); }
 
-        /* Word / info column */
         .card-info-col {
             flex: 1;
             display: flex;
@@ -320,7 +307,7 @@
         }
         .big-word {
             font-family: 'Fredoka One', cursive;
-            font-size: clamp(2.8em, 8vw, 5em);
+            font-size: clamp(2.5em, 7vw, 4.5em);
             background: linear-gradient(135deg, var(--pink), var(--orange));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -338,7 +325,37 @@
             to   { opacity: 1; transform: scale(1) rotate(0deg); }
         }
 
-        .phonetic { font-size: 1.1em; color: var(--muted); font-style: italic; font-weight: 600; }
+        .phonetic { font-size: 1em; color: var(--muted); font-style: italic; font-weight: 600; margin-top: 4px; }
+
+        .sentence-box {
+            background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+            border-left: 5px solid var(--green);
+            border-radius: 0 16px 16px 0;
+            padding: 16px 20px;
+            font-size: 1.15em;
+            font-weight: 700;
+            color: #166534;
+            line-height: 1.6;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .sentence-box:hover { transform: translateX(3px); box-shadow: 0 4px 12px rgba(93,216,130,0.2); }
+        .sentence-box .sentence-label { font-size: 0.75em; color: #4ade80; font-weight: 800; margin-bottom: 6px; display: block; }
+
+        .paragraph-box {
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            border-left: 5px solid var(--blue);
+            border-radius: 0 16px 16px 0;
+            padding: 16px 20px;
+            font-size: 1.05em;
+            font-weight: 600;
+            color: #1e3a8a;
+            line-height: 1.8;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .paragraph-box:hover { transform: translateX(3px); }
+        .paragraph-box .sentence-label { font-size: 0.75em; color: #60a5fa; font-weight: 800; margin-bottom: 6px; display: block; }
 
         .caption-box {
             background: rgba(255,217,61,0.15);
@@ -378,6 +395,7 @@
         .btn-green { background: linear-gradient(135deg, var(--green),  #3ab85a); color: white; }
         .btn-blue  { background: linear-gradient(135deg, var(--blue),   #3178c6); color: white; }
         .btn-orange{ background: linear-gradient(135deg, var(--orange), #e07a20); color: white; }
+        .btn-purple{ background: linear-gradient(135deg, var(--purple), #7c3aed); color: white; }
 
         .nav-row {
             display: flex;
@@ -405,7 +423,7 @@
         .btn-prev { background: #f0f0f0; color: #555; }
         .btn-next { background: linear-gradient(135deg, var(--green), #3ab85a); color: white; }
 
-        /* ── Story Mode ── */
+        /* Story Mode */
         .story-card {
             background: linear-gradient(135deg, #f0fdf4, #dcfce7);
             border: 3px solid var(--green);
@@ -420,7 +438,7 @@
             margin-bottom: 20px;
         }
         .story-body {
-            font-size: 1.5em;
+            font-size: 1.4em;
             line-height: 2.2;
             color: var(--text);
             font-weight: 600;
@@ -435,13 +453,12 @@
             transition: all 0.2s;
         }
         .story-word:hover { background: var(--yellow); transform: scale(1.1); }
-
         .story-controls { margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap; }
 
-        /* ── Achievement popup ── */
+        /* Achievement popup */
         .overlay {
             position: fixed; inset: 0;
-            background: rgba(0,0,0,0.4);
+            background: rgba(0,0,0,0.5);
             z-index: 999;
             display: flex;
             align-items: center;
@@ -450,12 +467,13 @@
         .achievement-box {
             background: white;
             border-radius: 30px;
-            padding: 52px 60px;
+            padding: 48px 56px;
             text-align: center;
             box-shadow: 0 20px 60px rgba(0,0,0,0.25);
             border: 5px solid var(--yellow);
             animation: popIn 0.5s cubic-bezier(.34,1.56,.64,1);
-            max-width: 90%;
+            max-width: 92%;
+            width: 480px;
         }
         @keyframes popIn {
             from { transform: scale(0.5); opacity: 0; }
@@ -471,7 +489,8 @@
             background-clip: text;
             margin: 14px 0 8px;
         }
-        .ach-sub { font-size: 1.1em; font-weight: 600; color: var(--muted); }
+        .ach-sub { font-size: 1.1em; font-weight: 600; color: var(--muted); line-height: 1.5; }
+        .ach-award { font-size: 2.5em; margin: 14px 0; }
 
         /* Confetti */
         @keyframes fall {
@@ -487,12 +506,13 @@
             pointer-events: none;
         }
 
-        /* Age group color bands */
+        /* Age group colors */
         .age-toddler   { --level-color: #FF6B9D; }
         .age-preschool { --level-color: #FF9A3C; }
         .age-early     { --level-color: #3DD9CB; }
         .age-mid       { --level-color: #A78BFA; }
         .age-advanced  { --level-color: #4A90E2; }
+        .age-expert    { --level-color: #5DD882; }
 
         .level-badge {
             display: inline-block;
@@ -500,463 +520,966 @@
             color: white;
             border-radius: 20px;
             padding: 4px 14px;
-            font-size: 0.8em;
+            font-size: 0.75em;
             font-weight: 800;
             margin-left: 10px;
             vertical-align: middle;
         }
+
+        .hint-box {
+            font-size: 0.85em;
+            color: var(--muted);
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        /* milestone streak indicator */
+        .streak-bar {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .streak-dot {
+            width: 22px; height: 22px;
+            border-radius: 50%;
+            background: #eee;
+            border: 2px solid #ddd;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.7em;
+            font-weight: 900;
+        }
+        .streak-dot.done { background: var(--yellow); border-color: var(--orange); }
+        .streak-dot.current { background: var(--pink); border-color: #E85384; color: white; animation: pulse-dot 1s infinite; }
+        @keyframes pulse-dot { 0%,100%{transform:scale(1);} 50%{transform:scale(1.2);} }
     </style>
 </head>
 <body>
 <div id="root"></div>
 
 <script type="text/babel">
-const { useState, useEffect, useCallback, useRef } = React;
+const { useState, useEffect, useCallback } = React;
 
-/* ───── Data ───── */
-const AGE_LEVELS = [
-    {
-        id: 'toddler',
-        icon: '🍼',
-        name: 'Baby Words',
-        range: 'Ages 1–2',
-        cls: 'age-toddler',
-        badge: 'TODDLER',
-        words: ['cat','dog','ball','cup','hat','sun','bed','car','bus','hen','bee','ant','cow','pig','duck','fish','frog','bird','star','moon'],
-        story: null,
-        hint: 'Click the picture or word to hear it!'
-    },
-    {
-        id: 'preschool',
-        icon: '🌈',
-        name: 'Colorful Words',
-        range: 'Ages 3–4',
-        cls: 'age-preschool',
-        badge: 'PRESCHOOL',
-        words: ['apple','kite','cake','rain','boat','tree','book','frog','jump','farm','flower','cloud','swing','baby','happy'],
-        story: null,
-        hint: 'Big, fun words! Tap to listen!'
-    },
-    {
-        id: 'early',
-        icon: '📖',
-        name: 'First Reader',
-        range: 'Ages 5–6',
-        cls: 'age-early',
-        badge: 'EARLY',
-        words: ['hat','bat','cat','mat','rat','hop','mop','top','pop','ship','chip','trip','drip','slip','clap','snap','trap'],
-        story: {
-            title: 'The Big Red Cat',
-            text: 'The cat sat on a mat. The cat had a hat. The big red cat ran to the van. What fun!',
-            focus: ['cat','mat','hat','ran','van','fun']
-        },
-        hint: 'Word families — they rhyme!'
-    },
-    {
-        id: 'mid',
-        icon: '🦋',
-        name: 'Growing Reader',
-        range: 'Ages 7–9',
-        cls: 'age-mid',
-        badge: 'GRADE 1-3',
-        words: ['happy','rabbit','garden','window','basket','morning','elephant','butterfly','children','birthday','playing','jumping','running','singing','laughing'],
-        story: {
-            title: 'A Day at the Park',
-            text: 'Sam went to the park on a bright morning. He saw a rabbit jumping in the garden. Birds were singing in the window tree. Sam played and laughed with the children. It was a very happy birthday!',
-            focus: ['park','rabbit','garden','morning','children','happy']
-        },
-        hint: 'Multi-syllable words — sound them out!'
-    },
-    {
-        id: 'advanced',
-        icon: '🚀',
-        name: 'Super Reader',
-        range: 'Ages 10–12',
-        cls: 'age-advanced',
-        badge: 'GRADES 4-6',
-        words: ['adventure','discovery','imagination','celebration','friendship','important','beautiful','wonderful','mysterious','fascinating','challenge','environment','responsible','courageous','extraordinary'],
-        story: {
-            title: 'The Mysterious Discovery',
-            text: 'Maya loved adventure more than anything. One extraordinary morning, she made a fascinating discovery in the garden. A mysterious door appeared between the trees. With courageous steps, she opened it — and a whole new world of imagination and wonder was waiting inside!',
-            focus: ['adventure','extraordinary','fascinating','mysterious','courageous','imagination']
-        },
-        hint: 'Big words for big readers!'
-    }
+/* ───── MILESTONE AWARDS ───── */
+const MILESTONE_AWARDS = [
+    { icon: '⭐', title: 'First Star!', msg: "You're doing amazing! Keep reading!" },
+    { icon: '🌟', title: 'Double Star!', msg: "Wow, 20 words! You are a reading superstar!" },
+    { icon: '🏅', title: 'Bronze Reader!', msg: "30 words! You should be so proud of yourself!" },
+    { icon: '🥈', title: 'Silver Reader!', msg: "40 words! You're getting better and better!" },
+    { icon: '🥇', title: 'Gold Reader!', msg: "50 words! Incredible! You are a reading champion!" },
+    { icon: '🏆', title: 'Trophy Time!', msg: "60 words! You are truly outstanding!" },
+    { icon: '💎', title: 'Diamond Reader!', msg: "70 words! Diamonds are for the best readers — that's YOU!" },
+    { icon: '🚀', title: 'Rocket Reader!', msg: "80 words! You're out of this world!" },
+    { icon: '👑', title: 'Reading Royalty!', msg: "90 words! All hail the Reading Queen/King!" },
+    { icon: '🌈', title: 'Rainbow Champion!', msg: "100 words! You've reached the rainbow! Legendary!" },
 ];
 
-/* ───── Emoji fallback map ───── */
+const ENCOURAGE_MSGS = [
+    "Keep going, you're doing brilliantly! 🌟",
+    "Wonderful work! Every word makes you smarter! 🧠",
+    "You're a reading rockstar! 🎸",
+    "Amazing effort! Reading is your superpower! 💪",
+    "You make learning look easy! Keep it up! 🌈",
+    "Every page you read opens a new door! 🚪✨",
+    "Reading heroes like you change the world! 🦸",
+    "You're unstoppable! One more word at a time! 🏃",
+    "Shine bright like the reading star you are! ⭐",
+    "The more you read, the more you know! 📚",
+];
+
+/* ───── LEVEL DATA ───── */
+const AGE_LEVELS = [
+  {
+    id: 'toddler',
+    icon: '🍼',
+    name: 'Baby Words',
+    range: 'Ages 1–2',
+    cls: 'age-toddler',
+    badge: 'TODDLER',
+    hint: 'Tap the picture or word to hear it!',
+    mode: 'word', // word only
+    words: [
+      {w:'mama'}, {w:'dada'}, {w:'baby'}, {w:'ball'}, {w:'cup'},
+      {w:'milk'}, {w:'cat'}, {w:'dog'}, {w:'hat'}, {w:'sun'},
+      {w:'bed'}, {w:'car'}, {w:'bus'}, {w:'duck'}, {w:'fish'},
+      {w:'bird'}, {w:'star'}, {w:'moon'}, {w:'apple'}, {w:'bear'},
+      {w:'bye'}, {w:'hi'}, {w:'yes'}, {w:'no'}, {w:'up'},
+      {w:'down'}, {w:'hot'}, {w:'cold'}, {w:'big'}, {w:'small'},
+      {w:'eat'}, {w:'more'}, {w:'stop'}, {w:'go'}, {w:'run'},
+      {w:'jump'}, {w:'sit'}, {w:'sleep'}, {w:'play'}, {w:'hug'},
+      {w:'tree'}, {w:'flower'}, {w:'water'}, {w:'shoe'}, {w:'sock'},
+      {w:'nose'}, {w:'eye'}, {w:'ear'}, {w:'hand'}, {w:'foot'},
+    ],
+    story: null,
+  },
+  {
+    id: 'preschool',
+    icon: '🌈',
+    name: 'Fun Sentences',
+    range: 'Ages 3–4',
+    cls: 'age-preschool',
+    badge: 'PRESCHOOL',
+    hint: 'Listen to the whole sentence!',
+    mode: 'sentence',
+    words: [
+      {w:'apple',    s:'I eat a red apple.'},
+      {w:'kite',     s:'I fly my kite high.'},
+      {w:'cake',     s:'We eat cake today.'},
+      {w:'rain',     s:'The rain is wet.'},
+      {w:'boat',     s:'The boat goes fast.'},
+      {w:'tree',     s:'I see a big tree.'},
+      {w:'book',     s:'I love to read a book.'},
+      {w:'frog',     s:'The frog can jump.'},
+      {w:'farm',     s:'I see cows on the farm.'},
+      {w:'flower',   s:'The flower is pretty.'},
+      {w:'cloud',    s:'The cloud is white and fluffy.'},
+      {w:'swing',    s:'I love to play on the swing.'},
+      {w:'cat',      s:'The cat drinks warm milk.'},
+      {w:'dog',      s:'My dog wags its tail.'},
+      {w:'bird',     s:'The bird can fly so high.'},
+      {w:'ball',     s:'I kick the ball to you.'},
+      {w:'hat',      s:'I wear my hat outside.'},
+      {w:'sun',      s:'The sun is bright and warm.'},
+      {w:'fish',     s:'The fish lives in water.'},
+      {w:'star',     s:'I see a star at night.'},
+      {w:'moon',     s:'The moon shines at night.'},
+      {w:'bed',      s:'I sleep in my cozy bed.'},
+      {w:'cup',      s:'I drink juice from my cup.'},
+      {w:'bus',      s:'I ride the big yellow bus.'},
+      {w:'pig',      s:'The pig rolls in the mud.'},
+      {w:'cow',      s:'The cow says moo all day.'},
+      {w:'bee',      s:'The bee makes sweet honey.'},
+      {w:'ant',      s:'The ant carries heavy food.'},
+      {w:'hen',      s:'The hen lays a small egg.'},
+      {w:'duck',     s:'The duck swims in the pond.'},
+      {w:'bear',     s:'The bear likes honey too.'},
+      {w:'shoe',     s:'I put on my red shoe.'},
+      {w:'sock',     s:'My sock keeps my foot warm.'},
+      {w:'nose',     s:'I smell flowers with my nose.'},
+      {w:'hand',     s:'I wave hello with my hand.'},
+      {w:'door',     s:'I open the big door.'},
+      {w:'home',     s:'I am safe at home.'},
+      {w:'food',     s:'We eat good food every day.'},
+      {w:'toy',      s:'I share my toy with friends.'},
+      {w:'song',     s:'We sing a happy song.'},
+      {w:'sit',      s:'Please sit down on the chair.'},
+      {w:'run',      s:'I love to run and play.'},
+      {w:'jump',     s:'Can you jump like a frog?'},
+      {w:'draw',     s:'I draw a rainbow picture.'},
+      {w:'color',    s:'What is your favorite color?'},
+      {w:'green',    s:'The grass is green and soft.'},
+      {w:'blue',     s:'The sky is bright and blue.'},
+      {w:'red',      s:'I have a red shiny apple.'},
+      {w:'pink',     s:'I love my pink dress.'},
+      {w:'white',    s:'Snow is cold and white.'},
+      {w:'black',    s:'My cat is black and fluffy.'},
+      {w:'circle',   s:'A ball is shaped like a circle.'},
+      {w:'square',   s:'The box is shaped like a square.'},
+      {w:'round',    s:'The orange is nice and round.'},
+      {w:'soft',     s:'The bunny is so soft.'},
+      {w:'hard',     s:'The rock feels very hard.'},
+      {w:'loud',     s:'The drum makes a loud sound.'},
+      {w:'quiet',    s:'Please be quiet at night.'},
+      {w:'fast',     s:'The car goes very fast.'},
+      {w:'slow',     s:'The turtle walks very slow.'},
+      {w:'tall',     s:'The giraffe is very tall.'},
+      {w:'short',    s:'My little sister is short.'},
+      {w:'happy',    s:'I feel happy every day.'},
+      {w:'sad',      s:'I feel sad when I fall.'},
+      {w:'hot',      s:'The soup is very hot.'},
+      {w:'cold',     s:'Ice cream is very cold.'},
+      {w:'sweet',    s:'The candy is very sweet.'},
+      {w:'sour',     s:'A lemon tastes so sour.'},
+      {w:'big',      s:'An elephant is very big.'},
+      {w:'little',   s:'The mouse is little and tiny.'},
+      {w:'one',      s:'I have one shiny apple.'},
+      {w:'two',      s:'I see two pretty butterflies.'},
+      {w:'three',    s:'There are three stars tonight.'},
+      {w:'four',     s:'My dog has four paws.'},
+      {w:'five',     s:'I have five fingers here.'},
+      {w:'night',    s:'Stars shine bright at night.'},
+      {w:'day',      s:'We play outside during the day.'},
+      {w:'water',    s:'I drink water to stay healthy.'},
+      {w:'bread',    s:'I eat bread with butter.'},
+      {w:'milk',     s:'Milk makes my bones strong.'},
+      {w:'rain',     s:'The rain falls from the sky.'},
+      {w:'snow',     s:'Snow is cold and white.'},
+      {w:'wind',     s:'The wind blows my hair.'},
+      {w:'friend',   s:'You are my best friend.'},
+      {w:'love',     s:'I love my family so much.'},
+      {w:'please',   s:'Please pass the juice to me.'},
+      {w:'thank',    s:'Thank you for helping me today.'},
+      {w:'sorry',    s:'I am sorry I was wrong.'},
+      {w:'help',     s:'Can you help me please?'},
+      {w:'share',    s:'Let us share our snacks together.'},
+      {w:'kind',     s:'Be kind to everyone you meet.'},
+      {w:'brave',    s:'I am brave when I try.'},
+      {w:'clean',    s:'Wash your hands to stay clean.'},
+      {w:'sleep',    s:'I sleep eight hours every night.'},
+      {w:'dream',    s:'I dream of flying every night.'},
+      {w:'laugh',    s:'I laugh when jokes are funny.'},
+      {w:'smile',    s:'Smile and the world smiles back.'},
+    ],
+    story: null,
+  },
+  {
+    id: 'early',
+    icon: '📖',
+    name: 'First Reader',
+    range: 'Ages 5–6',
+    cls: 'age-early',
+    badge: 'EARLY',
+    hint: 'Read each word and its sentence!',
+    mode: 'sentence',
+    words: [
+      {w:'morning',   s:'Every morning I wake up early.'},
+      {w:'outside',   s:'Let us go and play outside.'},
+      {w:'garden',    s:'Flowers grow in our garden.'},
+      {w:'kitchen',   s:'Mum cooks food in the kitchen.'},
+      {w:'window',    s:'I look through the window outside.'},
+      {w:'upstairs',  s:'My room is upstairs by the stairs.'},
+      {w:'breakfast', s:'I eat cereal for breakfast.'},
+      {w:'backpack',  s:'I put my books in my backpack.'},
+      {w:'teacher',   s:'My teacher is very kind today.'},
+      {w:'classroom', s:'We sit in our classroom together.'},
+      {w:'pencil',    s:'I write my name with a pencil.'},
+      {w:'crayon',    s:'I colour the sky with a blue crayon.'},
+      {w:'eraser',    s:'I use an eraser to fix mistakes.'},
+      {w:'ruler',     s:'I measure my paper with a ruler.'},
+      {w:'scissors',  s:'I cut the paper with scissors.'},
+      {w:'glue',      s:'I stick the paper with glue.'},
+      {w:'painting',  s:'I made a beautiful painting today.'},
+      {w:'counting',  s:'Counting to ten is easy and fun.'},
+      {w:'reading',   s:'Reading books makes me smarter.'},
+      {w:'writing',   s:'Writing stories is lots of fun.'},
+      {w:'singing',   s:'Singing a song makes me happy.'},
+      {w:'dancing',   s:'I love dancing to the music.'},
+      {w:'jumping',   s:'Jumping up high is so fun.'},
+      {w:'running',   s:'I am running as fast as I can.'},
+      {w:'climbing',  s:'I love climbing the big tree.'},
+      {w:'swimming',  s:'Swimming in the pool is refreshing.'},
+      {w:'playing',   s:'Playing with friends is the best.'},
+      {w:'building',  s:'I am building a big tower.'},
+      {w:'cooking',   s:'Mum is cooking my favourite dinner.'},
+      {w:'helping',   s:'I am helping my dad today.'},
+      {w:'sharing',   s:'Sharing toys makes everyone happy.'},
+      {w:'smiling',   s:'I keep smiling all day long.'},
+      {w:'thinking',  s:'I am thinking about my answer.'},
+      {w:'listening', s:'Good students are always listening.'},
+      {w:'learning',  s:'I love learning new things every day.'},
+      {w:'elephant',  s:'The elephant has a long trunk.'},
+      {w:'giraffe',   s:'The giraffe has a very long neck.'},
+      {w:'monkey',    s:'The monkey swings from tree to tree.'},
+      {w:'penguin',   s:'The penguin cannot fly but can swim.'},
+      {w:'dolphin',   s:'The dolphin jumps high in the sea.'},
+      {w:'rainbow',   s:'A rainbow appears after the rain.'},
+      {w:'thunder',   s:'Thunder is loud but cannot hurt you.'},
+      {w:'lightning', s:'Lightning lights up the dark sky.'},
+      {w:'weather',   s:'Today the weather is sunny and warm.'},
+      {w:'season',    s:'Summer is my favourite season.'},
+      {w:'autumn',    s:'Leaves fall during autumn.'},
+      {w:'winter',    s:'Winter is cold and sometimes snowy.'},
+      {w:'spring',    s:'Flowers bloom in spring.'},
+      {w:'summer',    s:'We swim at the beach in summer.'},
+      {w:'planet',    s:'Earth is the planet where we live.'},
+      {w:'rocket',    s:'A rocket flies up to outer space.'},
+      {w:'spaceship', s:'Astronauts travel in a spaceship.'},
+      {w:'hospital',  s:'Doctors work hard at the hospital.'},
+      {w:'library',   s:'I borrow books from the library.'},
+      {w:'market',    s:'We buy vegetables at the market.'},
+      {w:'airport',   s:'Aeroplanes land at the airport.'},
+      {w:'station',   s:'We catch the train at the station.'},
+      {w:'birthday',  s:'Happy birthday to my best friend!'},
+      {w:'present',   s:'I got a present on my birthday.'},
+      {w:'balloon',   s:'I blew up a big red balloon.'},
+      {w:'candle',    s:'We blow out the candles on the cake.'},
+      {w:'laughter',  s:'Our laughter filled the whole room.'},
+      {w:'adventure', s:'Reading takes me on an adventure.'},
+      {w:'question',  s:'I always ask a good question.'},
+      {w:'answer',    s:'I raised my hand with the answer.'},
+      {w:'problem',   s:'I can solve any problem I try.'},
+      {w:'careful',   s:'Be careful when you cross the road.'},
+      {w:'important', s:'It is important to be kind.'},
+      {w:'different', s:'We are all different and special.'},
+      {w:'together',  s:'Together we can do anything.'},
+      {w:'everyone',  s:'Everyone deserves to be treated kindly.'},
+      {w:'feeling',   s:'Tell me about your feeling today.'},
+      {w:'excited',   s:'I am excited about tomorrow.'},
+      {w:'nervous',   s:'I felt nervous before my speech.'},
+      {w:'proud',     s:'Mum is proud of what I did.'},
+      {w:'curious',   s:'I am curious about everything new.'},
+      {w:'creative',  s:'Painting makes me feel creative.'},
+      {w:'amazing',   s:'You did an amazing job today!'},
+      {w:'wonderful', s:'What a wonderful day this is.'},
+      {w:'beautiful', s:'The sunset looks so beautiful.'},
+      {w:'fantastic', s:'You made a fantastic picture.'},
+      {w:'brilliant', s:'That was a brilliant idea.'},
+      {w:'practice',  s:'I practice reading every night.'},
+      {w:'challenge', s:'Every challenge makes me stronger.'},
+      {w:'favourite', s:'Reading is my favourite hobby.'},
+      {w:'imagine',   s:'Imagine flying above the clouds.'},
+      {w:'believe',   s:'I believe I can do anything.'},
+      {w:'remember',  s:'Remember to drink water today.'},
+      {w:'discover',  s:'I discover something new every day.'},
+      {w:'explore',   s:'I love to explore the outdoors.'},
+      {w:'create',    s:'I create stories in my head.'},
+      {w:'protect',   s:'We protect animals and our earth.'},
+      {w:'nature',    s:'I love being in nature.'},
+      {w:'healthy',   s:'Eating vegetables keeps me healthy.'},
+      {w:'exercise',  s:'Exercise makes my body strong.'},
+      {w:'grateful',  s:'I am grateful for my family.'},
+      {w:'respect',   s:'I show respect to my teacher.'},
+      {w:'responsibility', s:'It is my responsibility to try hard.'},
+    ],
+    story: null,
+  },
+  {
+    id: 'mid',
+    icon: '🦋',
+    name: 'Growing Reader',
+    range: 'Ages 7–8',
+    cls: 'age-mid',
+    badge: 'GRADE 1-2',
+    hint: 'Read the word and its complex sentence!',
+    mode: 'sentence',
+    words: [
+      {w:'enormous',      s:'The enormous whale glided silently through the deep, dark ocean.'},
+      {w:'whispered',     s:'She whispered a secret to her best friend during the quiet lunchtime.'},
+      {w:'mysterious',    s:'A mysterious old map was hidden beneath the creaky floorboard.'},
+      {w:'discovered',    s:'The scientist discovered a rare butterfly deep in the forest.'},
+      {w:'scattered',     s:'Autumn leaves scattered across the path as the wind blew harder.'},
+      {w:'adventure',     s:'Every adventure begins with a single brave step forward.'},
+      {w:'enormous',      s:'The enormous castle stood at the top of the misty mountain.'},
+      {w:'trembling',     s:'The little rabbit was trembling with fright behind the bushes.'},
+      {w:'beneath',       s:'Beneath the old oak tree, the children buried their treasure.'},
+      {w:'glittering',    s:'The glittering stars above filled the night sky with magic.'},
+      {w:'wandered',      s:'She wandered through the enchanted forest, searching for the path.'},
+      {w:'shimmered',     s:'The lake shimmered like a silver mirror in the afternoon sun.'},
+      {w:'crumbled',      s:'The ancient castle walls crumbled over hundreds of years.'},
+      {w:'whirled',       s:'The leaves whirled and swirled in the gusty autumn breeze.'},
+      {w:'echoed',        s:'Her laughter echoed through the empty school hallways.'},
+      {w:'galloped',      s:'The wild horse galloped freely across the wide open meadow.'},
+      {w:'flickered',     s:'The candle flame flickered gently in the cold night air.'},
+      {w:'invisible',     s:'He wished he could be invisible during the difficult test.'},
+      {w:'glistened',     s:'The freshly cut grass glistened under the bright morning dew.'},
+      {w:'ancient',       s:'The ancient ruins told stories of a forgotten civilisation.'},
+      {w:'collapsed',     s:'The old bridge collapsed after the heavy storm passed through.'},
+      {w:'erupted',       s:'The volcano erupted, sending thick smoke high into the sky.'},
+      {w:'transformed',   s:'The caterpillar transformed into a beautiful butterfly over weeks.'},
+      {w:'celebrated',    s:'The whole class celebrated when they won the reading competition.'},
+      {w:'exhausted',     s:'After the long hike, everyone was completely exhausted.'},
+      {w:'disappointed',  s:'Tom was disappointed when his team lost the football match.'},
+      {w:'grateful',      s:'She was deeply grateful for the help her kind neighbour offered.'},
+      {w:'cautious',      s:'The cautious mouse crept quietly past the sleeping cat.'},
+      {w:'described',     s:'He described the painting in such vivid detail everyone could see it.'},
+      {w:'magnificent',   s:'The choir performed a magnificent song at the school concert.'},
+      {w:'imagined',      s:'She imagined herself sailing across the sparkling blue sea.'},
+      {w:'gathered',      s:'The villagers gathered around the fire to hear the old story.'},
+      {w:'competed',      s:'Ten children competed in the school spelling championship.'},
+      {w:'persuaded',     s:'She persuaded her mum to let her stay up for an extra hour.'},
+      {w:'reluctant',     s:'He was reluctant to try the new food, but he liked it.'},
+      {w:'predicted',     s:'The scientist predicted the storm would arrive by Friday evening.'},
+      {w:'consequences',  s:'Every choice we make has consequences that affect others around us.'},
+      {w:'apologised',    s:'She apologised sincerely after accidentally breaking her friend\'s pencil.'},
+      {w:'impressed',     s:'The judge was impressed by the young artist\'s incredible painting.'},
+      {w:'concentrated',  s:'He concentrated deeply on the difficult maths problem in front of him.'},
+      {w:'determined',    s:'She was determined to finish the race even though her legs ached.'},
+      {w:'overjoyed',     s:'The puppy was overjoyed when its owner finally came home.'},
+      {w:'thunderous',    s:'The crowd gave a thunderous cheer when the team scored a goal.'},
+      {w:'shivered',      s:'They shivered in the cold mountain air as snowflakes began to fall.'},
+      {w:'complained',    s:'He complained that the soup was too salty for his taste.'},
+      {w:'murmured',      s:'The river murmured softly as it flowed through the peaceful valley.'},
+      {w:'disguised',     s:'The spy was disguised as a postal worker to avoid being noticed.'},
+      {w:'melted',        s:'The ice cream melted quickly in the hot summer sunshine.'},
+      {w:'interrupted',   s:'She interrupted the conversation to share an important piece of news.'},
+      {w:'volunteered',   s:'He volunteered to help clean the classroom after the busy art lesson.'},
+      {w:'approached',    s:'She approached the enormous dog slowly and offered it her hand.'},
+      {w:'attempted',     s:'He attempted the climb three times before finally reaching the top.'},
+      {w:'survived',      s:'The tiny seedling survived the freezing winter under a layer of snow.'},
+      {w:'stumbled',      s:'He stumbled over the rock but quickly stood up with a smile.'},
+      {w:'mumbled',       s:'She mumbled her answer quietly, hoping the teacher would not hear.'},
+      {w:'exhausted',     s:'After swimming laps all afternoon, she felt completely exhausted.'},
+      {w:'enormous',      s:'The enormous spider web sparkled with morning dew in the sunlight.'},
+      {w:'frightened',    s:'The frightened kitten hid behind the sofa when thunder struck.'},
+      {w:'remarkable',    s:'The discovery of the ancient cave was truly remarkable.'},
+      {w:'celebrated',    s:'The whole school celebrated the end of term with a big parade.'},
+      {w:'wandered',      s:'The lost puppy wandered through the streets looking for its home.'},
+      {w:'delighted',     s:'She was absolutely delighted to receive first prize at the fair.'},
+      {w:'struggled',     s:'He struggled to lift the heavy box, but he did not give up.'},
+      {w:'terrified',     s:'She was terrified of speaking in front of the whole assembly.'},
+      {w:'precious',      s:'Time with family is precious and should never be taken for granted.'},
+      {w:'opportunity',   s:'This opportunity to perform on stage may never come again.'},
+      {w:'curiosity',     s:'Curiosity led her to explore every corner of the old museum.'},
+      {w:'independence',  s:'Learning to cook gave him a great sense of independence.'},
+      {w:'achievement',   s:'Finishing the book was her greatest achievement of the year.'},
+      {w:'persevered',    s:'Despite many failures, she persevered and eventually learned to swim.'},
+      {w:'responsible',   s:'Being responsible means taking care of your belongings and duties.'},
+      {w:'collaborate',   s:'We collaborate as a team to finish the big science project.'},
+      {w:'communicate',   s:'It is important to communicate your feelings calmly and clearly.'},
+      {w:'evaluate',      s:'The teacher asked us to evaluate which solution was most effective.'},
+      {w:'investigate',   s:'We investigate problems like scientists finding clues and evidence.'},
+      {w:'demonstrate',   s:'Can you demonstrate how to solve this maths equation step by step?'},
+      {w:'summarise',     s:'The student was asked to summarise the story in a few sentences.'},
+      {w:'comprehend',    s:'It was difficult to comprehend such a long and complex instruction.'},
+      {w:'persuasive',    s:'She wrote a persuasive letter to the council about planting more trees.'},
+      {w:'argument',      s:'He made a strong argument for why recess should be longer each day.'},
+      {w:'evidence',      s:'We need evidence to prove that our science hypothesis is correct.'},
+      {w:'conclusion',    s:'After much thought, she reached the conclusion that honesty was best.'},
+      {w:'experiment',    s:'The experiment showed that plants grow better with sunlight.'},
+      {w:'prediction',    s:'My prediction was that the ice would melt fastest in sunlight.'},
+      {w:'observation',   s:'Careful observation helped the explorer map the new territory.'},
+      {w:'imagination',   s:'Her imagination was so vivid that she wrote twenty pages in one night.'},
+      {w:'dedicated',     s:'The dedicated athlete trained every morning before sunrise.'},
+      {w:'inspired',      s:'She was inspired by the astronaut\'s incredible story of bravery.'},
+      {w:'passionate',    s:'He was passionate about protecting endangered animals.'},
+      {w:'courageous',    s:'The courageous firefighter rushed into the burning building to help.'},
+      {w:'ambitious',     s:'The ambitious young student dreamed of becoming a doctor one day.'},
+      {w:'compassionate', s:'A compassionate person cares deeply about the feelings of others.'},
+      {w:'influential',   s:'She became an influential figure in the world of science.'},
+      {w:'extraordinary', s:'The extraordinary discovery changed how scientists understood the universe.'},
+      {w:'significant',   s:'Her contribution to the project was truly significant and valued.'},
+      {w:'accomplish',    s:'With hard work and belief, you can accomplish absolutely anything.'},
+      {w:'potential',     s:'Every child has incredible potential waiting to be discovered.'},
+      {w:'resilience',    s:'Resilience means bouncing back stronger every time you face failure.'},
+    ],
+    story: null,
+  },
+  {
+    id: 'advanced',
+    icon: '🚀',
+    name: 'Super Reader',
+    range: 'Ages 9–10',
+    cls: 'age-advanced',
+    badge: 'GRADES 3-4',
+    hint: 'Read the word and its full paragraph!',
+    mode: 'paragraph',
+    words: [
+      {w:'phenomenal',     s:'The young gymnast gave a phenomenal performance at the national championships. The crowd erupted into thunderous applause as she completed her final routine without a single mistake. Her coach had always believed she was phenomenal, but tonight, the whole world could see it too.'},
+      {w:'deteriorate',    s:'When the air quality in the city began to deteriorate, scientists grew alarmed. Factories releasing thick smoke and cars polluting the streets caused the situation to worsen each year. Unless action was taken quickly, experts warned that conditions would continue to deteriorate.'},
+      {w:'catastrophic',   s:'The earthquake caused catastrophic damage to the ancient city. Buildings that had stood for centuries crumbled to the ground within minutes. Relief workers described the scenes as catastrophic, unlike anything they had ever seen in their long careers.'},
+      {w:'sophisticated',  s:'The new smartphone was the most sophisticated device the engineer had ever created. It could predict the user\'s needs, translate thirty languages, and even detect health problems. The sophisticated technology inside this tiny device took over seven years to develop.'},
+      {w:'controversial',  s:'The scientist\'s theory was highly controversial when it was first published. Many experts refused to believe it could be true, calling it radical and unproven. However, after years of experiments, the once controversial idea became widely accepted.'},
+      {w:'perseverance',   s:'Rosa Parks showed remarkable perseverance in the face of great injustice. Despite being arrested and threatened, she continued to stand up for equal rights. Her perseverance inspired millions of people around the world to fight for a fairer society.'},
+      {w:'predominant',    s:'The predominant cause of the famine was a severe drought that lasted three years. Without rain, crops failed and animals perished, leaving communities without food. The predominant colour across the once-green landscape turned to dusty brown and grey.'},
+      {w:'misconception',  s:'A common misconception is that humans only use ten percent of their brains. In reality, brain scans show that we use almost every part of our brain throughout the day. Correcting this misconception is important for helping people understand how the mind really works.'},
+      {w:'anticipation',   s:'The children waited in breathless anticipation as the curtain slowly rose on stage. Every eye in the packed theatre was fixed on the spotlight, wondering what would happen next. That electric feeling of anticipation is one of the most exciting parts of live theatre.'},
+      {w:'consequence',    s:'Every decision we make has a consequence, whether we realise it or not. Choosing to eat healthily has the consequence of a stronger body and a sharper mind. Learning to think ahead and consider the consequence of our actions is a sign of maturity.'},
+      {w:'transformation', s:'The transformation of the old railway station into a vibrant arts centre took two years. What was once a dark, abandoned building became a lively hub of music, theatre, and art. This transformation proved that with creativity, even forgotten places can be given new life.'},
+      {w:'collaboration',  s:'The rescue mission was only possible because of incredible collaboration between different teams. Doctors, engineers, pilots, and volunteers all worked together towards a single goal. This collaboration showed the world what human beings can achieve when they set aside differences.'},
+      {w:'equilibrium',    s:'A healthy ecosystem depends on a delicate equilibrium between all living things. When one species disappears, others are affected, upsetting the natural balance. Scientists study how to maintain equilibrium in ecosystems threatened by human activity.'},
+      {w:'exaggerated',    s:'The storyteller exaggerated every detail to make the tale more dramatic and entertaining. The fish he caught was not merely large — it was a beast the size of a boat! While exaggerated for fun, his wild stories always contained a small kernel of truth.'},
+      {w:'determination',  s:'It was sheer determination that carried her to the top of the mountain. Every time her legs gave out, she rested briefly, then pushed forward once more. Her determination was an inspiration to every member of the climbing team who struggled behind her.'},
+      {w:'vulnerability',  s:'The charity campaign encouraged people to embrace vulnerability and speak about their feelings. Many found it difficult at first, believing that showing emotion was a sign of weakness. However, they soon discovered that vulnerability actually builds trust and deeper connections with others.'},
+      {w:'sophisticated',  s:'The ancient city had a surprisingly sophisticated system of underground water channels. Engineers marvelled at how precisely the tunnels were carved using only simple tools. This sophisticated infrastructure kept the population supplied with clean water for hundreds of years.'},
+      {w:'expedition',     s:'The polar expedition set off in the depths of winter against all advice. Six scientists braved temperatures of minus forty degrees and howling blizzards. Despite the hardships, the expedition returned with data that transformed our understanding of climate change.'},
+      {w:'contribution',   s:'Marie Curie\'s contribution to science changed medicine forever. She discovered two new elements and developed X-ray technology that saved countless lives. Her extraordinary contribution earned her not one but two Nobel Prizes — the first person in history to achieve this.'},
+      {w:'influential',    s:'Nelson Mandela was one of the most influential leaders of the twentieth century. He spent twenty-seven years in prison yet emerged without bitterness, choosing forgiveness over revenge. His influential words and actions helped bring South Africa a peaceful transition to democracy.'},
+      {w:'irreversible',   s:'The scientists warned that deforestation could have irreversible effects on the climate. Once a rainforest is destroyed, its complex ecosystem cannot simply be rebuilt in a few years. Taking action now is essential to prevent irreversible damage to our planet.'},
+      {w:'perspective',    s:'Travelling to a new country gives you a completely different perspective on life. Seeing how other people live, eat, and celebrate challenges everything you once took for granted. This change in perspective is one of the greatest gifts that travel can offer.'},
+      {w:'adversity',      s:'History is filled with remarkable individuals who rose above great adversity. Despite poverty, illness, or injustice, they refused to give up on their dreams. These stories remind us that adversity, though painful, often shapes the strongest and most compassionate people.'},
+      {w:'sustainable',    s:'Scientists are working hard to develop sustainable sources of energy to replace fossil fuels. Solar panels and wind turbines generate electricity without producing harmful pollution. Building a sustainable future requires cooperation from governments, companies, and individuals around the world.'},
+      {w:'biodiversity',   s:'The Amazon rainforest contains extraordinary biodiversity found nowhere else on Earth. Millions of species of plants, insects, birds, and animals call this vast forest home. Protecting biodiversity in places like the Amazon is vital for the health of our entire planet.'},
+      {w:'hypothesis',     s:'Before starting an experiment, scientists always begin with a hypothesis. A hypothesis is an educated guess about what the results might show, based on existing knowledge. If the results disprove the hypothesis, that discovery is just as valuable to science as any success.'},
+      {w:'democracy',      s:'Democracy gives citizens the power to choose their own leaders and shape their society. In a democracy, every person\'s vote counts equally, regardless of wealth or status. Protecting democracy requires an educated population that questions what it hears and demands accountability.'},
+      {w:'propaganda',     s:'Governments in wartime often used propaganda to influence how people thought and felt. Posters, films, and radio broadcasts were carefully designed to build national pride. Recognising propaganda is an important skill that helps people think clearly and form their own views.'},
+      {w:'archaeological', s:'The archaeological dig uncovered a city buried beneath the desert sand for two thousand years. Pottery, jewellery, and written tablets gave archaeologists fascinating clues about daily life. Every archaeological discovery rewrites part of the story of human civilisation.'},
+      {w:'phenomenon',     s:'The Northern Lights are a stunning natural phenomenon caused by charged particles from the sun. These particles collide with gases in the atmosphere, producing waves of dancing coloured light. People travel from across the world to witness this breathtaking phenomenon.'},
+      {w:'atmosphere',     s:'The Earth\'s atmosphere is a thin layer of gases that makes life on our planet possible. It protects us from harmful radiation and keeps temperatures at levels that living things can survive. Without the atmosphere, Earth would be as lifeless and barren as the moon.'},
+      {w:'legislation',    s:'New environmental legislation was introduced to protect endangered species from hunting. The law made it illegal to buy or sell products made from threatened animals. Environmental groups celebrated, calling the legislation a major turning point in wildlife protection.'},
+      {w:'innovation',     s:'The invention of the internet was one of the greatest acts of innovation in human history. It transformed how people communicate, learn, shop, and experience the world. Future innovation in areas like medicine and clean energy could solve challenges that once seemed impossible.'},
+      {w:'controversy',    s:'The school\'s decision to remove the old oak tree sparked enormous controversy in the community. Parents, students, and local activists gathered to protest, holding signs and making speeches. The controversy ended when the council agreed to build around the tree instead.'},
+      {w:'accumulate',     s:'Over many years, tiny drops of water can accumulate to fill an entire lake. Similarly, small daily efforts to learn accumulate over time into extraordinary knowledge. This idea — that progress accumulates slowly — should encourage us never to give up on long-term goals.'},
+      {w:'persecuted',     s:'Throughout history, many people have been persecuted for their beliefs and traditions. Forced to flee their homes, they sought safety in distant and unfamiliar lands. Learning about those who were persecuted reminds us how important freedom and tolerance truly are.'},
+      {w:'conservation',   s:'Wildlife conservation efforts have helped bring several species back from the brink of extinction. Teams of dedicated rangers protect national parks from poachers and developers. Without ongoing conservation work, many of the world\'s most iconic animals would disappear forever.'},
+      {w:'camouflage',     s:'Many animals use camouflage to blend into their surroundings and hide from predators. The chameleon changes colour instantly, while the stick insect resembles a twig. This remarkable ability to use camouflage is one of nature\'s most clever survival strategies.'},
+      {w:'photosynthesis', s:'Photosynthesis is the process by which plants convert sunlight into energy for growth. Using chlorophyll in their leaves, plants absorb light, water, and carbon dioxide. The oxygen released during photosynthesis is the very air that all animals — including humans — breathe.'},
+      {w:'gravitational',  s:'A gravitational force acts between every object in the universe with mass. The larger the object, the stronger its gravitational pull on things around it. It is this powerful gravitational force that keeps the Earth orbiting the Sun year after year.'},
+      {w:'evaporation',    s:'Evaporation is the process by which liquid water turns into water vapour and rises into the sky. When the sun heats a puddle, the water gradually disappears through evaporation. This process is a crucial part of the water cycle that brings rain back to the earth.'},
+      {w:'adaptation',     s:'Every living creature on Earth has developed remarkable adaptations over millions of years. The polar bear\'s thick fur is an adaptation to arctic cold, while the camel\'s hump stores fat for desert survival. These adaptations are the result of long, slow processes of evolution.'},
+      {w:'migration',      s:'Every year, millions of birds undertake an extraordinary migration across continents. They follow ancient routes, guided by the stars and the Earth\'s magnetic fields. This incredible migration ensures that birds find warmer climates and plentiful food during winter months.'},
+      {w:'constellation',  s:'Every star pattern in the night sky is called a constellation. Ancient civilisations used constellations to navigate the seas and mark the changing seasons. Today, astronomers still use constellation maps to help identify and locate new discoveries in deep space.'},
+      {w:'revolution',     s:'The Industrial Revolution transformed how people lived and worked in the nineteenth century. Machines replaced human hands in factories, and steam engines powered trains and ships. This revolution changed society so rapidly that some historians call it the most important event in modern history.'},
+      {w:'civilisation',   s:'Every great civilisation in history rose on the foundations of agriculture, trade, and law. The ancient Egyptians built one of the most extraordinary civilisations the world has ever seen. Studying past civilisations helps us understand the mistakes and achievements that shape modern life.'},
+      {w:'proportion',     s:'In art, proportion refers to how the sizes of different parts relate to each other. When drawing a human face, the eyes sit in proportion to the nose and mouth. Great artists study proportion carefully to make their subjects appear natural and realistic.'},
+      {w:'microscopic',    s:'Beneath the surface of a single drop of pond water live thousands of microscopic creatures. These tiny organisms are invisible to the naked eye but can be seen through a microscope. This microscopic world is just as complex and fascinating as the one we can see.'},
+      {w:'symmetry',       s:'Many objects in nature display perfect symmetry, meaning each half mirrors the other. A butterfly\'s wings, a snowflake, and a human face all show this striking symmetry. Artists and architects have long been inspired by the beauty of symmetry found in the natural world.'},
+      {w:'trajectory',     s:'Scientists calculate the trajectory of a rocket with extraordinary precision before launch. Any small error in the trajectory could cause the spacecraft to miss its target by millions of kilometres. Understanding the mathematics of trajectory is essential for every successful space mission.'},
+    ],
+    story: null,
+  },
+  {
+    id: 'expert',
+    icon: '👑',
+    name: 'Story Reader',
+    range: 'Ages 11–12',
+    cls: 'age-expert',
+    badge: 'GRADES 5-6',
+    hint: 'Read these stories aloud — you\'re a real reader!',
+    mode: 'story',
+    words: [], // stories only
+    story: null,
+    stories: [
+      {
+        title: 'The Cartographer\'s Secret',
+        text: `In the ancient city of Veranthos, there lived a cartographer named Elara who was renowned for her extraordinary maps. Unlike the other mapmakers who simply recorded mountains and rivers, Elara embedded invisible codes within her intricate illustrations. Scholars who scrutinised her work discovered that the tiny decorative flourishes along the borders concealed a series of coordinates pointing to a location no map had ever documented.
+
+Elara was not merely an artist — she was a meticulous scientist who had spent decades investigating rumours of a civilisation predating recorded history. The archaeological evidence was fragmentary, but her hypothesis was supported by patterns she had observed across three continents. A persistent misconception among historians was that ancient trade routes followed only coastlines, but Elara\'s calculations demonstrated something far more sophisticated.
+
+When the prestigious Academy of Exploration dismissed her theory as controversial and exaggerated, she responded not with bitterness, but with determination. She organised her own expedition, recruiting twelve individuals whose diverse expertise complemented one another. Their collaboration transformed what critics assumed would be a catastrophic failure into one of the most phenomenal discoveries in the history of civilisation.`,
+        focus: ['cartographer','extraordinary','meticulous','hypothesis','archaeological','sophisticated','controversial','collaboration','phenomenal','civilisation']
+      },
+      {
+        title: 'The Algorithm\'s Choice',
+        text: `Seventeen-year-old Zara had written an algorithm so sophisticated that it could predict a person\'s career trajectory based on nothing more than the books they had read in childhood. When the government proposed using her innovation to determine which children would receive university funding, Zara was immediately conflicted. The proposition seemed efficient, but something about reducing a person\'s entire potential to a mathematical consequence troubled her deeply.
+
+She consulted Dr Osei, a philosopher renowned for his work on the ethics of artificial intelligence. "Technology," he murmured, "is never truly neutral. Every algorithm reflects the values and biases of the person who created it." This perspective shifted something fundamental in Zara\'s thinking. She began investigating the datasets she had used, and the results were disturbing — her model systematically disadvantaged children from rural communities.
+
+With considerable courage, Zara published a detailed report exposing the vulnerability in her own creation. The controversy that followed was immense and the criticism she received was devastating. Yet her transparency inspired a global movement demanding that innovation in artificial intelligence must always be accompanied by ethical responsibility. Sometimes, she reflected, the most extraordinary contribution a scientist can make is admitting what they do not yet know.`,
+        focus: ['algorithm','sophisticated','trajectory','innovation','consequence','vulnerability','controversy','transparency','responsibility','extraordinary']
+      },
+      {
+        title: 'The Keeper of the Mangroves',
+        text: `The mangrove forests along the Sulawesi coastline had, for centuries, maintained a delicate equilibrium with the sea. Their tangled roots stabilised the shoreline, their canopies sheltered an astonishing biodiversity of birds and fish, and their presence mitigated the ferocity of tropical storms. But three decades of unregulated development had brought this remarkable ecosystem to the brink of irreversible collapse.
+
+Twelve-year-old Amira had grown up listening to her grandmother describe how the forest had once stretched as far as the eye could see. Now, barely a fraction remained. Armed with a notebook and an old camera, she began documenting the deterioration with the systematic rigour of a scientist. She photographed the concrete structures encroaching on the remaining trees, interviewed the fishermen whose livelihoods had diminished, and compiled a comprehensive report on the consequences of the forest\'s destruction.
+
+Her petition, supported by evidence so meticulous that it impressed even government scientists, initiated the most significant conservation legislation the region had ever passed. Amira had not set out to become influential — she had simply refused to accept that what she loved was beyond saving. The mangroves, now under formal protection, began their slow transformation back to health, a living testament to the power of a single determined voice.`,
+        focus: ['equilibrium','biodiversity','irreversible','deterioration','conservation','legislation','meticulous','influential','transformation','consequence']
+      },
+    ],
+  },
+];
+
+/* ───── EMOJI FALLBACK ───── */
 const EMOJI_MAP = {
-    cat:'🐱',dog:'🐶',ball:'⚽',cup:'☕',hat:'🎩',sun:'☀️',bed:'🛏️',car:'🚗',bus:'🚌',
-    hen:'🐔',bee:'🐝',ant:'🐜',cow:'🐄',pig:'🐷',duck:'🦆',fish:'🐟',frog:'🐸',
-    bird:'🐦',star:'⭐',moon:'🌙',apple:'🍎',kite:'🪁',cake:'🎂',rain:'🌧️',boat:'⛵',
-    tree:'🌳',book:'📚',jump:'⬆️',farm:'🏡',flower:'🌸',cloud:'☁️',swing:'🎠',
-    baby:'👶',happy:'😊',hat:'🎩',bat:'🦇',ship:'🚢',chip:'🍟',clap:'👏',
-    rabbit:'🐰',garden:'🌺',window:'🪟',basket:'🧺',morning:'🌅',elephant:'🐘',
-    butterfly:'🦋',children:'👧',birthday:'🎂',playing:'🎮',jumping:'🏃',running:'🏃',
-    singing:'🎵',laughing:'😂',adventure:'🗺️',discovery:'🔍',imagination:'💭',
-    celebration:'🎉',friendship:'🤝',important:'❗',beautiful:'✨',wonderful:'🌟',
-    mysterious:'🔮',fascinating:'🤩',challenge:'💪',environment:'🌍',responsible:'🦸',
-    courageous:'⚔️',extraordinary:'🚀',park:'🌳',mat:'🟫',ran:'🏃',van:'🚐',fun:'🎊',
-    sat:'💺',big:'📐',red:'🔴',
+  mama:'👩',dada:'👨',baby:'👶',ball:'⚽',cup:'☕',milk:'🥛',cat:'🐱',dog:'🐶',
+  hat:'🎩',sun:'☀️',bed:'🛏️',car:'🚗',bus:'🚌',duck:'🦆',fish:'🐟',bird:'🐦',
+  star:'⭐',moon:'🌙',apple:'🍎',bear:'🐻',bye:'👋',hi:'👋',yes:'✅',no:'❌',
+  up:'⬆️',down:'⬇️',hot:'🔥',cold:'🧊',big:'📐',small:'🔬',eat:'🍽️',more:'➕',
+  stop:'🛑',go:'🟢',run:'🏃',jump:'⬆️',sit:'💺',sleep:'😴',play:'🎮',hug:'🤗',
+  tree:'🌳',flower:'🌸',water:'💧',shoe:'👟',sock:'🧦',nose:'👃',eye:'👁️',
+  ear:'👂',hand:'✋',foot:'🦶',kite:'🪁',cake:'🎂',rain:'🌧️',boat:'⛵',book:'📚',
+  farm:'🏡',cloud:'☁️',swing:'🎠',pig:'🐷',cow:'🐄',bee:'🐝',ant:'🐜',hen:'🐔',
+  door:'🚪',home:'🏠',food:'🍲',toy:'🧸',song:'🎵',draw:'✏️',color:'🎨',colour:'🎨',
+  green:'🟢',blue:'🔵',red:'🔴',pink:'🩷',white:'⬜',black:'⬛',circle:'⭕',square:'🟫',
+  happy:'😊',sad:'😢',sweet:'🍬',sour:'🍋',night:'🌙',day:'☀️',bread:'🍞',snow:'❄️',
+  wind:'💨',friend:'🤝',love:'❤️',laugh:'😂',smile:'😊',dream:'💭',
+  elephant:'🐘',giraffe:'🦒',monkey:'🐒',penguin:'🐧',dolphin:'🐬',rainbow:'🌈',
+  thunder:'⚡',lightning:'⚡',weather:'🌤️',season:'🍂',autumn:'🍂',winter:'❄️',
+  spring:'🌷',summer:'☀️',planet:'🌍',rocket:'🚀',spaceship:'🛸',hospital:'🏥',
+  library:'📚',market:'🛒',airport:'✈️',station:'🚉',birthday:'🎂',present:'🎁',
+  balloon:'🎈',candle:'🕯️',adventure:'🗺️',question:'❓',answer:'💡',curious:'🔍',
+  morning:'🌅',garden:'🌺',kitchen:'🍳',window:'🪟',breakfast:'🥣',backpack:'🎒',
+  teacher:'👩‍🏫',pencil:'✏️',crayon:'🖍️',eraser:'📝',scissors:'✂️',painting:'🖼️',
+  imagination:'💭',exploration:'🗺️',celebration:'🎉',friendship:'🤝',
+  enormous:'🐘',mysterious:'🔮',discovered:'🔭',adventure:'🗺️',ancient:'🏛️',
+  expedition:'🧭',innovation:'💡',democracy:'🏛️',microscopic:'🔬',
 };
 
 const buildEmojiSVG = (word) => {
-    const emoji = EMOJI_MAP[word.toLowerCase()] || '📖';
-    const palettes = [['#FFF0F5','#FF6B9D'],['#F0FFF4','#3DD9CB'],['#FFFDE7','#FFD93D'],['#EDE9FE','#A78BFA'],['#EFF6FF','#4A90E2']];
-    const [bg, accent] = palettes[word.length % palettes.length];
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  const emoji = EMOJI_MAP[word.toLowerCase()] || '📖';
+  const palettes = [['#FFF0F5','#FF6B9D'],['#F0FFF4','#3DD9CB'],['#FFFDE7','#FFD93D'],['#EDE9FE','#A78BFA'],['#EFF6FF','#4A90E2'],['#F0FDF4','#5DD882']];
+  const [bg, accent] = palettes[word.length % palettes.length];
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
   <rect width="400" height="300" fill="${bg}" rx="16"/>
   <circle cx="200" cy="130" r="90" fill="${accent}" opacity="0.15"/>
-  <text x="200" y="155" font-size="120" text-anchor="middle" dominant-baseline="middle">${emoji}</text>
+  <text x="200" y="155" font-size="110" text-anchor="middle" dominant-baseline="middle">${emoji}</text>
 </svg>`;
-    return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
 };
 
 const fetchWikiImage = async (word) => {
-    try {
-        const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(word)}`);
-        if (!res.ok) return null;
-        const data = await res.json();
-        if (data.thumbnail?.source) return data.thumbnail.source.replace(/\/\d+px-/, '/400px-');
-        return null;
-    } catch { return null; }
+  try {
+    const res = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(word)}`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (data.thumbnail?.source) return data.thumbnail.source.replace(/\/\d+px-/, '/400px-');
+    return null;
+  } catch { return null; }
 };
 
-const getImageAndCaption = async (word, apiKey) => {
-    const fallback = buildEmojiSVG(word);
-    const wikiUrl = await fetchWikiImage(word);
-    const url = wikiUrl || fallback;
-
-    if (apiKey) {
-        try {
-            const res = await fetch('https://api.anthropic.com/v1/messages', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'anthropic-version': '2023-06-01' },
-                body: JSON.stringify({
-                    model: 'claude-sonnet-4-20250514',
-                    max_tokens: 100,
-                    messages: [{ role: 'user', content: `Write 1 short, cheerful, child-friendly sentence about the word "${word}" for a 5-year-old. Keep it under 15 words.` }]
-                })
-            });
-            const d = await res.json();
-            return { url, fallback, caption: d.content[0].text.trim(), ai: true };
-        } catch {}
-    }
-
-    const captions = {
-        default: `This is a ${word}! Can you say it? 🌟`,
-    };
-    return { url, fallback, caption: EMOJI_MAP[word.toLowerCase()] ? `${EMOJI_MAP[word.toLowerCase()]} A ${word}! Great word!` : `This is a ${word}! 🌟`, ai: false };
+const getImage = async (word) => {
+  const fallback = buildEmojiSVG(word);
+  const wikiUrl = await fetchWikiImage(word);
+  return { url: wikiUrl || fallback, fallback };
 };
 
-/* ───── Main App ───── */
+/* ───── MILESTONE CELEBRATIONS ───── */
+const MILESTONES = [
+  { at:10,  icon:'⭐',  award:'🏅 Reading Star!',     msg:'Amazing! You\'ve read 10 words! You are a rising reading star!' },
+  { at:20,  icon:'🌟',  award:'🌟 Double Star!',      msg:'Fantastic! 20 words done! You are shining brighter every day!' },
+  { at:30,  icon:'🏅',  award:'🥉 Bronze Reader!',    msg:'Brilliant! 30 words! You\'ve earned your Bronze Reading Badge!' },
+  { at:40,  icon:'🥈',  award:'🥈 Silver Reader!',    msg:'Incredible! 40 words! Your Silver Reading Badge is yours!' },
+  { at:50,  icon:'🥇',  award:'🥇 Gold Reader!',      msg:'Spectacular! 50 words! You\'re a Gold Level Reading Champion!' },
+  { at:60,  icon:'🏆',  award:'🏆 Trophy Collector!', msg:'Outstanding! 60 words! You\'ve won the ReadBuddy Trophy!' },
+  { at:70,  icon:'💎',  award:'💎 Diamond Reader!',   msg:'Extraordinary! 70 words! The Diamond Badge is all yours!' },
+  { at:80,  icon:'🚀',  award:'🚀 Rocket Reader!',    msg:'You\'re out of this world! 80 words and still going!' },
+  { at:90,  icon:'👑',  award:'👑 Reading Royalty!',  msg:'Majestic! 90 words! Bow to the Reading Queen or King!' },
+  { at:100, icon:'🌈',  award:'🌈 Rainbow Legend!',   msg:'LEGENDARY! 100 words! You are a ReadBuddy LEGEND!' },
+];
+
+const getEncourage = (n) => {
+  const msgs = [
+    "Keep going — you\'re doing brilliantly! 🌟",
+    "Every word you read makes you smarter! 🧠",
+    "You\'re a reading rockstar — keep shining! 🎸",
+    "Amazing effort! Reading is your superpower! 💪",
+    "You make learning look effortless! 🌈",
+    "Every page opens a new door for you! 🚪✨",
+    "Reading heroes like you change the world! 🦸",
+    "One more word at a time — you\'re unstoppable! 🏃",
+    "Shine bright like the reading star you are! ⭐",
+    "The more you read, the more magical life becomes! 📚",
+  ];
+  return msgs[Math.floor(n / 10) % msgs.length];
+};
+
+/* ───── MAIN APP ───── */
 function ReadBuddyApp() {
-    const [levelId, setLevelId] = useState('toddler');
-    const [idx, setIdx] = useState(0);
-    const [mode, setMode] = useState('word'); // 'word' | 'story'
-    const [imgData, setImgData] = useState(null);
-    const [imgLoading, setImgLoading] = useState(false);
-    const [speaking, setSpeaking] = useState(false);
-    const [apiKey] = useState(''); // users can add their key if desired
-    const [wordsLearned, setWordsLearned] = useState(() => parseInt(sessionStorage.getItem('wl') || '0'));
-    const [achievement, setAchievement] = useState(false);
-    const [confetti, setConfetti] = useState([]);
-    const [storyMode, setStoryMode] = useState(false);
+  const [levelId, setLevelId] = useState('toddler');
+  const [idx, setIdx] = useState(0);
+  const [storyIdx, setStoryIdx] = useState(0);
+  const [imgData, setImgData] = useState(null);
+  const [imgLoading, setImgLoading] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
+  const [wordsLearned, setWordsLearned] = useState(() => parseInt(sessionStorage.getItem('wl') || '0'));
+  const [milestone, setMilestone] = useState(null);
+  const [confetti, setConfetti] = useState([]);
 
-    const level = AGE_LEVELS.find(l => l.id === levelId);
-    const word = level.words[idx];
-    const story = level.story;
+  const level = AGE_LEVELS.find(l => l.id === levelId);
+  const isStoryLevel = level.mode === 'story';
+  const currentWord = !isStoryLevel && level.words[idx] ? level.words[idx] : null;
+  const currentStory = isStoryLevel ? level.stories[storyIdx] : null;
 
-    /* Speak */
-    const speak = useCallback((text, rate = 0.8) => {
-        if (!window.speechSynthesis) return;
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.rate = rate;
-        u.pitch = 1.1;
-        u.volume = 1;
-        u.onstart = () => setSpeaking(true);
-        u.onend   = () => setSpeaking(false);
-        window.speechSynthesis.speak(u);
-    }, []);
+  const speak = useCallback((text, rate = 0.82) => {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.rate = rate; u.pitch = 1.05; u.volume = 1;
+    u.onstart = () => setSpeaking(true);
+    u.onend   = () => setSpeaking(false);
+    window.speechSynthesis.speak(u);
+  }, []);
 
-    /* Load image */
-    useEffect(() => {
-        if (storyMode) return;
-        let cancelled = false;
-        setImgLoading(true);
-        setImgData(null);
-        getImageAndCaption(word, apiKey).then(data => {
-            if (!cancelled) { setImgData(data); setImgLoading(false); }
-        });
-        return () => { cancelled = true; };
-    }, [word, storyMode]);
+  // Load image for word/sentence/paragraph modes
+  useEffect(() => {
+    if (!currentWord || isStoryLevel) return;
+    let cancelled = false;
+    setImgLoading(true);
+    setImgData(null);
+    getImage(currentWord.w).then(d => {
+      if (!cancelled) { setImgData(d); setImgLoading(false); }
+    });
+    return () => { cancelled = true; };
+  }, [currentWord, isStoryLevel]);
 
-    /* Auto-speak the word when it changes */
-    useEffect(() => {
-        if (!storyMode && word) {
-            const t = setTimeout(() => speak(word), 400);
-            return () => clearTimeout(t);
-        }
-    }, [word, storyMode]);
+  // Auto-speak word
+  useEffect(() => {
+    if (currentWord) {
+      const t = setTimeout(() => speak(currentWord.w), 400);
+      return () => clearTimeout(t);
+    }
+  }, [currentWord]);
 
-    const changeLevel = (id) => {
-        setLevelId(id);
-        setIdx(0);
-        setStoryMode(false);
-        setImgData(null);
-    };
+  const changeLevel = (id) => {
+    setLevelId(id);
+    setIdx(0);
+    setStoryIdx(0);
+    setImgData(null);
+    window.speechSynthesis && window.speechSynthesis.cancel();
+  };
 
-    const next = () => {
-        if (idx < level.words.length - 1) { setIdx(idx + 1); setImgData(null); }
-        else { alert('🎉 You finished all words! Amazing!'); setIdx(0); }
-    };
-    const prev = () => { if (idx > 0) { setIdx(idx - 1); setImgData(null); } };
+  const triggerMilestone = (n) => {
+    const m = MILESTONES.find(x => x.at === n);
+    if (m) {
+      setMilestone(m);
+      const pieces = Array.from({length:70}, (_,i) => ({
+        id:i,
+        x: Math.random()*100,
+        color: ['#FF6B9D','#FFD93D','#3DD9CB','#A78BFA','#FF9A3C','#5DD882'][i%6],
+        delay: Math.random()*1.8,
+        size: 6 + Math.random()*10
+      }));
+      setConfetti(pieces);
+      setTimeout(() => { setMilestone(null); setConfetti([]); }, 4500);
+    }
+  };
 
-    const markGotIt = () => {
-        const n = wordsLearned + 1;
-        setWordsLearned(n);
-        sessionStorage.setItem('wl', n);
-        if (n % 5 === 0) {
-            setAchievement(true);
-            const pieces = Array.from({length: 60}, (_, i) => ({
-                id: i,
-                x: Math.random() * 100,
-                color: ['#FF6B9D','#FFD93D','#3DD9CB','#A78BFA','#FF9A3C'][i % 5],
-                delay: Math.random() * 1.5,
-                size: 6 + Math.random() * 8
-            }));
-            setConfetti(pieces);
-            setTimeout(() => { setAchievement(false); setConfetti([]); }, 3200);
-        }
-        next();
-    };
+  const markGotIt = () => {
+    const n = wordsLearned + 1;
+    setWordsLearned(n);
+    sessionStorage.setItem('wl', n);
+    triggerMilestone(n);
+    if (idx < level.words.length - 1) { setIdx(idx+1); setImgData(null); }
+    else { alert('🎉 You finished all words in this level! Incredible!'); setIdx(0); }
+  };
 
-    const hasStory = !!story;
+  const nextStory = () => {
+    if (storyIdx < level.stories.length - 1) setStoryIdx(storyIdx+1);
+    else { setStoryIdx(0); alert('🎉 You read all the stories! You are a champion reader!'); }
+    const n = wordsLearned + 1;
+    setWordsLearned(n);
+    sessionStorage.setItem('wl', n);
+    triggerMilestone(n);
+  };
 
-    return (
-        <>
-            {/* Header */}
-            <div className="header">
-                <div className="header-left">
-                    <span className="logo-emoji">📚</span>
-                    <div>
-                        <h1>ReadBuddy</h1>
-                        <div className="header-tagline">🌟 Learning is fun for every age!</div>
-                    </div>
-                </div>
-                <div className="stars-badge">⭐ {wordsLearned} words learned!</div>
+  const milestoneEvery10 = wordsLearned > 0 && wordsLearned % 10 === 0;
+  const progressInSet = (wordsLearned % 10);
+
+  return (
+    <>
+      {/* Header */}
+      <div className="header">
+        <div className="header-left">
+          <span className="logo-emoji">📚</span>
+          <div>
+            <h1>ReadBuddy</h1>
+            <div className="header-tagline">🌟 Every word brings you closer to greatness!</div>
+          </div>
+        </div>
+        <div className="stars-badge">⭐ {wordsLearned} words learned!</div>
+      </div>
+
+      <div className="layout">
+        {/* Sidebar */}
+        <aside className="sidebar">
+          <h3>🎯 Choose Your Level</h3>
+          {AGE_LEVELS.map(l => (
+            <button key={l.id} className={`age-btn ${l.cls} ${levelId === l.id ? 'active' : ''}`} onClick={() => changeLevel(l.id)}>
+              <span className="age-icon">{l.icon}</span>
+              <span className="age-info">
+                <span className="age-name">{l.name}</span>
+                <span className="age-range">{l.range}</span>
+              </span>
+            </button>
+          ))}
+
+          <div className="progress-wrap">
+            <h3>📊 Your Progress</h3>
+            <div className="prog-bar-bg">
+              <div className="prog-bar-fill" style={{width:`${progressInSet * 10}%`}}></div>
             </div>
-
-            <div className="layout">
-                {/* Sidebar */}
-                <aside className="sidebar">
-                    <h3>🎯 Choose Your Level</h3>
-                    {AGE_LEVELS.map(l => (
-                        <button
-                            key={l.id}
-                            className={`age-btn ${l.cls} ${levelId === l.id ? 'active' : ''}`}
-                            onClick={() => changeLevel(l.id)}
-                        >
-                            <span className="age-icon">{l.icon}</span>
-                            <span className="age-info">
-                                <span className="age-name">{l.name}</span>
-                                <span className="age-range">{l.range}</span>
-                            </span>
-                        </button>
-                    ))}
-
-                    <div className="progress-wrap">
-                        <h3>📊 Progress</h3>
-                        <div className="prog-bar-bg">
-                            <div className="prog-bar-fill" style={{width: `${Math.min(100, (wordsLearned % 10) * 10)}%`}}></div>
-                        </div>
-                        <div className="prog-label">Next star in {10 - (wordsLearned % 10)} words!</div>
-                        <div className="stat-row">
-                            <div className="stat-box">
-                                <div className="stat-num">{wordsLearned}</div>
-                                <div className="stat-lbl">Learned</div>
-                            </div>
-                            <div className="stat-box">
-                                <div className="stat-num">{Math.floor(wordsLearned / 5)}</div>
-                                <div className="stat-lbl">Stars ⭐</div>
-                            </div>
-                        </div>
-                    </div>
-                </aside>
-
-                {/* Main */}
-                <main className="content">
-                    <div className="content-header">
-                        <div className="content-title">
-                            {level.icon} {level.name}
-                            <span className={`level-badge ${level.cls}`}>{level.badge}</span>
-                        </div>
-                        <div style={{display:'flex', gap:'10px', flexWrap:'wrap'}}>
-                            {hasStory && (
-                                <button
-                                    className={`btn ${storyMode ? 'btn-orange' : 'btn-blue'}`}
-                                    onClick={() => setStoryMode(!storyMode)}
-                                >
-                                    {storyMode ? '🔤 Words' : '📖 Story'}
-                                </button>
-                            )}
-                            {!storyMode && (
-                                <div className="word-count-pill">
-                                    {idx + 1} / {level.words.length}
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* ── WORD MODE ── */}
-                    {!storyMode && (
-                        <>
-                            <div className="word-card">
-                                {/* LEFT: image + buttons beside it */}
-                                <div className="card-image-col">
-                                    <div className="img-frame">
-                                        {imgLoading && (
-                                            <div className="img-loading">
-                                                🎨
-                                                <span>Loading...</span>
-                                            </div>
-                                        )}
-                                        {imgData && !imgLoading && (
-                                            <img
-                                                src={imgData.url}
-                                                alt={word}
-                                                onError={e => { if (imgData.fallback && e.target.src !== imgData.fallback) e.target.src = imgData.fallback; }}
-                                            />
-                                        )}
-                                    </div>
-
-                                    {/* ✅ Clickable buttons BESIDE (below) the image */}
-                                    <button
-                                        className={`img-speak-btn ${speaking ? 'speaking' : ''}`}
-                                        onClick={() => speak(word)}
-                                        disabled={speaking}
-                                    >
-                                        🔊 {speaking ? 'Saying...' : 'Say it!'}
-                                    </button>
-                                    <button
-                                        className="img-slow-btn"
-                                        onClick={() => speak(word, 0.45)}
-                                    >
-                                        🐌 Slow
-                                    </button>
-                                </div>
-
-                                {/* RIGHT: word + info */}
-                                <div className="card-info-col">
-                                    <div>
-                                        <div
-                                            className="big-word"
-                                            onClick={() => speak(word)}
-                                            title="Click to hear!"
-                                        >
-                                            {word}
-                                        </div>
-                                        <div className="phonetic">👆 Tap the word to hear it!</div>
-                                        <div style={{marginTop:'6px', fontSize:'0.85em', color:'var(--muted)', fontWeight:700}}>
-                                            {level.hint}
-                                        </div>
-                                    </div>
-
-                                    {imgData && (
-                                        <div className="caption-box">
-                                            {imgData.ai && <span style={{fontSize:'0.75em', color:'#7c3aed', fontWeight:800}}>🤖 AI says: </span>}
-                                            {imgData.caption}
-                                        </div>
-                                    )}
-
-                                    <div className="action-btns">
-                                        <button className="btn btn-pink" onClick={() => speak(word)} disabled={speaking}>
-                                            🔊 {speaking ? 'Speaking...' : 'Hear Word'}
-                                        </button>
-                                        <button className="btn btn-green" onClick={markGotIt}>
-                                            ✅ Got it!
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Nav */}
-                            <div className="nav-row">
-                                <button className="btn-nav btn-prev" onClick={prev} disabled={idx === 0}>
-                                    ← Back
-                                </button>
-                                <button className="btn-nav btn-next" onClick={next} disabled={idx === level.words.length - 1}>
-                                    Next Word →
-                                </button>
-                            </div>
-                        </>
-                    )}
-
-                    {/* ── STORY MODE ── */}
-                    {storyMode && story && (
-                        <div className="story-card">
-                            <div className="story-title">📖 {story.title}</div>
-                            <div className="story-body">
-                                {story.text.split(' ').map((w, i) => {
-                                    const clean = w.replace(/[.,!?]/g,'').toLowerCase();
-                                    const isKey = story.focus.includes(clean);
-                                    return (
-                                        <span key={i}>
-                                            {isKey ? (
-                                                <span className="story-word" onClick={() => speak(clean)}>{w}</span>
-                                            ) : w}{' '}
-                                        </span>
-                                    );
-                                })}
-                            </div>
-                            <div className="story-controls">
-                                <button className="btn btn-pink" onClick={() => speak(story.text, 0.82)} disabled={speaking}>
-                                    🔊 {speaking ? 'Reading...' : 'Read Story'}
-                                </button>
-                                <button className="btn btn-blue" onClick={() => speak(story.text, 0.55)}>
-                                    🐌 Read Slowly
-                                </button>
-                                <button className="btn btn-green" onClick={() => { setStoryMode(false); markGotIt(); }}>
-                                    ✅ Story Done!
-                                </button>
-                            </div>
-                            <p style={{marginTop:'18px', color:'var(--muted)', fontWeight:700, fontSize:'0.95em'}}>
-                                💡 Tap the <span style={{background:'var(--yellow)', padding:'2px 6px', borderRadius:'4px', color:'#7a5c00'}}>highlighted words</span> to hear them!
-                            </p>
-                        </div>
-                    )}
-                </main>
+            <div className="prog-label">
+              {progressInSet === 0 && wordsLearned > 0
+                ? '🏆 Award earned! Keep going!'
+                : `${10 - progressInSet} more for next award!`}
             </div>
-
-            {/* Achievement popup */}
-            {achievement && (
-                <div className="overlay" onClick={() => setAchievement(false)}>
-                    <div className="achievement-box" onClick={e => e.stopPropagation()}>
-                        <div className="ach-icon">🏆</div>
-                        <div className="ach-title">You're Amazing!</div>
-                        <div className="ach-sub">You've learned {wordsLearned} words! Keep going! 🌟</div>
-                        <button className="btn btn-green" style={{margin:'20px auto 0', fontSize:'1.1em'}} onClick={() => setAchievement(false)}>
-                            🎉 Yay!
-                        </button>
-                    </div>
+            {/* Mini dot tracker */}
+            <div className="streak-bar">
+              {Array.from({length:10}, (_,i) => (
+                <div key={i} className={`streak-dot ${i < progressInSet ? 'done' : i === progressInSet ? 'current' : ''}`}>
+                  {i < progressInSet ? '✓' : i+1}
                 </div>
+              ))}
+            </div>
+            <div className="stat-row">
+              <div className="stat-box">
+                <div className="stat-num">{wordsLearned}</div>
+                <div className="stat-lbl">Learned</div>
+              </div>
+              <div className="stat-box">
+                <div className="stat-num">{Math.floor(wordsLearned / 10)}</div>
+                <div className="stat-lbl">Awards 🏅</div>
+              </div>
+            </div>
+          </div>
+        </aside>
+
+        {/* Main Content */}
+        <main className="content">
+          <div className="content-header">
+            <div className="content-title">
+              {level.icon} {level.name}
+              <span className={`level-badge ${level.cls}`}>{level.badge}</span>
+            </div>
+            {!isStoryLevel && (
+              <div className="word-count-pill">{idx + 1} / {level.words.length}</div>
             )}
+            {isStoryLevel && (
+              <div className="word-count-pill">Story {storyIdx + 1} / {level.stories.length}</div>
+            )}
+          </div>
 
-            {/* Confetti */}
-            {confetti.map(p => (
-                <div key={p.id} className="conf-piece" style={{
-                    left: p.x + '%',
-                    top: '-20px',
-                    width: p.size + 'px',
-                    height: p.size + 'px',
-                    background: p.color,
-                    animationDelay: p.delay + 's',
-                    animationDuration: '2.5s'
-                }} />
-            ))}
-        </>
-    );
+          {/* ── WORD / SENTENCE / PARAGRAPH MODE ── */}
+          {!isStoryLevel && currentWord && (
+            <>
+              <div className="word-card">
+                {/* Image column */}
+                <div className="card-image-col">
+                  <div className="img-frame">
+                    {imgLoading && (
+                      <div className="img-loading">🎨<span>Loading...</span></div>
+                    )}
+                    {imgData && !imgLoading && (
+                      <img src={imgData.url} alt={currentWord.w}
+                        onError={e => { if (imgData.fallback && e.target.src !== imgData.fallback) e.target.src = imgData.fallback; }} />
+                    )}
+                  </div>
+                  <button className={`img-speak-btn ${speaking ? 'speaking' : ''}`}
+                    onClick={() => speak(currentWord.w)} disabled={speaking}>
+                    🔊 {speaking ? 'Saying...' : 'Say it!'}
+                  </button>
+                  <button className="img-slow-btn" onClick={() => speak(currentWord.w, 0.42)}>
+                    🐌 Slow
+                  </button>
+                  {currentWord.s && (
+                    <button className="img-slow-btn" style={{background:'linear-gradient(135deg,#FF9A3C,#e07a20)', marginTop:'4px'}}
+                      onClick={() => speak(currentWord.s, 0.75)}>
+                      📖 Read Sentence
+                    </button>
+                  )}
+                </div>
+
+                {/* Word / Info column */}
+                <div className="card-info-col">
+                  <div>
+                    <div className="big-word" onClick={() => speak(currentWord.w)} title="Tap to hear!">
+                      {currentWord.w}
+                    </div>
+                    <div className="phonetic">👆 Tap the word to hear it!</div>
+                    <div className="hint-box">{level.hint}</div>
+                  </div>
+
+                  {/* Sentence box for preschool / early */}
+                  {currentWord.s && (level.mode === 'sentence') && (
+                    <div className="sentence-box" onClick={() => speak(currentWord.s, 0.78)}>
+                      <span className="sentence-label">📝 Read this sentence:</span>
+                      {currentWord.s}
+                    </div>
+                  )}
+
+                  {/* Paragraph box for advanced */}
+                  {currentWord.s && (level.mode === 'paragraph') && (
+                    <div className="paragraph-box" onClick={() => speak(currentWord.s, 0.80)}>
+                      <span className="sentence-label">📄 Read this paragraph:</span>
+                      {currentWord.s}
+                    </div>
+                  )}
+
+                  <div className="action-btns">
+                    <button className="btn btn-pink" onClick={() => speak(currentWord.w)} disabled={speaking}>
+                      🔊 {speaking ? 'Speaking...' : 'Hear Word'}
+                    </button>
+                    {currentWord.s && (
+                      <button className="btn btn-blue" onClick={() => speak(currentWord.s, 0.78)}>
+                        📖 Read {level.mode === 'paragraph' ? 'Paragraph' : 'Sentence'}
+                      </button>
+                    )}
+                    <button className="btn btn-green" onClick={markGotIt}>
+                      ✅ Got it!
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Nav */}
+              <div className="nav-row">
+                <button className="btn-nav btn-prev" onClick={() => { if(idx>0){setIdx(idx-1);setImgData(null);} }} disabled={idx===0}>
+                  ← Back
+                </button>
+                <button className="btn-nav btn-next" onClick={() => { if(idx<level.words.length-1){setIdx(idx+1);setImgData(null);}else{alert('🎉 Level complete! Try the next level!');} }}>
+                  Next Word →
+                </button>
+              </div>
+            </>
+          )}
+
+          {/* ── STORY MODE (Ages 11-12) ── */}
+          {isStoryLevel && currentStory && (
+            <div className="story-card">
+              <div className="story-title">📖 {currentStory.title}</div>
+              <div className="story-body">
+                {currentStory.text.split('\n\n').map((para, pi) => (
+                  <p key={pi} style={{marginBottom:'1.2em'}}>
+                    {para.split(' ').map((w, i) => {
+                      const clean = w.replace(/[.,!?'"]/g,'').toLowerCase();
+                      const isKey = currentStory.focus.includes(clean);
+                      return (
+                        <span key={i}>
+                          {isKey
+                            ? <span className="story-word" onClick={() => speak(clean)}>{w}</span>
+                            : w
+                          }{' '}
+                        </span>
+                      );
+                    })}
+                  </p>
+                ))}
+              </div>
+              <div style={{marginTop:'16px', padding:'12px 18px', background:'rgba(167,139,250,0.1)', borderRadius:'14px', borderLeft:'4px solid var(--purple)'}}>
+                <strong style={{color:'#7c3aed', fontSize:'0.9em'}}>🔑 Key Words to explore:</strong>
+                <div style={{display:'flex', flexWrap:'wrap', gap:'8px', marginTop:'8px'}}>
+                  {currentStory.focus.map(w => (
+                    <span key={w} onClick={() => speak(w)} style={{background:'var(--purple)', color:'white', padding:'4px 12px', borderRadius:'20px', fontWeight:800, fontSize:'0.9em', cursor:'pointer', transition:'all 0.2s'}}
+                      onMouseOver={e=>e.target.style.transform='scale(1.1)'} onMouseOut={e=>e.target.style.transform='scale(1)'}>
+                      {w}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="story-controls">
+                <button className="btn btn-pink" onClick={() => speak(currentStory.text, 0.82)} disabled={speaking}>
+                  🔊 {speaking ? 'Reading...' : 'Read Story'}
+                </button>
+                <button className="btn btn-blue" onClick={() => speak(currentStory.text, 0.55)}>
+                  🐌 Read Slowly
+                </button>
+                <button className="btn btn-green" onClick={nextStory}>
+                  ✅ Story Complete!
+                </button>
+              </div>
+              <p style={{marginTop:'16px', color:'var(--muted)', fontWeight:700, fontSize:'0.9em'}}>
+                💡 Tap the <span style={{background:'var(--yellow)', padding:'2px 6px', borderRadius:'4px', color:'#7a5c00'}}>highlighted words</span> to hear them pronounced!
+              </p>
+              {level.stories.length > 1 && (
+                <div style={{marginTop:'16px', display:'flex', gap:'8px', flexWrap:'wrap'}}>
+                  {level.stories.map((s,i) => (
+                    <button key={i} onClick={() => setStoryIdx(i)} style={{
+                      padding:'8px 16px', borderRadius:'20px', border:'none', fontFamily:'Nunito, sans-serif', fontWeight:800, cursor:'pointer',
+                      background: i===storyIdx ? 'var(--purple)' : '#eee', color: i===storyIdx ? 'white' : '#555',
+                      transition:'all 0.2s'
+                    }}>
+                      Story {i+1}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
+        </main>
+      </div>
+
+      {/* Milestone Award Popup */}
+      {milestone && (
+        <div className="overlay" onClick={() => setMilestone(null)}>
+          <div className="achievement-box" onClick={e => e.stopPropagation()}>
+            <div className="ach-icon">{milestone.icon}</div>
+            <div className="ach-award">{milestone.award}</div>
+            <div className="ach-title">You're Amazing!</div>
+            <div className="ach-sub">{milestone.msg}</div>
+            <div style={{margin:'14px 0', fontSize:'1em', fontWeight:700, color:'#888'}}>
+              {getEncourage(wordsLearned)}
+            </div>
+            <button className="btn btn-green" style={{margin:'16px auto 0', fontSize:'1.1em'}} onClick={() => setMilestone(null)}>
+              🎉 Keep Reading!
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Confetti */}
+      {confetti.map(p => (
+        <div key={p.id} className="conf-piece" style={{
+          left: p.x+'%', top:'-20px',
+          width: p.size+'px', height: p.size+'px',
+          background: p.color,
+          animationDelay: p.delay+'s',
+          animationDuration: '2.8s',
+          borderRadius: p.id % 2 === 0 ? '50%' : '3px'
+        }} />
+      ))}
+    </>
+  );
 }
 
 ReactDOM.render(<ReadBuddyApp />, document.getElementById('root'));
